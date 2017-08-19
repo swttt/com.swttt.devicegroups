@@ -1,0 +1,51 @@
+<script src="./vue.min.js"></script>
+<script src="./capabilities.js"></script>
+<script>
+
+Homey.setTitle('Select devices to group');
+Homey.emit('startedDevices', null, function (err, result) {
+  if (err) {
+    console.log(err);
+    return;
+  }
+  var allDevices = result.devices;
+  var pairingDevice = result.pairingDevice;
+  new Vue({
+    el: '#alldevices',
+    data: {
+      selectedDevices: [],
+      devices: result.devices || {},
+      pairingDevice: result.pairingDevice || {}
+    },
+    mounted(){
+    },
+    methods:{
+
+    },
+    watch: {
+        'selectedDevices': function(val){
+          Homey.emit('devicesChanged', {'devices': val}, function (err, result) {
+            if(err){console.log(err); return;}
+            console.log(result);
+          });
+      }
+    }
+  });
+
+
+});
+</script>
+
+<div id="alldevices">
+  <ul id="devices-list">
+    <li class="device" v-for="device in devices">
+		<label :for="device.id" class="name">
+			<div class="overlay"></div>
+			<span class="name" tabindex="-1">{{device.name}}</span>
+		</label>
+		<label :for="device.id" class="checkbox">
+			<input :id="device.id" :value="device" name="device" type="checkbox" tabindex="2" v-model="selectedDevices">
+		</label>
+	</li>
+  </ul>
+</div>

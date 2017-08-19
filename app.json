@@ -1,0 +1,50 @@
+{
+  "id": "com.swttt.devicegroups",
+  "sdk": 2,
+  "permissions": [
+    "homey:manager:api"
+  ],
+  "name": {
+    "en": "Device groups"
+  },
+  "description": {
+    "en": "Makes it possible to group devices."
+  },
+  "category": "tools",
+  "version": "1.0.0",
+  "compatibility": ">=1.5.0",
+  "author": {
+    "name": "Bas Jansen",
+    "email": "bas@balotti.com"
+  },
+  "drivers": [{
+    "id": "devicegroup",
+    "class": "other",
+    "capabilities": [],
+    "name": {
+      "en": "Device group"
+    },
+    "pair": [{
+        "id": "class"
+      },
+      {
+        "id": "capabilities",
+        "navigation": {
+          "next": "devices",
+          "prev": "class"
+        }
+      },
+      {
+        "id": "devices",
+        "navigation": {
+          "next": "add_devices",
+          "prev": "capabilities"
+        }
+      },
+      {
+        "id": "add_devices",
+        "template": "add_devices"
+      }
+    ]
+  }]
+}
