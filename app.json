@@ -37,13 +37,15 @@
       {
         "id": "devices",
         "navigation": {
-          "next": "add_devices",
+          "next": "done",
           "prev": "capabilities"
         }
       },
       {
-        "id": "add_devices",
-        "template": "add_devices"
+        "id": "done",
+        "navigation": {
+          "prev": "capabilities"
+        }
       }
     ]
   }]
