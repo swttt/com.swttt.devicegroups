@@ -5,17 +5,26 @@
     "homey:manager:api"
   ],
   "name": {
-    "en": "HomeyGroups"
+    "en": "Device Groups"
   },
   "description": {
-    "en": "Makes it possible to group devices and switch all devices within a group."
+    "en": "Makes it possible to group devices and switch all devices within a group.",
+    "nl": "Maakt het mogelijk om apparaten te groeperen en te schakelen."
   },
   "category": "tools",
+  "tags": {
+    "en": ["device", "group", "virtual"],
+    "nl": ["apparaat", "groep", "virtueel"]
+  },
   "version": "1.0.0",
   "compatibility": ">=1.5.0",
   "author": {
     "name": "Bas Jansen",
     "email": "bas@balotti.com"
+  },
+  "images": {
+    "large": "./assets/images/large.png",
+    "small": "./assets/images/small.png"
   },
   "drivers": [{
     "id": "devicegroup",
@@ -23,6 +32,10 @@
     "capabilities": [],
     "name": {
       "en": "Device group"
+    },
+    "images": {
+      "large": "./drivers/devicegroup/assets/images/large.png",
+      "small": "./drivers/devicegroup/assets/images/small.png"
     },
     "pair": [{
         "id": "class"
