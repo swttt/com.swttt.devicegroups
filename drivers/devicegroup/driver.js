@@ -18,6 +18,7 @@ class DeviceGroupDriver extends Homey.Driver {
           pairingDevice.data = {};
           socket.on('addClass', function( data, callback ) {
               pairingDevice.class = data.class;
+              pairingDevice.icon = '/app/com.swttt.devicegroups/drivers/devicegroup/assets/icons/'+data.class+'.svg';
               callback( null, pairingDevice );
           });
           socket.on('startedCapabilities', function( data, callback ) {

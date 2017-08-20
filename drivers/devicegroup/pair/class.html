@@ -22,6 +22,7 @@
   <li v-for="(value, key) in classes"  v-on:click="addClass(key)" class="device">
     <label for="device" class="name">
       <div class="overlay"></div>
+      <span class="icon" v-bind:style="{WebkitMaskImage: 'url(/app/com.swttt.devicegroups/drivers/devicegroup/assets/icons/' + key + '.svg)'}"></span>
       <span class="name" tabindex="-1">{{key}}</span>
     </label>
   </li>

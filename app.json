@@ -5,10 +5,10 @@
     "homey:manager:api"
   ],
   "name": {
-    "en": "Device groups"
+    "en": "HomeyGroups"
   },
   "description": {
-    "en": "Makes it possible to group devices."
+    "en": "Makes it possible to group devices and switch all devices within a group."
   },
   "category": "tools",
   "version": "1.0.0",
