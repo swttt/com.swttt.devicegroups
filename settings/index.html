@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+  <head>
+    <script src='/homey.js' data-origin='settings'></script>
+    <link rel='stylesheet' href='../assets/semantic-custom.min.css'>
+    <script src='../assets/vue.min.js'></script>
+    <style>
+      .capabilities.list code {
+        padding       : 3px 5px;
+        border        : 1px solid #ccc;
+        background    : #eee;
+        border-radius : 3px;
+      }
+
+      .device-class {
+        font-family : monospace !important;
+        font-weight : normal !important;
+      }
+
+      .device-class img {
+        height         : 17px !important;
+        vertical-align : middle !important;
+        opacity        : 0.5;
+        padding        : 0 0 0 0.5em;
+        margin-right   : 0 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id='app-settings-view' style='padding: 3px'>
+      <div class='ui attached message'>
+        <div class='ui right floated basic segment' style='padding: 0; margin: 0'>
+          <select :class='{ ui : true, dropdown : true, disabled : ! groups.length }' @change='groupSelected' >
+            <option disabled selected>Select device group:</option>
+            <option v-for='group in groups' :value='group.id'>{{ group.name }}</option>
+          </select>
+        </div>
+        <div class='header'>Device Groups Editor</div>
+        <p>Edit your device groups</p>
+      </div>
+      <div class='ui bottom attached segment'>
+        <div class='ui loading basic segment' v-if='isLoading'></div>
+        <table class='ui definition table' v-if='selectedGroup'>
+          <tbody>
+            <tr>
+              <td>Device Group Name:</td>
+              <td :title='selectedGroup.id'>{{ selectedGroup.name }}</td>
+            </tr>
+            <tr>
+              <td>Device Class:</td>
+              <td>
+                <div class='ui basic image label device-class'>
+                  <img 
+                    style = 'height: 17px!important; vertical-align: middle!important'
+                    :src  = '`../drivers/devicegroup/assets/icons/${ selectedGroup.class }.svg`'>
+                  {{ selectedGroup.class }}
+                </div>
+              </tr>
+            </tr>
+            <tr>
+              <td>Capabilities:</td>
+              <td>
+                <div class='ui compact horizontal list capabilities'>
+                  <div class='item' v-for='capability in selectedGroup.capabilities'>
+                    <div class='content'>
+                      <code>{{ capability }}</code>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class='top aligned'>Devices in group:</td>
+              <td>
+                <div class='ui middle aligned divided relaxed list'>
+                  <div class='item' v-for='device in allDevicesMatchingCapabilities'>
+                    <div :class='{
+                      ui          : true,
+                      checked     : true,
+                      disabled    : this.isUpdating,
+                      "read-only" : this.isUpdating,
+                      checkbox    : true,
+                    }'>
+                      <input type='checkbox' :value='device.id' v-model='groupedDevices'>
+                      <label>
+                        {{ device.name }} (<i>{{ device.zone.name }}</i>)
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script>
+      function onHomeyReady(Homey) {
+        Homey.ready();
+        new Vue({
+          el      : '#app-settings-view',
+          data    : {
+            groups         : [],
+            selectedGroup  : null,
+            groupedDevices : [],
+            isLoading      : false,
+            isUpdating     : false,
+            allDevices     : [],
+          },
+          mounted() {
+            // Retrieve list of groups.
+            Homey.api('GET', '/group', (err, groups) => {
+              if (err) return Homey.alert(err);
+              this.groups = groups;
+            });
+          },
+          watch : {
+            groupedDevices(newValue, oldValue) {
+              if (this.isLoading || oldValue.length === 0) return;
+              this.isUpdating = true;
+              Homey.api('PUT', '/group/' + this.selectedGroup.id, newValue, (err) => {
+                this.isUpdating = false;
+                if (err) return Homey.alert(err);
+              });
+            }
+          },
+          computed: {
+            // Match all devices that have at least one capability matching the device group.
+            allDevicesMatchingCapabilities() {
+              let caps = this.selectedGroup.capabilities;
+              return this.allDevices.filter(device => {
+                return device.capabilitiesArray.some(c => caps.includes(c));
+              });
+            }
+          },
+          methods : {
+            groupSelected(ev) {
+              this.isLoading      = true;
+              this.selectedGroup  = null;
+              this.groupedDevices = [];
+              Homey.api('GET', '/group/' + ev.target.value, (err, group) => {
+                this.isLoading = false;
+                if (err) return Homey.alert(err);
+                this.selectedGroup  = group;
+                this.groupedDevices = (group.settings.groupedDevices || []).map(g => g.id);
+                if (! this.allDevices.length) {
+                  this.isLoading = true;
+                  Homey.api('GET', '/devices', (err, devices) => {
+                    this.isLoading = false;
+                    if (err) return Homey.alert(err);
+                    this.allDevices = devices;
+                  });
+                }
+              });
+            }
+          }
+        });
+      }
+      if (typeof Homey === 'undefined') {
+        Homey = {
+          ready: () => {},
+          api  : (method, endpoint, callback) => {
+            setTimeout(() => {
+              return callback(null, [
+                { id : 'foo',  name : 'Foo Device' },
+                { id : 'bar',  name : 'Bar Device' },
+                { id : 'blah', name : 'Blah Device' },
+              ]);
+            }, 1000);
+          }
+        };
+        onHomeyReady(Homey);
+      }
+    </script>
+  </body>
+</html>
+

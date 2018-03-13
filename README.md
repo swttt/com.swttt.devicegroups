@@ -30,5 +30,8 @@ If you like this app, then consider to buy me a beer :)
 
 ### Changelog
 
+##### 1.1.0
+- Device Group editor
+
 ##### 1.0.0
 - Initial release
