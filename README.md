@@ -49,4 +49,5 @@ If you like this app, then consider to buy me a beer :)
 - Allow "All"  to be selected in setup, to show all capabilities, if performance is not an issue.
 - Update capability setup screen to initially show loading status.
 - Investigate including home-lib to increase speed of feature updates
-
+- Change calculated method from the settings
+- Allow calculated method to be changed when adding a device. 

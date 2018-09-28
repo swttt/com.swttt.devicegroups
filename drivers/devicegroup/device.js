@@ -6,50 +6,116 @@ const {
 } = require('../../lib/athom-api.js');
 
 class DeviceGroupDevice extends Homey.Device {
-  onInit() {
-    this.log('device init');
 
-    this.registerMultipleCapabilityListener(this.getCapabilities(), async(valueObj, optsObj) => {
-      try {
-        var api = await this.getApi();
-        await api.devices.subscribe();
-        var deviceGroup = await this.getSettings().groupedDevices;
-        for (var key in deviceGroup) {
-          let device = await api.devices.getDevice({
-            id: deviceGroup[key].id
-          });
-          for (var key in valueObj) {
-            device.setCapabilityValue(key, valueObj[key]);
-          }
+    /**
+     * Automatically runs
+     * Gathers the required properties, sets our listeners, and polls
+     */
+    onInit() {
 
-        }
-        return Promise.resolve();
-      }
-      catch (err) {
-        this.error(err);
-        return Promise.reject();
-      }
-    }, 500);
+        this.settings = this.getSettings();
 
-  }
-  // this method is called when the Device is added
-  onAdded() {
-    this.log('device added');
-  }
+        this.initApi().then( () => {
 
-  // this method is called when the Device is deleted
-  onDeleted() {
-    this.log('device deleted');
-  }
+            this.initListener();
+            this.initPolls();
 
-  getApi() {
-    if (!this.api) {
-      this.api = HomeyAPI.forCurrentHomey();
+        }).catch( (error) => {
+            this.error(error);
+        });
+
     }
-    return this.api;
-  }
+
+    /**
+     * Initialises the capability listener.
+     *
+     * Basically : Registers every capability this device (MultipleCapabilityListener) has, so
+     * when any of the devices capabilities are changed, the function is called  which sets the
+     * value of all of the 'grouped/real' devices to said value.
+     *
+     * @returns {Promise<void>}
+     */
+    async initListener() {
+
+        try {
+            // Register all of the capabilities at once with a (async) call back.
+            this.registerMultipleCapabilityListener(this.getCapabilities(), async(valueObj, optsObj) => {
+                return this.updateCapability(valueObj, optsObj);
+            }, 500);
+        }
+        catch (error) {
+            return Promise.reject(error);
+        }
+    }
 
 
+    /**
+     * Update the value of all the grouped items
+     *
+     * Note that it's using the WebAPI to set the values.
+     * @param valueObj
+     * @param optsObj
+     * @returns {Promise<*>}
+     */
+    async updateCapability(valueObj, optsObj) {
+        try {
+            // Alias
+            let deviceGroup = this.settings.groupedDevices;
+
+            // Loop through each 'real' device in the group
+            for (let key in deviceGroup) {
+
+                // Get the WebAPI reference 'real' device
+                let device = await this.api.devices.getDevice({
+                    id: deviceGroup[key].id
+                });
+
+                // Using the WebAPI for the 'real' device, set the capability value, to what ever we just changed.
+                for (let capabilityId in valueObj) {
+                    device.setCapabilityValue(capabilityId, valueObj[capabilityId]);
+                }
+            }
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
+    // Placeholder
+    async initPolls() {}
+
+    /**
+     * Initialise the API, but getting the API for (current) Homey
+     * and subscribing to the observer.
+     *
+     * @returns {Promise<void>}
+     */
+    async initApi () {
+        try {
+            this.api = await this.getApi();
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
+    /**
+     * Retrieves the HomeAPI library for the (current) Homey
+     * @returns {*}
+     */
+    getApi() {
+        if (!this.api) {
+            this.api = HomeyAPI.forCurrentHomey();
+        }
+        return this.api;
+    }
+
+    // Placeholder Ill need this to remove the polls
+    onDeleted() {
+        this.log('device deleted');
+    }
 }
 
 module.exports = DeviceGroupDevice;
