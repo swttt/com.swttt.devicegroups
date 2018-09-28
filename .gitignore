@@ -1,8 +1,11 @@
 # Ignore internal project files
 *.
 
-# Ignore system/application filesgit
+# Ignore system/application files git
 .*
+
+# Ignore installed nodes, while in development.
+/node_modules
 
 # Do not ignore me!
 !.gitignore

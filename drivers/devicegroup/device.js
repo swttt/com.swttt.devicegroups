@@ -7,6 +7,7 @@ const {
 
 class DeviceGroupDevice extends Homey.Device {
 
+
     /**
      * Automatically runs
      * Gathers the required properties, sets our listeners, and polls
@@ -25,6 +26,7 @@ class DeviceGroupDevice extends Homey.Device {
         });
 
     }
+
 
     /**
      * Initialises the capability listener.
@@ -85,6 +87,7 @@ class DeviceGroupDevice extends Homey.Device {
     // Placeholder
     async initPolls() {}
 
+
     /**
      * Initialise the API, but getting the API for (current) Homey
      * and subscribing to the observer.
@@ -100,6 +103,7 @@ class DeviceGroupDevice extends Homey.Device {
             return Promise.reject(error);
         }
     }
+
 
     /**
      * Retrieves the HomeAPI library for the (current) Homey

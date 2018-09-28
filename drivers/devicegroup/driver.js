@@ -12,22 +12,27 @@ function guid() {
 class DeviceGroupDriver extends Homey.Driver {
 
   onPair( socket ) {
+
       let pairingDevice = {};
           pairingDevice.name = 'Grouped device';
           pairingDevice.settings = {};
           pairingDevice.data = {};
+
           socket.on('addClass', function( data, callback ) {
               pairingDevice.class = data.class;
               pairingDevice.icon = '/app/com.swttt.devicegroups/drivers/devicegroup/assets/icons/'+data.class+'.svg';
               callback( null, pairingDevice );
           });
+
           socket.on('startedCapabilities', function( data, callback ) {
               callback( null, pairingDevice );
           });
+
           socket.on('capabilitiesChanged', function( data, callback ) {
               pairingDevice.capabilities = data.capabilities;
               callback( null, pairingDevice );
           });
+
           socket.on('startedDevices', function( data, callback ) {
               var result = {};
                   result.pairingDevice = pairingDevice;
@@ -37,11 +42,15 @@ class DeviceGroupDriver extends Homey.Driver {
                     })
                     .catch(error => callback(error, null));
           });
+
+
           socket.on('devicesChanged', function( data, callback ) {
               pairingDevice.settings.groupedDevices = data.devices;
               callback( null, pairingDevice );
           });
-          socket.on('allmostDone', function( data, callback ) {
+
+          // Adds the Unique ID, returns to the view for it to be added.
+          socket.on('almostDone', function( data, callback ) {
               pairingDevice.data.id = guid();
               callback( null, pairingDevice );
           });

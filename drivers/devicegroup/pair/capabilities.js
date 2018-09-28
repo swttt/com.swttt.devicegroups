@@ -101,4 +101,4 @@ var devices = {
       "volume_down"
     ]
   }
-}
+};
