@@ -1,0 +1,9 @@
+# Ignore internal project files
+*.
+
+# Ignore system/application filesgit
+.*
+
+# Do not ignore me!
+!.gitignore
+!.gitattributes

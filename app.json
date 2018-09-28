@@ -16,17 +16,22 @@
     "en": ["device", "group", "virtual"],
     "nl": ["apparaat", "groep", "virtueel"]
   },
-  "version": "1.1.0",
+  "version": "1.2.0",
   "compatibility": ">=1.5.0",
   "author": {
     "name": "Bas Jansen",
     "email": "bas@balotti.com"
   },
   "contributors": {
-    "developers": [{
-      "name": "Robert Klep",
-      "email": "robert@klep.name"
-    }]
+      "developers": [{
+        "name": "Robert Klep",
+        "email": "robert@klep.name"
+      },
+      {
+        "name": "Jamie Peake",
+        "email": "jamie.peake@gmail.com"
+      }
+    ]
   },
   "images": {
     "large": "./assets/images/large.png",
