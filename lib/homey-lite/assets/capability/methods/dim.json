@@ -1,1 +1,10 @@
-{}
+{
+  "default": "mean",
+  "methods": [
+    "none",
+    "mean",
+    // median,
+    "min",
+    "max"
+  ]
+}

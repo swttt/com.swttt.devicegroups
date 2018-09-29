@@ -118,6 +118,7 @@ class DeviceGroupDevice extends Homey.Device {
     }
 
     // min, max, ave, sum, mean, median
+    // @todo refactor
     async pollDevices () {
 
         let values = [], value;
@@ -150,9 +151,15 @@ class DeviceGroupDevice extends Homey.Device {
             try {
                 // Alias
                 let capability = capabilities[i];
+                // let method = this.settings.capabilities[capability].function;
 
                 // @todo : hard to set the value to last item.
                 let value = (values[capability][values[capability].length-1]);
+
+                // Calculate our value
+                // value = this[method.function](values[capability]);
+                // Convert the value in the to capabilities required type
+                // value = this[map.group[capability].type](value);
 
                 // // Set the capability of the groupedDevice
                 this.setCapabilityValue(capability, value).then().catch( (error) => {
@@ -201,6 +208,77 @@ class DeviceGroupDevice extends Homey.Device {
         clearInterval(this.interval);
     }
 
+    /**
+     * Ensure that the value is a boolean.
+     * @param value
+     * @returns {boolean}
+     */
+    boolean(value) {
+        return !!value;
+    }
+
+    /**
+     * Force the value to be a number
+     * @param value
+     * @returns {number}
+     */
+    number(value) {
+        return value * 1;
+    }
+
+    /**
+     * Enum types are not currently supported
+     * @param value
+     */
+    enum(value) {
+        throw new error('enum: This has not yet been implemented');
+    }
+
+    /**
+     * Sum of the values of the device
+     * @param values
+     * @returns {*}
+     */
+    sum (values){
+        return values.reduce(function(a,b){
+            return a + b
+        }, 0);
+    }
+
+    /**
+     * The largest value of the devices
+     * @param values
+     * @returns {number}
+     */
+    max (values) {
+        return Math.max(...values);
+    }
+
+    /**
+     * The smallest number of the devices
+     * @param values
+     * @returns {number}
+     */
+    min (values) {
+        return Math.min(...values);
+    }
+
+    /**
+     * The mean average (total/number)
+     * @param values
+     * @returns {number}
+     */
+    mean (values) {
+        return this.sum(values) / values.length
+    }
+
+    median(values) {
+        throw new error('median: This has not yet been implemented');
+    }
+
+    mode(values) {
+        throw new error('mode: This has not yet been implemented');
+    }
 }
 
 module.exports = DeviceGroupDevice;

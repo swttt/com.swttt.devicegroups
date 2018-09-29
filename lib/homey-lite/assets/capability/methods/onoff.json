@@ -1,1 +1,9 @@
-{}
+{
+  "default" : "min",
+  "methods" : [
+      "none",
+      "any",
+      "all",
+      "mode"
+  ]
+}
