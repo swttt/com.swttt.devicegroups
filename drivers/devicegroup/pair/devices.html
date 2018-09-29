@@ -36,19 +36,17 @@
         }
       },
       computed: {
-
         filteredDevices() {
 
           var capabilities = this.pairingDevice.capabilities;
           var devices = this.devices;
           var array = $.map(devices, function (value, index) {
             return [value];
-          });
+          })
 
           // the capabilities to search for const capabilities = capabilities
           const devicesByCapability = array.reduce((result, device) => {
-
-              // try to find a capability that is not supported, if one of them is not supported, set includeIt to false
+            // try to find a capability that is not supported, if one of them is not supported, set includeIt to false
             let includeIt = true
 
 

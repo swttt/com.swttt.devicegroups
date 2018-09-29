@@ -1,34 +1,35 @@
 <script src='../../../assets/vue.min.js'></script>
 <script src="./capabilities.js"></script>
+
+
 <script>
 
-	// @todo change devices[result.class].capabilities, to new mapping
+	Homey.setTitle('Select the capabilities');
+	Homey.emit('startedCapabilities', null, function (err, result) {
 
-Homey.setTitle('Select the capabilities');
-Homey.emit('startedCapabilities', null, function (err, result) {
-  if (err) {
-    console.log(err);
-    return;
-  }
-  new Vue({
-    el: '#app',
-    data: {
-      capabilities: devices[result.class].capabilities,
-      deviceClass: result.class,
-      selectedCapabilities: []
-    },
-    watch: {
-        'selectedCapabilities': function(val){
-          Homey.emit('capabilitiesChanged', {'capabilities': val}, function (err, result) {
-            if(err){console.log(err); return;}
-            console.log(result);
-          });
-      }
-    }
-  });
+		if (err) {
+			console.log(err);
+			return;
+		}
 
+		new Vue({
+			el: '#app',
+			data: {
+				capabilities: devices[result.class].capabilities,
+				deviceClass: result.class,
+				selectedCapabilities: []
+			},
+			watch: {
+				'selectedCapabilities': function(val){
+					Homey.emit('capabilitiesChanged', {'capabilities': val}, function (err, result) {
+						if(err){console.log(err); return;}
+						console.log(result);
+					});
+				}
+			}
+		});
+	});
 
-});
 </script>
 
 <div id="app">

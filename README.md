@@ -32,6 +32,9 @@ If you like this app, then consider to buy me a beer :)
 
 ##### 1.2.0
 - API Update to 2.0.129
+- Feedback on device status
+- Ability to group read only capabilities
+- Allow device status to be calculated from grouped devices
 
 ##### 1.1.0
 - Device Group editor
@@ -40,14 +43,10 @@ If you like this app, then consider to buy me a beer :)
 - Initial release
 
 ### 1.2.0 Road Map
-- Feedback on device status
-- Ability to group read only capabilities
 - Addition of all new devices 
 - Addition of all new capabilities
-- Allow device status to be calculated from grouped devices
 - Removal of  Dim capability from heater devices (now use target_temperature)
 - Allow "All"  to be selected in setup, to show all capabilities, if performance is not an issue.
 - Update capability setup screen to initially show loading status.
-- Investigate including home-lib to increase speed of feature updates
 - Change calculated method from the settings
 - Allow calculated method to be changed when adding a device. 

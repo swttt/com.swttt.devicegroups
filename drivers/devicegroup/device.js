@@ -18,8 +18,6 @@ class DeviceGroupDevice extends Homey.Device {
      */
     onInit() {
 
-
-
         this.settings = this.getSettings();
 
         this.initApi().then( () => {

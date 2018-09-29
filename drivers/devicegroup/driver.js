@@ -26,6 +26,10 @@ class DeviceGroupDriver extends Homey.Driver {
               callback( null, pairingDevice );
           });
 
+          socket.on('getCapabilities', function( data, callback ) {
+              callback( null, pairingDevice );
+          });
+
           socket.on('startedCapabilities', function( data, callback ) {
               callback( null, pairingDevice );
           });

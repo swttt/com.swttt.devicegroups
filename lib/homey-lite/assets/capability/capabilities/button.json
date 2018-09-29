@@ -1,0 +1,21 @@
+{
+  "title": {
+    "en": "Button",
+    "nl": "Knop"
+  },
+  "type": "boolean",
+  "getable": false,
+  "setable": true,
+  "uiComponent": "button",
+  "$flow": {
+    "actions": [
+      {
+        "id": "press",
+        "title": {
+          "en": "Press the button",
+          "nl": "Druk op de knop"
+        }
+      }
+    ]
+  }
+}
