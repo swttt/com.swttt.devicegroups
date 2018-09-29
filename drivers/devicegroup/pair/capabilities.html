@@ -2,6 +2,8 @@
 <script src="./capabilities.js"></script>
 <script>
 
+	// @todo change devices[result.class].capabilities, to new mapping
+
 Homey.setTitle('Select the capabilities');
 Homey.emit('startedCapabilities', null, function (err, result) {
   if (err) {

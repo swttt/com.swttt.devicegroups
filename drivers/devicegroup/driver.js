@@ -1,6 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
+const map = require('../../lib/map.js');
 
 function guid() {
  		function s4() {
@@ -16,6 +17,7 @@ class DeviceGroupDriver extends Homey.Driver {
       let pairingDevice = {};
           pairingDevice.name = 'Grouped device';
           pairingDevice.settings = {};
+          pairingDevice.settings.capabilities = {};
           pairingDevice.data = {};
 
           socket.on('addClass', function( data, callback ) {
@@ -29,7 +31,17 @@ class DeviceGroupDriver extends Homey.Driver {
           });
 
           socket.on('capabilitiesChanged', function( data, callback ) {
+
+              pairingDevice.settings.capabilities = {};
               pairingDevice.capabilities = data.capabilities;
+
+
+              // Set the capability method to the default
+              // @todo allow this to be changed on the next screen
+              for (let i in data.capabilities) {
+                  pairingDevice.settings.capabilities[data.capabilities[i]] = map.group[data.capabilities[i]].default;
+              }
+
               callback( null, pairingDevice );
           });
 
@@ -42,7 +54,6 @@ class DeviceGroupDriver extends Homey.Driver {
                     })
                     .catch(error => callback(error, null));
           });
-
 
           socket.on('devicesChanged', function( data, callback ) {
               pairingDevice.settings.groupedDevices = data.devices;

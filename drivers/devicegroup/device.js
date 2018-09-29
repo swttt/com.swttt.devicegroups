@@ -5,6 +5,10 @@ const {
   HomeyAPI
 } = require('../../lib/athom-api.js');
 
+
+const map = require('../../lib/map.js');
+
+
 class DeviceGroupDevice extends Homey.Device {
 
 
@@ -13,6 +17,8 @@ class DeviceGroupDevice extends Homey.Device {
      * Gathers the required properties, sets our listeners, and polls
      */
     onInit() {
+
+
 
         this.settings = this.getSettings();
 
@@ -74,7 +80,11 @@ class DeviceGroupDevice extends Homey.Device {
 
                 // Using the WebAPI for the 'real' device, set the capability value, to what ever we just changed.
                 for (let capabilityId in valueObj) {
-                    device.setCapabilityValue(capabilityId, valueObj[capabilityId]);
+
+                    // Only bother setting if the capability is setable.
+                    if (map.group[capabilityId].capability.setable) {
+                        device.setCapabilityValue(capabilityId, valueObj[capabilityId]);
+                    }
                 }
             }
             return Promise.resolve();
@@ -84,8 +94,78 @@ class DeviceGroupDevice extends Homey.Device {
         }
     }
 
-    // Placeholder
-    async initPolls() {}
+    /**
+     * Initialise the polling, this is how we gather our grouped devices data
+     * to ensure that the card/mobile is kept up to date. Will run the first poll.
+     *
+     * @returns {Promise<void>}
+     */
+    async initPolls() {
+
+        try {
+            // Run our initial poll immediately.
+            this.pollDevices().then(() => {
+
+                // Set the polling interval based from the settings, once we have the first value.
+                this.interval = setInterval(() => { this.pollDevices(); }, 1000 * 60 * 0.05); // In minutes
+                // @todo : change the above debugging to the below production code.
+                // setInterval(() => { this.pollDevices(); }, 1000 * 60 * this.settings.pollingFrequency); // In minutes
+            });
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
+    // min, max, ave, sum, mean, median
+    async pollDevices () {
+
+        let values = [], value;
+        let capabilities = this.getCapabilities();
+
+        // Initialise the values
+        for (let i in capabilities) {
+            values[capabilities[i]] = [];
+        }
+
+        // Loop through each of the devices in the group
+        for (let x in this.settings.groupedDevices) {
+
+            // requires the API.
+            let device = await this.api.devices.getDevice({
+                id: this.settings.groupedDevices[x].id
+            });
+
+            // A refresh is required for the WebAPI when accessing capabilities.
+            await device.refreshCapabilities();
+
+            // Loop through each of the capabilities checking each of the devices value.
+            for (let i in capabilities) {
+                values[capabilities[i]].push(device.state[capabilities[i]]);
+            }
+        }
+
+        // loop through each of the capabilities calculating the values.
+        for (let i in capabilities) {
+            try {
+                // Alias
+                let capability = capabilities[i];
+
+                // @todo : hard to set the value to last item.
+                let value = (values[capability][values[capability].length-1]);
+
+                // // Set the capability of the groupedDevice
+                this.setCapabilityValue(capability, value).then().catch( (error) => {
+                    console.log(error.message);
+                });
+            }
+            catch (error) {
+                return Promise.reject(error);
+            }
+        }
+    }
 
 
     /**
@@ -116,10 +196,13 @@ class DeviceGroupDevice extends Homey.Device {
         return this.api;
     }
 
-    // Placeholder Ill need this to remove the polls
+    /**
+     * Removing device interval polling
+     */
     onDeleted() {
-        this.log('device deleted');
+        clearInterval(this.interval);
     }
+
 }
 
 module.exports = DeviceGroupDevice;
