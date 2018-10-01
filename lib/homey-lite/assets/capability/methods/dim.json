@@ -1,9 +1,8 @@
 {
-  "default": "mean",
-  "methods": [
+  "method": "mean",
+  "available": [
     "none",
     "mean",
-    // median,
     "min",
     "max"
   ]

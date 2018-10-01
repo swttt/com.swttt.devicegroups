@@ -1,6 +1,6 @@
 {
-  "default" : "min",
-  "methods" : [
+  "method" : "min",
+  "available" : [
       "none",
       "any",
       "all",

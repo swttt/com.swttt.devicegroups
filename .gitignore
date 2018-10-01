@@ -6,6 +6,7 @@
 
 # Ignore installed nodes, while in development.
 /node_modules
+debug.js
 
 # Do not ignore me!
 !.gitignore

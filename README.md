@@ -35,6 +35,8 @@ If you like this app, then consider to buy me a beer :)
 - Feedback on device status
 - Ability to group read only capabilities
 - Allow device status to be calculated from grouped devices
+- Device Classes (Categories) will now display correct name rather than tag.
+- Device Classes (Categories) now support en/nl languages. 
 
 ##### 1.1.0
 - Device Group editor

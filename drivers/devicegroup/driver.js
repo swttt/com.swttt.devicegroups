@@ -1,7 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
-const map = require('../../lib/map.js');
+const HomeyLite = require('../../lib/homey-lite/lib');
 
 function guid() {
  		function s4() {
@@ -14,11 +14,20 @@ class DeviceGroupDriver extends Homey.Driver {
 
   onPair( socket ) {
 
+      let library = new HomeyLite();
       let pairingDevice = {};
           pairingDevice.name = 'Grouped device';
           pairingDevice.settings = {};
           pairingDevice.settings.capabilities = {};
           pairingDevice.data = {};
+
+
+          socket.on('startedClasses', function( data, callback ) {
+
+              let categories = library.categories;
+              callback( null, categories );
+          });
+
 
           socket.on('addClass', function( data, callback ) {
               pairingDevice.class = data.class;
@@ -39,11 +48,11 @@ class DeviceGroupDriver extends Homey.Driver {
               pairingDevice.settings.capabilities = {};
               pairingDevice.capabilities = data.capabilities;
 
-
               // Set the capability method to the default
               // @todo allow this to be changed on the next screen
               for (let i in data.capabilities) {
-                  pairingDevice.settings.capabilities[data.capabilities[i]] = map.group[data.capabilities[i]].default;
+                  pairingDevice.settings.capabilities[data.capabilities[i]] = {}
+                  pairingDevice.settings.capabilities[data.capabilities[i]].method = library.capabilities[data.capabilities[i]].method
               }
 
               callback( null, pairingDevice );
@@ -71,8 +80,6 @@ class DeviceGroupDriver extends Homey.Driver {
           });
 
       }
-
-
 }
 
 module.exports = DeviceGroupDriver;

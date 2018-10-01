@@ -1,12 +1,11 @@
 'use strict';
 
 const Homey = require('homey');
+const HomeyLite = require('../../lib/homey-lite/lib');
+
 const {
   HomeyAPI
 } = require('../../lib/athom-api.js');
-
-
-const map = require('../../lib/map.js');
 
 
 class DeviceGroupDevice extends Homey.Device {
@@ -19,6 +18,7 @@ class DeviceGroupDevice extends Homey.Device {
     onInit() {
 
         this.settings = this.getSettings();
+        this.library = new HomeyLite();
 
         this.initApi().then( () => {
 
@@ -80,7 +80,7 @@ class DeviceGroupDevice extends Homey.Device {
                 for (let capabilityId in valueObj) {
 
                     // Only bother setting if the capability is setable.
-                    if (map.group[capabilityId].capability.setable) {
+                    if (this.library.capabilities[capabilityId].setable) {
                         device.setCapabilityValue(capabilityId, valueObj[capabilityId]);
                     }
                 }
@@ -149,20 +149,21 @@ class DeviceGroupDevice extends Homey.Device {
         // loop through each of the capabilities calculating the values.
         for (let i in capabilities) {
             try {
-                // Alias
-                let capability = capabilities[i];
-                // let method = this.settings.capabilities[capability].function;
 
-                // @todo : hard to set the value to last item.
-                let value = (values[capability][values[capability].length-1]);
+                // Aliases
+                let key = capabilities[i];                              // Alias the capability key
+                let value = values[key];                                // Alias the value
+                let method = this.settings.capabilities[key].method;    // Alias the method we are going to use
+                let type = this.library.capabilities[key].type;         // Alias the data type
 
                 // Calculate our value
-                // value = this[method.function](values[capability]);
+                value = this[method](value);
+
                 // Convert the value in the to capabilities required type
-                // value = this[map.group[capability].type](value);
+                value = this[type](value);
 
                 // // Set the capability of the groupedDevice
-                this.setCapabilityValue(capability, value).then().catch( (error) => {
+                this.setCapabilityValue(key, value).then().catch( (error) => {
                     console.log(error.message);
                 });
             }
