@@ -20,14 +20,11 @@ class DeviceGroupDriver extends Homey.Driver {
           pairingDevice.settings = {};
           pairingDevice.settings.capabilities = {};
           pairingDevice.data = {};
-
+          pairingDevice.class = false;
 
           socket.on('startedClasses', function( data, callback ) {
-
-              let categories = library.categories;
-              callback( null, categories );
+              callback( null, library.getCategories() );
           });
-
 
           socket.on('addClass', function( data, callback ) {
               pairingDevice.class = data.class;
@@ -36,11 +33,22 @@ class DeviceGroupDriver extends Homey.Driver {
           });
 
           socket.on('getCapabilities', function( data, callback ) {
-              callback( null, pairingDevice );
+              callback( null, library.getCategories() );
           });
 
           socket.on('startedCapabilities', function( data, callback ) {
-              callback( null, pairingDevice );
+
+              let categoryCapabilities = library.getCategoryCapabilities(pairingDevice.class);
+              console.log(categoryCapabilities);
+              let result = {};
+              for (let i in categoryCapabilities) {
+
+                  result[categoryCapabilities[i]] = library.getCapability(categoryCapabilities[i]);
+              }
+                console.log(result);
+              callback(null, result)
+
+              // callback( null, pairingDevice );
           });
 
           socket.on('capabilitiesChanged', function( data, callback ) {
@@ -52,7 +60,7 @@ class DeviceGroupDriver extends Homey.Driver {
               // @todo allow this to be changed on the next screen
               for (let i in data.capabilities) {
                   pairingDevice.settings.capabilities[data.capabilities[i]] = {}
-                  pairingDevice.settings.capabilities[data.capabilities[i]].method = library.capabilities[data.capabilities[i]].method
+                  pairingDevice.settings.capabilities[data.capabilities[i]].method = library.getCapability(data.capabilities[i]).method
               }
 
               callback( null, pairingDevice );
