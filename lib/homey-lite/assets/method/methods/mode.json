@@ -1,0 +1,9 @@
+{
+  "title": {
+    "en": "Mode Average",
+    "nl": "Mode Average"
+  },
+  "description": "The value which the most devices has",
+  "value": "mode",
+  "function": "mode"
+}

@@ -1,0 +1,9 @@
+{
+  "title": {
+    "en": "On if Any",
+    "nl": "On if Any"
+  },
+  "description": "On if any devices are on",
+  "value": "any",
+  "function": "max"
+}

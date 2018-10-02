@@ -1,7 +1,6 @@
 {
   "method": "mean",
   "available": [
-    "none",
     "mean",
     "min",
     "max"

@@ -1,0 +1,9 @@
+{
+  "title": {
+    "en": "Total Value",
+    "nl": "Total Value"
+  },
+  "description": "The sum of all the grouped device values",
+  "value": "sum",
+  "function": "sum"
+}

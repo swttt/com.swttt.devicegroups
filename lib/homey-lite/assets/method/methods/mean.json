@@ -1,0 +1,9 @@
+{
+  "title": {
+    "en": "Mean Average",
+    "nl": "Mean Average"
+  },
+  "description": "The average your are used to (sum/count)",
+  "value": "median",
+  "function": "median"
+}

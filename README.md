@@ -52,3 +52,4 @@ If you like this app, then consider to buy me a beer :)
 - Update capability setup screen to initially show loading status.
 - Change calculated method from the settings
 - Allow calculated method to be changed when adding a device. 
+- Alphabetical ordering of items. 

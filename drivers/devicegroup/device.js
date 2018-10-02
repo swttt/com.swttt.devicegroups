@@ -80,7 +80,7 @@ class DeviceGroupDevice extends Homey.Device {
                 for (let capabilityId in valueObj) {
 
                     // Only bother setting if the capability is setable.
-                    if (this.library.capabilities[capabilityId].setable) {
+                    if (this.library.getCapability(capabilityId).setable) {
                         device.setCapabilityValue(capabilityId, valueObj[capabilityId]);
                     }
                 }
@@ -154,7 +154,7 @@ class DeviceGroupDevice extends Homey.Device {
                 let key = capabilities[i];                              // Alias the capability key
                 let value = values[key];                                // Alias the value
                 let method = this.settings.capabilities[key].method;    // Alias the method we are going to use
-                let type = this.library.capabilities[key].type;         // Alias the data type
+                let type = this.library.getCapability(key).type;      // Alias the data type
 
                 // Calculate our value
                 value = this[method](value);
@@ -262,6 +262,14 @@ class DeviceGroupDevice extends Homey.Device {
      */
     min (values) {
         return Math.min(...values);
+    }
+
+    /**
+     * Basically a NAND
+     * need to work out if we will require this for types other than boolean.
+     */
+    none (values) {
+        return this.sum(values) !== values.length
     }
 
     /**

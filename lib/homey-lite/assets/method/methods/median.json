@@ -1,0 +1,9 @@
+{
+  "title": {
+    "en": "Median Average",
+    "nl": "Median Average"
+  },
+  "description": "The value of the device in the middle",
+  "value": "median",
+  "function": "median"
+}

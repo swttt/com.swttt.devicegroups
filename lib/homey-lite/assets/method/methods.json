@@ -1,9 +1,18 @@
+[
+    "none",
+    "mean",
+    "median",
+    "mode",
+    "min",
+    "max",
+    "sum",
+    "all",
+    "any"
+]
+
 {
     "none": {
-        "title": "Ignore changes",
-        "description": "Ignore changes to the to grouped devices",
-        "value": "none",
-        "function": "none"
+
     },
     "mean": {
         "title": "Mean Average",
