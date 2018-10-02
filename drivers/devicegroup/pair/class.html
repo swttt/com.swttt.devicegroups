@@ -1,45 +1,34 @@
 <script src='../../../assets/vue.min.js'></script>
-<script src="./capabilities.js"></script>
 <script>
   Homey.setTitle('Choose a device class');
 
-
-
-  Homey.getLanguage(function (err, result){
-
-     let language = result;
-
-      Homey.emit('startedClasses', null, function (err, result) {
-
-          new Vue({
-              el: '#devices-list',
-              data: {
-                  classes: result
+  Homey.emit('startedClasses', null, function (err, result) {
+      new Vue({
+          el: '#devices-list',
+          data: {
+              classes: result,
+              i18n: Homey.getLanguage(function (err, result){ return (err) ? 'en' : result; }),
+          },
+          methods:{
+              addClass(deviceclass) {
+                  Homey.emit('addClass', {'class': deviceclass}, function (err, result) {
+                      if(err){console.log(err); return;}
+                      Homey.nextView();
+                  });
               },
-              props: [
-                  'userCarType'
-              ],
-              methods:{
-                  addClass(deviceclass) {
-                      Homey.emit('addClass', {'class': deviceclass}, function (err, result) {
-                          if(err){console.log(err); return;}
-                          Homey.nextView();
-                      });
-                  },
-                  getTitle($value) {
-                      // Future proofing for new languages
-                      if ($value.title.hasOwnProperty(language)) {
-                          return $value.title[language];
-                      } else {
-                          return $value.title.en;
-                      }
+              getTitle(value, i18n) {
+                  // Future proofing for new languages
+                  if (value.title.hasOwnProperty(i18n)) {
+                      return value.title[i18n];
+                  } else {
+                      return value.title.en;
                   }
               }
-          });
+          }
       });
-
-
   });
+
+
 
 
 
@@ -50,7 +39,7 @@
     <label for="device" class="name">
       <div class="overlay"></div>
       <span class="icon" v-bind:style="{WebkitMaskImage: 'url(/app/com.swttt.devicegroups/drivers/devicegroup/assets/icons/' + key + '.svg)'}"></span>
-      <span class="name" tabindex="-1">{{getTitle(value)}}</span>
+      <span class="name" tabindex="-1">{{getTitle(value, i18n)}}</span>
     </label>
   </li>
 </ul>
