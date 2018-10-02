@@ -35,8 +35,10 @@ If you like this app, then consider to buy me a beer :)
 - Feedback on device status
 - Ability to group read only capabilities
 - Allow device status to be calculated from grouped devices
-- Device Classes (Categories) will now display correct name rather than tag.
-- Device Classes (Categories) now support en/nl languages. 
+- Device Classes (Categories) & Capabilities will now display correct name rather than tag.
+- Device Classes (Categories) & Capabilities now support en/nl languages. 
+- Removal of  Dim capability from heater devices (now use target_temperature)
+- Addition of all new devices 
 
 ##### 1.1.0
 - Device Group editor
@@ -45,11 +47,11 @@ If you like this app, then consider to buy me a beer :)
 - Initial release
 
 ### 1.2.0 Road Map
-- Addition of all new devices 
+
 - Addition of all new capabilities
-- Removal of  Dim capability from heater devices (now use target_temperature)
 - Allow "All"  to be selected in setup, to show all capabilities, if performance is not an issue.
 - Update capability setup screen to initially show loading status.
 - Change calculated method from the settings
-- Allow calculated method to be changed when adding a device. 
+- ~~Allow calculated method to be changed when adding a device.~~ 
 - Alphabetical ordering of items. 
+- Add translations 

@@ -1,0 +1,9 @@
+{
+  "title": {
+    "en": "Minimum Value",
+    "nl": "Minimale waarde"
+  },
+  "description": "The value of the device with the smallest value",
+  "value": "min",
+  "function": "min"
+}

@@ -1,7 +1,7 @@
 {
   "title": {
     "en": "Median Average",
-    "nl": "Median Average"
+    "nl": "Mediaan Gemiddeld?"
   },
   "description": "The value of the device in the middle",
   "value": "median",
