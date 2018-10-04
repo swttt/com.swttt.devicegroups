@@ -8,6 +8,9 @@ const {
 } = require('../../lib/athom-api.js');
 
 
+/**
+ * @todo move helper classes out of device.
+ */
 class DeviceGroupDevice extends Homey.Device {
 
 
@@ -16,14 +19,23 @@ class DeviceGroupDevice extends Homey.Device {
      * Gathers the required properties, sets our listeners, and polls
      */
     onInit() {
+        console.log('Initialising ' + this.getName());
 
         this.settings = this.getSettings();
+        this.store = this.getStore();
         this.library = new HomeyLite();
 
-        this.initApi().then( () => {
+        // Backwards compatibility check
+        this.checkForUpdates().then( () => {
 
-            this.initListener();
-            this.initPolls();
+            this.initApi().then( () => {
+
+                this.initListener();
+                this.initPolls();
+
+            }).catch( (error) => {
+                throw error;
+            });
 
         }).catch( (error) => {
             this.error(error);
@@ -81,7 +93,9 @@ class DeviceGroupDevice extends Homey.Device {
 
                     // Only bother setting if the capability is setable.
                     if (this.library.getCapability(capabilityId).setable) {
-                        device.setCapabilityValue(capabilityId, valueObj[capabilityId]);
+                        device.setCapabilityValue(capabilityId, valueObj[capabilityId]).catch( (error) => {
+                            console.log('Error setting capability ' + capabilityId + ' on ' + this.getName());
+                        });
                     }
                 }
             }
@@ -148,31 +162,84 @@ class DeviceGroupDevice extends Homey.Device {
 
         // loop through each of the capabilities calculating the values.
         for (let i in capabilities) {
-            try {
 
-                // Aliases
-                let key = capabilities[i];                              // Alias the capability key
-                let value = values[key];                                // Alias the value
-                let method = this.settings.capabilities[key].method;    // Alias the method we are going to use
-                let type = this.library.getCapability(key).type;      // Alias the data type
+            // Only bother getting the capability value .. if it is getable.
+            if (this.library.getCapability(capabilities[i]).getable) {
 
-                // Calculate our value
-                value = this[method](value);
+                try {
+                    // Aliases
+                    let key = capabilities[i];                              // Alias the capability key
+                    let value = values[key];                                // Alias the value
+                    let method = this.settings.capabilities[key].method;    // Alias the method we are going to use
+                    let type = this.library.getCapability(key).type;        // Alias the data type
 
-                // Convert the value in the to capabilities required type
-                value = this[type](value);
+                    // if the method is set the false - its disabled.
+                    if (method !== false) {
 
-                // // Set the capability of the groupedDevice
-                this.setCapabilityValue(key, value).then().catch( (error) => {
-                    console.log(error.message);
-                });
-            }
-            catch (error) {
-                return Promise.reject(error);
+                        // Calculate our value using our function
+
+                        value = this[this.library.getMethod(method).function](value);
+
+                        // Convert the value in the to capabilities required type
+                        value = this[type](value);
+
+                        // // Set the capability of the groupedDevice
+                        this.setCapabilityValue(key, value).then().catch( (error) => {
+                            console.log(error.message);
+                        });
+                    }
+                }
+                catch (error) {
+                    return Promise.reject(error);
+                }
             }
         }
     }
 
+
+    /**
+     * Check for application updates, and then update if required
+     *
+     * @returns {Promise<*>} true if update installed, false if no update
+     */
+    async checkForUpdates() {
+
+        try {
+
+            // If we do not have a version property at all
+            // This device was added prior to 1.2.0 when the version was instated.
+            // Upgrade the item with all 1.2.0 features disabled.
+            if (!this.store.hasOwnProperty('version')) {
+
+                console.log('Upgrading ' + this.getName());
+
+                let capabilities = await this.getCapabilities();
+                let settings = {capabilities: {}};
+
+                for (let i in capabilities) {
+                    // Add all the settings which are new to 1.2.0
+                    // Default each of method to false (ie disabled).
+                    settings.capabilities[capabilities[i]] = {};
+                    settings.capabilities[capabilities[i]].method = false;
+                }
+
+                // Gigo check :: that there are capabilities
+                if (Object.keys(settings.capabilities).length) {
+                    this.setSettings(settings);
+                    this.setStoreValue('version', '1.2.0');
+                    this.store.version = '1.2.0';
+
+                    console.log('Completed ' + this.getName() + ' ' + this.store.version + ' upgrade');
+                    return true;
+                }
+            }
+        }
+        catch (error) {
+            return Promise.reject(error);
+        }
+
+        return false;
+    }
 
     /**
      * Initialise the API, but getting the API for (current) Homey

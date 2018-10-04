@@ -1,3 +1,7 @@
 {
-  "capabilities" : []
+  "capabilities" : [
+    "onoff",
+    "dim",
+    "windowcoverings_state"
+  ]
 }

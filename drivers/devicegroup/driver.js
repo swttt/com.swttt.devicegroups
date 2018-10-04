@@ -14,6 +14,12 @@ class DeviceGroupDriver extends Homey.Driver {
 
   onPair( socket ) {
 
+      /*
+       * Add for future backwards compatibility checks : will require npm semver
+       * Currently being stored with in the devices store object @ onAlmostDone
+       */
+      const version = '1.2.0';
+
       let library = new HomeyLite();
       let pairingDevice = {};
           pairingDevice.name = 'Grouped device';
@@ -28,8 +34,12 @@ class DeviceGroupDriver extends Homey.Driver {
 
           socket.on('addClass', function( data, callback ) {
               pairingDevice.class = data.class;
+
+              // @todo add check that icon exists while in alpha testing
               pairingDevice.icon = '/app/com.swttt.devicegroups/drivers/devicegroup/assets/icons/'+data.class+'.svg';
+              pairingDevice.name = 'Grouped ' + data.class;
               callback( null, pairingDevice );
+
           });
 
           socket.on('getCapabilities', function( data, callback ) {
@@ -39,16 +49,12 @@ class DeviceGroupDriver extends Homey.Driver {
           socket.on('startedCapabilities', function( data, callback ) {
 
               let categoryCapabilities = library.getCategoryCapabilities(pairingDevice.class);
-              console.log(categoryCapabilities);
               let result = {};
-              for (let i in categoryCapabilities) {
 
+              for (let i in categoryCapabilities) {
                   result[categoryCapabilities[i]] = library.getCapability(categoryCapabilities[i]);
               }
-                console.log(result);
               callback(null, result)
-
-              // callback( null, pairingDevice );
           });
 
           socket.on('capabilitiesChanged', function( data, callback ) {
@@ -59,7 +65,7 @@ class DeviceGroupDriver extends Homey.Driver {
               // Set the capability method to the default
               // @todo allow this to be changed on the next screen
               for (let i in data.capabilities) {
-                  pairingDevice.settings.capabilities[data.capabilities[i]] = {}
+                  pairingDevice.settings.capabilities[data.capabilities[i]] = {};
                   pairingDevice.settings.capabilities[data.capabilities[i]].method = library.getCapability(data.capabilities[i]).method
               }
 
@@ -83,8 +89,15 @@ class DeviceGroupDriver extends Homey.Driver {
 
           // Adds the Unique ID, returns to the view for it to be added.
           socket.on('almostDone', function( data, callback ) {
-              pairingDevice.data.id = guid();
-              callback( null, pairingDevice );
+
+              try {
+                  pairingDevice.data.id = guid();
+                  pairingDevice.store = {version : '1.2.0'};
+                  callback( null, pairingDevice );
+              } catch(error) {
+                  callback( error, null );
+              }
+
           });
 
       }

@@ -17,6 +17,8 @@ class DeviceGroups extends Homey.App {
     return await api.devices.getDevices();
   }
 
+
+
   async getGroups() {
     return Homey.ManagerDrivers.getDriver('devicegroup').getDevices();
   }

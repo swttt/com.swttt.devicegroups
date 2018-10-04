@@ -1,3 +1,6 @@
 {
-  "capabilities" : []
+  "capabilities" : [
+    "onoff",
+    "dim"
+  ]
 }
