@@ -30,6 +30,12 @@ If you like this app, then consider to buy me a beer :)
 
 ### Changelog
 
+##### Testing notes
+
+- Default behaviour of 'dim' changed to average of the group
+- Default behaviour of 'onoff' changed to 'any' (on if any grouped devices are on) 
+
+
 ##### 1.2.0
 - API Update to 2.0.129
 - Feedback on device status
@@ -37,14 +43,15 @@ If you like this app, then consider to buy me a beer :)
 - Allow device status to be calculated from grouped devices
 - Device Classes (Categories) & Capabilities will now display correct name rather than tag.
 - Device Classes (Categories) & Capabilities now support en/nl languages. 
-- Removal of  Dim capability from heater devices (now use target_temperature)
-- Addition of all new devices 
+- Addition of all new categories
 
 ##### 1.1.0
 - Device Group editor
 
 ##### 1.0.0
 - Initial release
+
+---
 
 ### 1.2.0 Road Map
 
@@ -53,5 +60,5 @@ If you like this app, then consider to buy me a beer :)
 - Update capability setup screen to initially show loading status.
 - Change calculated method from the settings
 - ~~Allow calculated method to be changed when adding a device.~~ 
-- Alphabetical ordering of items. 
-- Add translations 
+- Alphabetical ordering of items.
+- Update categories to be tiles & addition of icons for all categories. 

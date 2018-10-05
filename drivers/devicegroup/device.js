@@ -25,6 +25,8 @@ class DeviceGroupDevice extends Homey.Device {
         this.store = this.getStore();
         this.library = new HomeyLite();
 
+
+
         // Backwards compatibility check
         this.checkForUpdates().then( () => {
 
@@ -122,6 +124,8 @@ class DeviceGroupDevice extends Homey.Device {
                 this.interval = setInterval(() => { this.pollDevices(); }, 1000 * 60 * 0.05); // In minutes
                 // @todo : change the above debugging to the below production code.
                 // setInterval(() => { this.pollDevices(); }, 1000 * 60 * this.settings.pollingFrequency); // In minutes
+            }).catch( (error) => {
+                return Promise.reject(error);
             });
 
             return Promise.resolve();
@@ -159,11 +163,11 @@ class DeviceGroupDevice extends Homey.Device {
                 values[capabilities[i]].push(device.state[capabilities[i]]);
             }
         }
-
-        // loop through each of the capabilities calculating the values.
+        //
+        // // loop through each of the capabilities calculating the values.
         for (let i in capabilities) {
-
-            // Only bother getting the capability value .. if it is getable.
+        //
+        //     // Only bother getting the capability value .. if it is getable.
             if (this.library.getCapability(capabilities[i]).getable) {
 
                 try {
@@ -177,7 +181,6 @@ class DeviceGroupDevice extends Homey.Device {
                     if (method !== false) {
 
                         // Calculate our value using our function
-
                         value = this[this.library.getMethod(method).function](value);
 
                         // Convert the value in the to capabilities required type
@@ -299,7 +302,7 @@ class DeviceGroupDevice extends Homey.Device {
      * @param value
      */
     enum(value) {
-        throw new error('enum: This has not yet been implemented');
+        return 0;
     }
 
     /**
@@ -349,11 +352,11 @@ class DeviceGroupDevice extends Homey.Device {
     }
 
     median(values) {
-        throw new error('median: This has not yet been implemented');
+        return 0;
     }
 
     mode(values) {
-        throw new error('mode: This has not yet been implemented');
+        return 0;
     }
 }
 
