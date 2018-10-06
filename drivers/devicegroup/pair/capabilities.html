@@ -30,7 +30,6 @@
 				'selectedCapabilities': function(val){
 					Homey.emit('capabilitiesChanged', {'capabilities': val}, function (err, result) {
 						if(err){console.log(err); return;}
-						console.log(result);
 					});
 				}
 			}

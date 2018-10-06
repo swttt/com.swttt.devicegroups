@@ -64,7 +64,7 @@
                             <div class='content'>
                                 <div class="ui labeled input">
                                     <div class="ui label" style="text-align:center;border-radius:.28571429rem;">
-                                        <div title="{{ capability.desc }}">{{ capability.i18n }}</div>
+                                        <div>{{ capability.i18n }}</div>
                                         <template v-if="capability.available.length">
                                             <select v-model="capability.selected" @change="onCapabilityMethodChanged" v-bind:data-capability="capability.key" class="ui input compact mini selection dropdown" style="margin-top:1em;">
                                                 <option v-for="option in capability.available" v-bind:value="option" title="{{ option.description }}" v-bind:data-method="option.value">
@@ -140,9 +140,9 @@
                     this.library = library;
                 });
 
-                // Get our language
+                // Get our language, force it to always be en or nl
                 Homey.getLanguage(function (err, result) {
-                    this.i18n = (err) ? 'en' : result;
+                    this.i18n = (err) ? 'en' : ((result == 'nl') ? 'nl' : 'en');
                 });
 
             },

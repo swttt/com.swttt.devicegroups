@@ -2,6 +2,7 @@
 
 const Homey = require('homey');
 const HomeyLite = require('../../lib/homey-lite/lib');
+const Helper = require('../../lib/helper');
 
 const {
   HomeyAPI
@@ -24,8 +25,6 @@ class DeviceGroupDevice extends Homey.Device {
         this.settings = this.getSettings();
         this.store = this.getStore();
         this.library = new HomeyLite();
-
-
 
         // Backwards compatibility check
         this.checkForUpdates().then( () => {
@@ -183,11 +182,11 @@ class DeviceGroupDevice extends Homey.Device {
                 values[capabilities[i]].push(device.state[capabilities[i]]);
             }
         }
-        //
-        // // loop through each of the capabilities calculating the values.
+
+        // loop through each of the capabilities calculating the values.
         for (let i in capabilities) {
-        //
-        //     // Only bother getting the capability value .. if it is getable.
+
+            // Only bother getting the capability value .. if it is getable.
             if (this.library.getCapability(capabilities[i]).getable) {
 
                 try {
@@ -201,10 +200,10 @@ class DeviceGroupDevice extends Homey.Device {
                     if (method !== false) {
 
                         // Calculate our value using our function
-                        value = this[this.library.getMethod(method).function](value);
+                        value = Helper[this.library.getMethod(method).function](value);
 
                         // Convert the value in the to capabilities required type
-                        value = this[type](value);
+                        value = Helper[type](value);
 
                         // // Set the capability of the groupedDevice
                         this.setCapabilityValue(key, value).then().catch( (error) => {
@@ -297,99 +296,6 @@ class DeviceGroupDevice extends Homey.Device {
      */
     onDeleted() {
         clearInterval(this.interval);
-    }
-
-    /**
-     * Ensure that the value is a boolean.
-     * @param value
-     * @returns {boolean}
-     */
-    boolean(value) {
-        return !!value;
-    }
-
-    /**
-     * Force the value to be a number
-     * @param value
-     * @returns {number}
-     */
-    number(value) {
-        return value * 1;
-    }
-
-    /**
-     * Enum types are not currently supported
-     * @param value
-     */
-    enum(value) {
-        return 0;
-    }
-
-    /**
-     * Sum of the values of the device
-     * @param values
-     * @returns {*}
-     */
-    sum (values){
-        return values.reduce(function(a,b){
-            return a + b
-        }, 0);
-    }
-
-    /**
-     * The largest value of the devices
-     * @param values
-     * @returns {number}
-     */
-    max (values) {
-        return Math.max(...values);
-    }
-
-    /**
-     * The smallest number of the devices
-     * @param values
-     * @returns {number}
-     */
-    min (values) {
-        return Math.min(...values);
-    }
-
-    /**
-     * Basically a NAND
-     * need to work out if we will require this for types other than boolean.
-     */
-    none (values) {
-        return this.sum(values) !== values.length
-    }
-
-    /**
-     * The mean average (total/number)
-     * @param values
-     * @returns {number}
-     */
-    mean (values) {
-        return this.sum(values) / values.length
-    }
-
-    /**
-     * The value in the middle, or ave of two middle items if array is even
-     *
-     * @param values
-     * @returns {number}
-     */
-    median(values) {
-
-        values.sort((a, b) => a - b);
-
-        let lowMiddle = Math.floor((values.length - 1) / 2);
-        let highMiddle = Math.ceil((values.length - 1) / 2);
-
-        // Even length will be ave of two middle ones, even will be middle item.
-        return (values[lowMiddle] + values[highMiddle]) / 2;
-    }
-
-    mode(values) {
-        return 0;
     }
 }
 

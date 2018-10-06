@@ -49,6 +49,8 @@ If you like this app, then consider to buy me a beer :)
 - Added the ability to store your notes against a device group.
 - Added Sensors (temp/power)
 - Added Power to Light & Socket category (TBC)
+- Added i18n support to the device settings page labels, currently support en only. 
+
 
 ##### 1.1.0
 - Device Group editor

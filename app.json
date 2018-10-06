@@ -88,14 +88,6 @@
             "value": "Unknown"
           },
           {
-            "id": "labelClassDesc",
-            "type": "label",
-            "label": {
-              "en": "Description"
-            },
-            "value": "Unknown"
-          },
-          {
             "id": "labelCapabilities",
             "type": "label",
             "label": {
@@ -109,15 +101,10 @@
             "label": {
               "en": "Devices"
             },
-            "value": "Unknown"
-          },
-          {
-            "id": "labelNotes",
-            "type": "label",
-            "label": {
-              "en": "Notes"
-            },
-            "value": "To change which devices are with in a group, please go to the Homey settings page and click on the Device Groups Settings"
+            "value": "Unknown",
+            "hint": {
+              "en": "To change which devices are with in a group, please go to the Homey settings page and click on the Device Groups Settings"
+            }
           }
         ]
       },
