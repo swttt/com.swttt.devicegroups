@@ -117,7 +117,7 @@
             "label": {
               "en": "Notes"
             },
-            "value": "To change which devices are with in a group, please go to the Homey settings page and click on the Device Groups <a href='TEST'>ASD</a> Settings"
+            "value": "To change which devices are with in a group, please go to the Homey settings page and click on the Device Groups Settings"
           }
         ]
       },
