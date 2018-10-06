@@ -1,0 +1,9 @@
+{
+  "title": {
+    "en": "Highest Value",
+    "nl": "høyeste verdi"
+  },
+  "description": "The highest value of the all the grouped device",
+  "value": "highest",
+  "function": "min"
+}

@@ -3,7 +3,7 @@
   "available" : [
     "mean",
     "mode",
-    "min",
-    "max"
+    "lowest",
+    "highest"
   ]
 }

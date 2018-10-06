@@ -1,0 +1,9 @@
+{
+  "title": {
+    "en": "Lowest Value",
+    "nl": "Laveste verdi"
+  },
+  "description": "The lowest value of the all the grouped device",
+  "value": "lowest",
+  "function": "min"
+}

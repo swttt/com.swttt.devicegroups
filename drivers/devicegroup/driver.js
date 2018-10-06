@@ -37,7 +37,7 @@ class DeviceGroupDriver extends Homey.Driver {
               pairingDevice.settings.labelClass = data.class;
 
               // @todo add check that icon exists while in alpha testing
-              pairingDevice.icon = '/app/com.swttt.devicegroups.alpha/drivers/devicegroup/assets/icons/'+data.class+'.svg';
+              pairingDevice.icon = '/app/com.swttt.devicegroups/drivers/devicegroup/assets/icons/'+data.class+'.svg';
               pairingDevice.name = 'Grouped ' + data.class;
               callback( null, pairingDevice );
 

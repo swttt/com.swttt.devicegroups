@@ -31,23 +31,23 @@
     <div class='ui attached message'>
         <div class='ui right floated basic segment' style='padding: 0; margin: 0'>
             <select :class='{ ui : true, dropdown : true, disabled : ! groups.length }' @change='groupSelected'>
-                <option disabled selected>Select device group:</option>
+                <option disabled selected data-i18n="Select device group">Select device group:</option>
                 <option v-for='group in groups' :value='group.id'>{{ group.name }}</option>
             </select>
         </div>
-        <div class='header'>Device Groups Editor</div>
-        <p>Edit your device groups</p>
+        <div data-i18n="Device Groups Editor" class='header'>Device Groups Editor</div>
+        <p data-i18n="Edit your device groups">Edit your device groups</p>
     </div>
     <div class='ui bottom attached segment'>
         <div class='ui loading basic segment' v-if='isLoading'></div>
         <table class='ui definition table' v-if='selectedGroup'>
             <tbody>
             <tr>
-                <td>Device Group Name:</td>
+                <td data-i18n="Device Group Name">Device Group Name:</td>
                 <td :title='selectedGroup.id'>{{ selectedGroup.name }}</td>
             </tr>
             <tr>
-                <td>Device Class:</td>
+                <td data-i18n="Device Class">Device Class:</td>
                 <td>
                     <div class='ui basic image label device-class'>
                         <img
@@ -57,24 +57,21 @@
                     </div>
             </tr>
             <tr>
-                <td>Capabilities:</td>
+                <td data-i18n="Capabilities">Capabilities:</td>
                 <td>
                     <div class='ui compact mini horizontal list capabilities'>
                         <div class='item' v-for='capability in capabilities'>
                             <div class='content'>
                                 <div class="ui labeled input">
-                                    <div class="ui label">
-                                        {{ capability.i18n }}
+                                    <div class="ui label" style="text-align:center;border-radius:.28571429rem;">
+                                        <div title="{{ capability.desc }}">{{ capability.i18n }}</div>
                                         <template v-if="capability.available.length">
-
-                                            <select v-model="capability.selected" @change="onCapabilityMethodChanged" v-bind:data-capability="capability.key" class="ui input compact mini selection dropdown">
-                                                <option v-for="option in capability.available" v-bind:value="option">
-                                                    {{ option }}
+                                            <select v-model="capability.selected" @change="onCapabilityMethodChanged" v-bind:data-capability="capability.key" class="ui input compact mini selection dropdown" style="margin-top:1em;">
+                                                <option v-for="option in capability.available" v-bind:value="option" title="{{ option.description }}" v-bind:data-method="option.value">
+                                                    {{ option.i18n }}
                                                 </option>
                                             </select>
-
                                         </template>
-
                                     </div>
                                 </div>
                             </div>
@@ -83,8 +80,11 @@
                 </td>
             </tr>
             <tr>
-                <td class='top aligned'>Devices in group:</td>
+            </tr>
+            <tr>
+                <td data-i18n="Devices in group" class='top aligned'>Devices in group:</td>
                 <td>
+                    <div class='ui loading basic segment' v-if='isLoadingDevices'></div>
                     <div class='ui middle aligned divided relaxed list'>
                         <div class='item' v-for='device in allDevicesMatchingCapabilities'>
                             <div :class='{
@@ -118,7 +118,8 @@
                 selectedGroup: null,
                 groupedDevices: [],
                 isLoading: false,
-                isUpdating: false,
+                isLoadingDevices: false,
+                isUpdating: true,
                 allDevices: [],
                 i18n: 'en',
                 library: {},
@@ -176,9 +177,13 @@
             },
             methods: {
 
-                onCapabilityMethodChanged(ev) {
+                onCapabilityMethodChanged(event) {
+                    this.isUpdating = true;
 
-                    this.selectedGroup.settings.capabilities[ev.target.dataset.capability].method = ev.target.value;
+                    // Seriously? This is 'modern'? FU vue.
+                    const selectedMethod = event.target.options[event.target.options.selectedIndex].dataset.method;
+
+                    this.selectedGroup.settings.capabilities[event.target.dataset.capability].method = selectedMethod;
 
                     Homey.api('PUT', '/group/' + this.selectedGroup.id + '/capabilities', this.selectedGroup.settings.capabilities, (err) => {
                         this.isUpdating = false;
@@ -189,12 +194,15 @@
                 groupSelected(ev) {
 
                     this.isLoading = true;
+                    this.isLoadingDevices = true;
                     this.selectedGroup = null;
                     this.groupedDevices = [];
 
                     Homey.api('GET', '/group/' + ev.target.value, (err, group) => {
 
+                        this.isLoadingDevices = false;
                         this.isLoading = false;
+
                         if (err) return Homey.alert(err);
 
                         this.selectedGroup = group;
@@ -209,17 +217,35 @@
 
                         // Populate the capabilities
                         for (i in this.selectedGroup.capabilities) {
+
                             let key = this.selectedGroup.capabilities[i];
+
                             this.capabilities[key]          = this.library.capabilities[key];
                             this.capabilities[key].key      = key;
                             this.capabilities[key].i18n     = this.capabilities[key].title[this.i18n];
-                            this.capabilities[key].selected = group.settings.capabilities[key].method;
+                            this.capabilities[key].selected = this.library.methods[group.settings.capabilities[key].method];
+
+
+                            // Now populate the method i18n titles.
+                            for (x in this.capabilities[key].available) {
+
+                                // Shoul dbe stored int he data store as we go.
+                                if (!this.capabilities[key].available[x].hasOwnProperty('i18n')) {
+                                    // Alias
+                                    let method = this.capabilities[key].available[x];
+                                    this.capabilities[key].available[x] = this.library.methods[method];
+                                    this.capabilities[key].available[x].i18n = this.capabilities[key].available[x].title[this.i18n];
+                                }
+
+                            }
                         }
 
                         if (!this.allDevices.length) {
-                            this.isLoading = true;
+                            // this.isLoading = true;
+                            this.isLoadingDevices = true;
                             Homey.api('GET', '/devices', (err, devices) => {
                                 this.isLoading = false;
+                                this.isLoadingDevices = false;
                                 if (err) return Homey.alert(err);
                                 this.allDevices = devices;
                             });

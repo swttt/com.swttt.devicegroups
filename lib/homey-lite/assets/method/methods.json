@@ -7,5 +7,7 @@
     "sum",
     "all",
     "any",
-    "none"
+    "none",
+    "highest",
+    "lowest"
 ]
