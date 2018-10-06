@@ -34,6 +34,7 @@ class DeviceGroupDriver extends Homey.Driver {
 
           socket.on('addClass', function( data, callback ) {
               pairingDevice.class = data.class;
+              pairingDevice.settings.labelClass = data.class;
 
               // @todo add check that icon exists while in alpha testing
               pairingDevice.icon = '/app/com.swttt.devicegroups/drivers/devicegroup/assets/icons/'+data.class+'.svg';
@@ -64,10 +65,14 @@ class DeviceGroupDriver extends Homey.Driver {
 
               // Set the capability method to the default
               // @todo allow this to be changed on the next screen
+              let labelCapabilities = [];
+
               for (let i in data.capabilities) {
                   pairingDevice.settings.capabilities[data.capabilities[i]] = {};
                   pairingDevice.settings.capabilities[data.capabilities[i]].method = library.getCapability(data.capabilities[i]).method
               }
+
+              pairingDevice.settings.labelCapabilities = data.capabilities.join();
 
               callback( null, pairingDevice );
           });

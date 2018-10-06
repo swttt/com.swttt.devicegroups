@@ -47,6 +47,28 @@ class DeviceGroupDevice extends Homey.Device {
 
 
     /**
+     * Refresh the settings & capability listeners
+     * @returns {Promise<void>}
+     */
+    async refresh() {
+
+        this.setUnavailable().then( (result) => {
+
+            // destroy the polling
+            clearInterval(this.interval);
+
+            // update the settings
+            this.settings = this.getSettings();
+
+            // re-initialise the polling
+            this.initPolls();
+
+            this.setAvailable();
+        })
+    }
+
+
+    /**
      * Initialises the capability listener.
      *
      * Basically : Registers every capability this device (MultipleCapabilityListener) has, so
@@ -121,9 +143,8 @@ class DeviceGroupDevice extends Homey.Device {
             this.pollDevices().then(() => {
 
                 // Set the polling interval based from the settings, once we have the first value.
-                this.interval = setInterval(() => { this.pollDevices(); }, 1000 * 60 * 0.05); // In minutes
-                // @todo : change the above debugging to the below production code.
-                // setInterval(() => { this.pollDevices(); }, 1000 * 60 * this.settings.pollingFrequency); // In minutes
+                this.interval = setInterval(() => { this.pollDevices(); }, 1000 * this.settings.pollingFrequency); // In seconds
+
             }).catch( (error) => {
                 return Promise.reject(error);
             });
@@ -138,7 +159,6 @@ class DeviceGroupDevice extends Homey.Device {
     // min, max, ave, sum, mean, median
     // @todo refactor
     async pollDevices () {
-
         let values = [], value;
         let capabilities = this.getCapabilities();
 
@@ -351,8 +371,21 @@ class DeviceGroupDevice extends Homey.Device {
         return this.sum(values) / values.length
     }
 
+    /**
+     * The value in the middle, or ave of two middle items if array is even
+     *
+     * @param values
+     * @returns {number}
+     */
     median(values) {
-        return 0;
+
+        values.sort((a, b) => a - b);
+
+        let lowMiddle = Math.floor((values.length - 1) / 2);
+        let highMiddle = Math.ceil((values.length - 1) / 2);
+
+        // Even length will be ave of two middle ones, even will be middle item.
+        return (values[lowMiddle] + values[highMiddle]) / 2;
     }
 
     mode(values) {
