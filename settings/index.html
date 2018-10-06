@@ -65,11 +65,15 @@
                                 <div class="ui labeled input">
                                     <div class="ui label">
                                         {{ capability.i18n }}
-                                        <select v-model="capability.selected" @change="onCapabilityMethodChanged" class="ui input compact mini selection dropdown">
-                                            <option v-for="option in capability.available" v-bind:value="option">
-                                                {{ option }}
-                                            </option>
-                                        </select>
+                                        <template v-if="capability.available.length">
+
+                                            <select v-model="capability.selected" @change="onCapabilityMethodChanged" v-bind:data-capability="capability.key" class="ui input compact mini selection dropdown">
+                                                <option v-for="option in capability.available" v-bind:value="option">
+                                                    {{ option }}
+                                                </option>
+                                            </select>
+
+                                        </template>
 
                                     </div>
                                 </div>
@@ -117,41 +121,39 @@
                 isUpdating: false,
                 allDevices: [],
                 i18n: 'en',
-                selected: {},
                 library: {},
                 category : 'category',
                 capabilities: {}
             },
             mounted() {
+
                 // Retrieve list of groups.
                 Homey.api('GET', '/group', (err, groups) => {
                     if (err) return Homey.alert(err);
                     this.groups = groups;
                 });
+
                 // Retrieve our library.
                 Homey.api('GET', '/library', (err, library) => {
                     if (err) return Homey.alert(err);
                     this.library = library;
                 });
 
+                // Get our language
                 Homey.getLanguage(function (err, result) {
                     this.i18n = (err) ? 'en' : result;
                 });
 
-                Homey.get('settings', function(err, savedSettings) {
-                    console.log(savedSettings);
-                });
-
-
-
             },
             watch: {
+
                 groupedDevices(newValue, oldValue) {
+
                     if (this.isLoading && oldValue.length === 0) return;
 
                     this.isUpdating = true;
 
-                    // Gets called when changing groups : disable it if thats the case.
+                    // Gets called when changing groups : disable it if that's the case.
                     if (this.selectedGroup) {
                         Homey.api('PUT', '/group/' + this.selectedGroup.id, newValue, (err) => {
                             this.isUpdating = false;
@@ -162,6 +164,7 @@
                 },
             },
             computed: {
+
                 // Match all devices that have support the capabilities matching the device group.
                 // Also prevent self-inclusion.
                 allDevicesMatchingCapabilities() {
@@ -172,15 +175,24 @@
                 }
             },
             methods: {
+
                 onCapabilityMethodChanged(ev) {
-                    console.log(ev.target.value);
+
+                    this.selectedGroup.settings.capabilities[ev.target.dataset.capability].method = ev.target.value;
+
+                    Homey.api('PUT', '/group/' + this.selectedGroup.id + '/capabilities', this.selectedGroup.settings.capabilities, (err) => {
+                        this.isUpdating = false;
+                        if (err) return Homey.alert(err);
+                    });
                 },
+
                 groupSelected(ev) {
+
                     this.isLoading = true;
                     this.selectedGroup = null;
                     this.groupedDevices = [];
-                    Homey.api('GET', '/group/' + ev.target.value, (err, group) => {
 
+                    Homey.api('GET', '/group/' + ev.target.value, (err, group) => {
 
                         this.isLoading = false;
                         if (err) return Homey.alert(err);
@@ -188,15 +200,18 @@
                         this.selectedGroup = group;
                         this.groupedDevices = (group.settings.groupedDevices || []).map(g => g.id);
 
-
+                        // Get the i18n category name
                         this.category       = this.library.categories[this.selectedGroup.class];
                         this.category.i18n  = this.category.title[this.i18n];
 
-                        // Reset
+                        // Reset the capabilities.
                         this.capabilities = {};
+
+                        // Populate the capabilities
                         for (i in this.selectedGroup.capabilities) {
                             let key = this.selectedGroup.capabilities[i];
                             this.capabilities[key]          = this.library.capabilities[key];
+                            this.capabilities[key].key      = key;
                             this.capabilities[key].i18n     = this.capabilities[key].title[this.i18n];
                             this.capabilities[key].selected = group.settings.capabilities[key].method;
                         }

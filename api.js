@@ -36,7 +36,24 @@ module.exports = [
         method: 'PUT',
         path: '/group/:id',
         fn: async (args) => {
+
             await Homey.app.setDevicesForGroup(args.params.id, args.body);
+        }
+    },
+    {
+        // Update the grouped devices for a group.
+        method: 'PUT',
+        path: '/group/:id/settings',
+        fn: async (args) => {
+            await Homey.app.setGroupSettings(args.params.id, args.body);
+        }
+    },
+    {
+        // Update the grouped devices for a group.
+        method: 'PUT',
+        path: '/group/:id/capabilities',
+        fn: async (args) => {
+            await Homey.app.setMethodForCapabilityOfGroup(args.params.id, args.body);
         }
     },
     {

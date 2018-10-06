@@ -36,9 +36,39 @@ class DeviceGroups extends Homey.App {
     let allDevices     = await this.getDevices();
     let groupedDevices = Object.values(allDevices).filter(d => devices.includes(d.id));
 
+
     // Update the group settings.
-    return await group.setSettings({ groupedDevices });
+    let ret =  await group.setSettings({ groupedDevices });
+
+    await group.refresh();
+
+    return ret;
   }
+
+    async setGroupSettings(id, settings) {
+
+        let group = await this.getGroup(id);
+
+        group.settings.capabilities.onoff.method = 'mode';
+
+        // Update the group settings.
+        let ret =   await group.setSettings(group.settings);
+    }
+
+    async setMethodForCapabilityOfGroup(id, capabilities) {
+
+        let group = await this.getGroup(id);
+
+        group.settings.capabilities = capabilities;
+
+        // Update the group settings.
+        let ret =  await group.setSettings(group.settings);
+
+        await group.refresh();
+
+        return ret;
+    }
+
 
   onInit() {
     this.log('Device groups is running...');

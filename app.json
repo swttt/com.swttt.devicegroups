@@ -1,11 +1,11 @@
 {
-  "id": "com.swttt.devicegroups",
+  "id": "com.swttt.devicegroups-alpha",
   "sdk": 2,
   "permissions": [
     "homey:manager:api"
   ],
   "name": {
-    "en": "Device Groups"
+    "en": "(1.2.0-alpha) Device Groups"
   },
   "description": {
     "en": "Makes it possible to group devices and switch all devices within a group.",
@@ -70,6 +70,97 @@
         "navigation": {
           "prev": "capabilities"
         }
+      }
+    ],
+    "settings": [
+      {
+        "type": "group",
+        "label": {
+          "en": "About"
+        },
+        "children": [
+          {
+            "id": "labelClass",
+            "type": "label",
+            "label": {
+              "en": "Category"
+            },
+            "value": "Unknown"
+          },
+          {
+            "id": "labelClassDesc",
+            "type": "label",
+            "label": {
+              "en": "Description"
+            },
+            "value": "Unknown"
+          },
+          {
+            "id": "labelCapabilities",
+            "type": "label",
+            "label": {
+              "en": "Capabilities"
+            },
+            "value": "Unknown"
+          },
+          {
+            "id": "labelDevices",
+            "type": "label",
+            "label": {
+              "en": "Devices"
+            },
+            "value": "Unknown"
+          },
+          {
+            "id": "labelNotes",
+            "type": "label",
+            "label": {
+              "en": "Notes"
+            },
+            "value": "To change which devices are with in a group, please go to the Homey settings page and click on the Device Groups <a href='TEST'>ASD</a> Settings"
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "label": {
+          "en": "General Settings"
+        },
+        "children": [
+          {
+            "id": "pollingFrequency",
+            "type": "number",
+            "label": {
+              "en": "Polling frequency"
+            },
+            "value": 3,
+            "attr": {
+              "min": 3
+            },
+            "hint": {
+              "en": "How often to poll devices in a group for changes, in seconds."
+            }
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "label": {
+          "en": "Other"
+        },
+        "children": [
+          {
+            "id": "notes",
+            "type": "textarea",
+            "label": {
+              "en": "Your Notes"
+            },
+            "value": "",
+            "hint": {
+              "en": "Enter any thoughts or notes you may have regarding this device group."
+            }
+          }
+        ]
       }
     ]
   }]

@@ -44,6 +44,10 @@ If you like this app, then consider to buy me a beer :)
 - Device Classes (Categories) & Capabilities will now display correct name rather than tag.
 - Device Classes (Categories) & Capabilities now support en/nl languages. 
 - Addition of all new categories
+- Groups will now refresh and update their devices immediately when changed in the settings, rather then waiting for  restart.
+- Added class and capabilities to the device settings page, with in "devices", Read Only.
+- Change calculated method from the settings
+- Added the ability to store your notes against a device group.
 
 ##### 1.1.0
 - Device Group editor
@@ -58,7 +62,6 @@ If you like this app, then consider to buy me a beer :)
 - Addition of all new capabilities
 - Allow "All"  to be selected in setup, to show all capabilities, if performance is not an issue.
 - Update capability setup screen to initially show loading status.
-- Change calculated method from the settings
 - ~~Allow calculated method to be changed when adding a device.~~ 
 - Alphabetical ordering of items.
 - Update categories to be tiles & addition of icons for all categories. 
