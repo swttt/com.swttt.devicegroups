@@ -1,5 +1,9 @@
 {
-  "method" : false,
+  "method" : "mean",
   "available" : [
+    "mean",
+    "mode",
+    "min",
+    "max"
   ]
 }

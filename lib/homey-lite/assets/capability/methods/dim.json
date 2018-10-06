@@ -3,6 +3,7 @@
   "available": [
     "mean",
     "min",
-    "max"
+    "max",
+    "median"
   ]
 }
