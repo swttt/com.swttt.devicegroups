@@ -1,6 +1,7 @@
 {
   "capabilities" : [
     "onoff",
-    "dim"
+    "dim",
+    "measure_power"
   ]
 }

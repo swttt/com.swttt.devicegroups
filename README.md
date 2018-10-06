@@ -35,19 +35,20 @@ If you like this app, then consider to buy me a beer :)
 - Default behaviour of 'dim' changed to average of the group
 - Default behaviour of 'onoff' changed to 'any' (on if any grouped devices are on) 
 
-
-##### 1.2.0
+##### 1.2.0-alpha1
 - API Update to 2.0.129
 - Feedback on device status
-- Ability to group read only capabilities
+- Added Ability to group read only capabilities.
 - Allow device status to be calculated from grouped devices
 - Device Classes (Categories) & Capabilities will now display correct name rather than tag.
 - Device Classes (Categories) & Capabilities now support en/nl languages. 
 - Addition of all new categories
 - Groups will now refresh and update their devices immediately when changed in the settings, rather then waiting for  restart.
-- Added class and capabilities to the device settings page, with in "devices", Read Only.
+- Added class and capabilities to the device settings page, with in "devices", Read Only. (WIP)
 - Change calculated method from the settings
 - Added the ability to store your notes against a device group.
+- Added Sensors (temp/power)
+- Added Power to Light & Socket category (TBC)
 
 ##### 1.1.0
 - Device Group editor
