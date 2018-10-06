@@ -1,6 +1,7 @@
 {
   "capabilities" : [
     "measure_temperature",
-    "measure_power"
+    "measure_power",
+    "measure_luminance"
   ]
 }
