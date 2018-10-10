@@ -79,16 +79,10 @@ class DeviceGroupDevice extends Homey.Device {
    * @returns {Promise<void>}
    */
   async initListener() {
-
-    try {
-      // Register all of the capabilities at once with a (async) call back.
-      this.registerMultipleCapabilityListener(this.getCapabilities(), async (valueObj, optsObj) => {
-        return this.updateCapability(valueObj, optsObj);
-      }, 500);
-    }
-    catch (error) {
-      return Promise.reject(error);
-    }
+    // Register all of the capabilities at once with a (async) call back.
+    return this.registerMultipleCapabilityListener(this.getCapabilities(), async (valueObj, optsObj) => {
+      return this.updateCapability(valueObj, optsObj);
+    }, 500);
   }
 
 
