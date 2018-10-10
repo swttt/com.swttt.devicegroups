@@ -6,6 +6,7 @@
 ### Features
 
 - Allow All to be selected in setup, to show all capabilities, if performance is not an issue.
+- Update default polling from from 3 to 10. 
 
 ### UX 
 
@@ -25,3 +26,8 @@
 ### Testing
 
 https://docs.google.com/spreadsheets/d/1GAjOZUtZgUeg95zHC7CNl6wXo-iqTMqeUiyN16OXlxM/edit#gid=0
+
+
+### Future
+- Move all i18n back into the locales folder/structure, instead of the homey-lite.
+- Update polling frequency based off of the specific capability. 

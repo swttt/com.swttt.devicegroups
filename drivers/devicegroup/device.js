@@ -211,6 +211,7 @@ class DeviceGroupDevice extends Homey.Device {
 
             // // Set the capability of the groupedDevice
             this.setCapabilityValue(key, value).then().catch((error) => {
+              console.log('err:')
               console.log(error.message);
             });
           }

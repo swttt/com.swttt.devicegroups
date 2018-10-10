@@ -1,0 +1,9 @@
+{
+  "title": {
+    "en": "On if Most",
+    "nl": "On if Most",
+  },
+  "description": "On if half devices are on",
+  "value": "median",
+  "function": "median"
+}

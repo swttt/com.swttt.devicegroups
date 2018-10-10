@@ -1,5 +1,9 @@
 {
-  "method" : false,
+  "method" : "ignore",
   "available" : [
+    "ignore",
+    "any",
+    "all",
+    "most"
   ]
 }

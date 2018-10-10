@@ -71,7 +71,7 @@
                               class="ui input compact mini selection dropdown"
                               style="margin-top:1em;">
                         <option v-for="option in capability.available" v-bind:value="option"
-                                title="{{ option.description }}"
+                                v-bind:title="option.description"
                                 v-bind:data-method="option.value">
                           {{ option.i18n }}
                         </option>
