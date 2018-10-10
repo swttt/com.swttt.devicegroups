@@ -9,5 +9,8 @@
     "any",
     "none",
     "highest",
-    "lowest"
+    "lowest",
+    "always",
+    "never",
+    "ignore"
 ]

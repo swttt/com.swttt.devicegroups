@@ -1,0 +1,9 @@
+{
+  "title": {
+      "en": "Ignore Devices",
+      "nl": "Ignore Devices"
+  },
+  "description": "Don't update, only use values set by the card",
+  "value": "ignore",
+  "function": "ignore"
+}

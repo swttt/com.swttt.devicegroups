@@ -1,0 +1,9 @@
+{
+  "title": {
+    "en": "Never On",
+    "nl": "Never On"
+  },
+  "description": "Never on, always returns to off",
+  "value": "never",
+  "function": "never"
+}

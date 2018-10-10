@@ -1,0 +1,9 @@
+{
+  "title": {
+    "en": "Always On",
+    "nl": "Always On"
+  },
+  "description": "Always returns to on",
+  "value": "always",
+  "function": "always"
+}
