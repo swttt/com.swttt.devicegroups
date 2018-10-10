@@ -1,7 +1,7 @@
 <style>
-    [v-cloak] {
-        display: none;
-    }
+  [v-cloak] {
+    display: none;
+  }
 
 </style>
 
@@ -78,27 +78,27 @@
 </script>
 
 <div id="all-devices">
-    <i v-if='isLoading' class="loading fa fa-cog fa-spin"></i>
+  <i v-if='isLoading' class="loading fa fa-cog fa-spin"></i>
 
-    <template v-cloak>
-        <div v-if="filteredDevices.length > 0" style="text-align:right;font-size:0.9em">
-            <smnall>{{ filteredDevices.length }} Devices</smnall>
-        </div>
-        <div v-else>No Devices Found</div>
+  <template v-cloak>
+    <div v-if="filteredDevices.length > 0" style="text-align:right;font-size:0.9em">
+      <smnall>{{ filteredDevices.length }} Devices</smnall>
+    </div>
+    <div v-else>No Devices Found</div>
 
-        <ul id="devices-list">
-            <li v-if="filteredDevices.length > 0" class="device" v-for="device in filteredDevices">
-                <label :for="device.id" class="name">
-                    <div class="overlay"></div>
-                    <span class="name" tabindex="-1">{{device.name}}</span>
-                </label>
-                <label :for="device.id" class="checkbox">
-                    <input :id="device.id" :value="device" name="device" type="checkbox" tabindex="2"
-                           v-model="selectedDevices">
-                </label>
-            </li>
-        </ul>
-    </template>
+    <ul id="devices-list">
+      <li v-if="filteredDevices.length > 0" class="device" v-for="device in filteredDevices">
+        <label :for="device.id" class="name">
+          <div class="overlay"></div>
+          <span class="name" tabindex="-1">{{device.name}}</span>
+        </label>
+        <label :for="device.id" class="checkbox">
+          <input :id="device.id" :value="device" name="device" type="checkbox" tabindex="2"
+                 v-model="selectedDevices">
+        </label>
+      </li>
+    </ul>
+  </template>
 </div>
 
 

@@ -1,7 +1,7 @@
 <style>
-    [v-cloak] {
-        display: none;
-    }
+  [v-cloak] {
+    display: none;
+  }
 </style>
 
 <script src='../../../assets/vue.min.js'></script>
@@ -52,20 +52,20 @@
 
 <div id="app">
 
-    <i v-if='isLoading' class="loading fa fa-cog fa-spin"></i>
+  <i v-if='isLoading' class="loading fa fa-cog fa-spin"></i>
 
-    <template v-cloak>
-        <ul id="devices-list">
-            <li class="device" v-for="(value, key) in capabilities">
-                <label :for="key" class="name">
-                    <div class="overlay"></div>
-                    <span class="name" tabindex="-1">{{getTitle(value, i18n)}}</span>
-                </label>
-                <label :for="key" class="checkbox">
-                    <input :id="key" :value="key" name="device" type="checkbox" tabindex="2"
-                           v-model="selectedCapabilities">
-                </label>
-            </li>
-        </ul>
-    </template>
+  <template v-cloak>
+    <ul id="devices-list">
+      <li class="device" v-for="(value, key) in capabilities">
+        <label :for="key" class="name">
+          <div class="overlay"></div>
+          <span class="name" tabindex="-1">{{getTitle(value, i18n)}}</span>
+        </label>
+        <label :for="key" class="checkbox">
+          <input :id="key" :value="key" name="device" type="checkbox" tabindex="2"
+                 v-model="selectedCapabilities">
+        </label>
+      </li>
+    </ul>
+  </template>
 </div>

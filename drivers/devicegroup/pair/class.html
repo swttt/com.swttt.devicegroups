@@ -1,7 +1,7 @@
 <style>
-    [v-cloak] {
-        display: none;
-    }
+  [v-cloak] {
+    display: none;
+  }
 </style>
 <script src='../../../assets/vue.min.js'></script>
 <script>
@@ -43,19 +43,19 @@
 </script>
 <div id="all-classes">
 
-    <i v-if='isLoading' class="loading fa fa-cog fa-spin"></i>
+  <i v-if='isLoading' class="loading fa fa-cog fa-spin"></i>
 
-    <template v-cloak>
-        <ul id="devices-list">
-            <li v-for="(value, key) in classes" v-on:click="addClass(key)" class="device">
-                <label for="device" class="name">
-                    <div class="overlay"></div>
-                    <span class="icon"
-                          v-bind:style="{WebkitMaskImage: 'url(/app/com.swttt.devicegroup/drivers/devicegroup/assets/icons/' + key + '.svg)'}"></span>
-                    <span class="name" tabindex="-1">{{getTitle(value, i18n)}}</span>
-                </label>
-            </li>
-        </ul>
-    </template>
+  <template v-cloak>
+    <ul id="devices-list">
+      <li v-for="(value, key) in classes" v-on:click="addClass(key)" class="device">
+        <label for="device" class="name">
+          <div class="overlay"></div>
+          <span class="icon"
+                v-bind:style="{WebkitMaskImage: 'url(/app/com.swttt.devicegroup/drivers/devicegroup/assets/icons/' + key + '.svg)'}"></span>
+          <span class="name" tabindex="-1">{{getTitle(value, i18n)}}</span>
+        </label>
+      </li>
+    </ul>
+  </template>
 </div>
 
