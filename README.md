@@ -43,11 +43,12 @@ If you like this app, then consider to buy me a beer :)
 - Device Classes (Categories) & Capabilities will now display correct name rather than tag.
 - Device Classes (Categories) & Capabilities now support en/nl languages. 
 - Addition of all new categories
+- Addition of all new capabilities
 - Groups will now refresh and update their devices immediately when changed in the settings, rather then waiting for  restart.
-- Added class and capabilities to the device settings page, with in "devices", Read Only. (WIP)
+- Added class and capabilities to the device settings page, with in devices, Read Only.
 - Change calculated method from the settings
 - Added the ability to store your notes against a device group.
-- Added Sensors (temp/power)
+- Added Sensors (temp/power/lux)
 - Added Power to Light & Socket category (TBC)
 - Added i18n support to the device settings page labels, currently support en only. 
 
@@ -62,9 +63,11 @@ If you like this app, then consider to buy me a beer :)
 
 ### 1.2.0 Road Map
 
-- Addition of all new capabilities
-- Allow "All"  to be selected in setup, to show all capabilities, if performance is not an issue.
+
+- Allow All  to be selected in setup, to show all capabilities, if performance is not an issue.
 - Update capability setup screen to initially show loading status.
 - ~~Allow calculated method to be changed when adding a device.~~ 
 - Alphabetical ordering of items.
 - Update categories to be tiles & addition of icons for all categories. 
+- Addition of all new capabilities
+

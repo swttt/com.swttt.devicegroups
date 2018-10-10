@@ -155,6 +155,8 @@
                     this.isUpdating = true;
 
                     // Gets called when changing groups : disable it if that's the case.
+                    // @todo this is still getting called.
+                    console.log(this.selectedGroup);
                     if (this.selectedGroup) {
                         Homey.api('PUT', '/group/' + this.selectedGroup.id, newValue, (err) => {
                             this.isUpdating = false;

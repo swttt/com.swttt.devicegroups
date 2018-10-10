@@ -20,7 +20,7 @@ class DeviceGroupDevice extends Homey.Device {
      * Gathers the required properties, sets our listeners, and polls
      */
     onInit() {
-        console.log('Initialising ' + this.getName());
+        this.log('Initialising ' + this.getName());
 
         this.settings = this.getSettings();
         this.store = this.getStore();
@@ -50,6 +50,8 @@ class DeviceGroupDevice extends Homey.Device {
      * @returns {Promise<void>}
      */
     async refresh() {
+
+        this.log('Refreshing Device Group ' + this.getName());
 
         this.setUnavailable().then( (result) => {
 
@@ -94,6 +96,9 @@ class DeviceGroupDevice extends Homey.Device {
      * Update the value of all the grouped items
      *
      * Note that it's using the WebAPI to set the values.
+     *
+     *
+     *
      * @param valueObj
      * @param optsObj
      * @returns {Promise<*>}
@@ -132,7 +137,7 @@ class DeviceGroupDevice extends Homey.Device {
     /**
      * Initialise the polling, this is how we gather our grouped devices data
      * to ensure that the card/mobile is kept up to date. Will run the first poll.
-     *
+     * @todo Initally I attempted to add a deviceCapability listener to the individual devices, but was unsuccessful, try again.
      * @returns {Promise<void>}
      */
     async initPolls() {
@@ -169,7 +174,8 @@ class DeviceGroupDevice extends Homey.Device {
         // Loop through each of the devices in the group
         for (let x in this.settings.groupedDevices) {
 
-            // requires the API.
+
+            // requires the API. @todo investigate whether this should be stored in memory
             let device = await this.api.devices.getDevice({
                 id: this.settings.groupedDevices[x].id
             });
@@ -196,8 +202,11 @@ class DeviceGroupDevice extends Homey.Device {
                     let method = this.settings.capabilities[key].method;    // Alias the method we are going to use
                     let type = this.library.getCapability(key).type;        // Alias the data type
 
-                    // if the method is set the false - its disabled.
-                    if (method !== false) {
+
+
+                    // if the method is set the false - its disabled
+                    // if the method is set to ignore, dont update use the card behaviour.
+                    if (method !== false && method !== 'ignore') {
 
                         // Calculate our value using our function
                         value = Helper[this.library.getMethod(method).function](value);
@@ -218,6 +227,23 @@ class DeviceGroupDevice extends Homey.Device {
         }
     }
 
+
+    /**
+     * Will check the current devices and capability methods, and update
+     * the label settings.
+     * @returns {Promise<void>}
+     */
+    async updateLabels() {
+
+        let labelDevices = [];
+
+        for (let x in this.settings.groupedDevices) {
+
+            labelDevices.push(this.settings.groupedDevices[x].name);
+        }
+
+        this.setSettings({labelDevices : labelDevices});
+    }
 
     /**
      * Check for application updates, and then update if required

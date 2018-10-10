@@ -33,12 +33,8 @@ class DeviceGroupDriver extends Homey.Driver {
 
           socket.on('startedClasses', function( data, callback ) {
 
-              // set our i18n
-              this.i18n = Homey.ManagerI18n.getLanguage();
-
               // Force i18n to en or nl, as we are accessing the i18n directly,
-              // it wont fall back for us.
-              this.i18n = (this.i18n == 'nl') ? 'nl' : 'en';
+              this.i18n = (Homey.ManagerI18n.getLanguage() == 'nl') ? 'nl' : 'en';
 
               callback( null, library.getCategories() );
           });
@@ -86,10 +82,15 @@ class DeviceGroupDriver extends Homey.Driver {
                   // @todo move all labels to separate function called from almostDone
                   let details = library.getCapability(data.capabilities[i]);
                   pairingDevice.settings.capabilities[data.capabilities[i]].method = details.method;
-                  labelCapabilities.push(details.title[this.i18n]);     // Find the i18n of the device, to be displayed
+
+                  // temp hack for if methods are disabled.
+                  if (details.method) {
+                    labelCapabilities.push(details.title[this.i18n] +  ' (' + library.getMethod(details.method).title[this.i18n] + ')' );     // Find the i18n of the device, to be displayed
+                  } else {
+                      labelCapabilities.push(details.title[this.i18n]);
+                  }
 
               }
-                console.log(labelCapabilities);
               pairingDevice.settings.labelCapabilities = labelCapabilities.join(', ');
 
               callback( null, pairingDevice );
@@ -98,17 +99,20 @@ class DeviceGroupDriver extends Homey.Driver {
           socket.on('startedDevices', function( data, callback ) {
               var result = {};
                   result.pairingDevice = pairingDevice;
+
                   Homey.app.getDevices().then(res => {
                       result.devices = res;
                       callback(null, result);
                     })
-                    .catch(error => callback(error, null));
+                    .catch(error => {callback(error, null)});
           });
 
           socket.on('devicesChanged', function( data, callback ) {
               pairingDevice.settings.groupedDevices = data.devices;
 
-              // @todo move all lables to separate function called from almostDone
+
+
+              // @todo move all labels to separate function called from almostDone
               let labelDevices = [];
               for (let i in data.devices) {
                   labelDevices.push(data.devices[i].name);
@@ -123,6 +127,7 @@ class DeviceGroupDriver extends Homey.Driver {
               try {
                   pairingDevice.data.id = guid();
                   pairingDevice.store = {version : '1.2.0'};
+
                   callback( null, pairingDevice );
               } catch(error) {
                   callback( error, null );
