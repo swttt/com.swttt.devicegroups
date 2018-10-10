@@ -1,5 +1,4 @@
 [
-  "other",
   "socket",
   "light",
   "vacuumcleaner",
@@ -14,10 +13,13 @@
   "button",
   "doorbell",
   "lock",
+  "garagedoor",
+  "relay",
   "windowcoverings",
   "tv",
   "amplifier",
   "curtain",
   "blinds",
-  "sunshade"
+  "sunshade",
+  "other"
 ]

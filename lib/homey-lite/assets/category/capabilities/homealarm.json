@@ -1,4 +1,6 @@
 {
   "capabilities" : [
+    "homealarm_state",
+    "alarm_tamper"
   ]
 }

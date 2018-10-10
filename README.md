@@ -63,8 +63,6 @@ If you like this app, then consider to buy me a beer :)
 
 ### 1.2.0 Road Map
 
-
 - Allow All to be selected in setup, to show all capabilities, if performance is not an issue.
-- Alphabetical ordering of items.
 - Update categories to be tiles & addition of icons for all categories. 
 
