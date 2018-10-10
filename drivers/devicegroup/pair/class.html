@@ -9,11 +9,11 @@
 
   Homey.emit('startedClasses', null, function (err, result) {
     new Vue({
-      el: '#all-classes',
-      data: {
+      el     : '#all-classes',
+      data   : {
         isLoading: false,
-        classes: result,
-        i18n: Homey.getLanguage(function (err, result) {
+        classes  : result,
+        i18n     : Homey.getLanguage(function (err, result) {
           return (err) ? 'en' : result;
         }),
       },

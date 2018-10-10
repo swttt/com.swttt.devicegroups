@@ -117,19 +117,19 @@
     Homey.ready();
 
     new Vue({
-      el: '#app-settings-view',
-      data: {
-        groups: [],
-        selectedGroup: null,
-        groupedDevices: [],
-        isLoading: false,
+      el      : '#app-settings-view',
+      data    : {
+        groups          : [],
+        selectedGroup   : null,
+        groupedDevices  : [],
+        isLoading       : false,
         isLoadingDevices: false,
-        isUpdating: true,
-        allDevices: [],
-        i18n: 'en',
-        library: {},
-        category: 'category',
-        capabilities: {}
+        isUpdating      : true,
+        allDevices      : [],
+        i18n            : 'en',
+        library         : {},
+        category        : 'category',
+        capabilities    : {}
       },
       mounted() {
 
@@ -151,7 +151,7 @@
         });
 
       },
-      watch: {
+      watch   : {
 
         groupedDevices(newValue, oldValue) {
 
@@ -182,7 +182,7 @@
           });
         }
       },
-      methods: {
+      methods : {
 
         onCapabilityMethodChanged(event) {
           this.isUpdating = true;
@@ -267,7 +267,7 @@
     Homey = {
       ready: () => {
       },
-      api: (method, endpoint, callback) => {
+      api  : (method, endpoint, callback) => {
         setTimeout(() => {
           return callback(null, [
             {id: 'foo', name: 'Foo Device'},

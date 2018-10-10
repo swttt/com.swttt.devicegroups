@@ -17,19 +17,19 @@
     var allDevices = result.devices;
     var pairingDevice = result.pairingDevice;
     new Vue({
-      el: '#all-devices',
-      data: {
-        isLoading: false,
+      el      : '#all-devices',
+      data    : {
+        isLoading      : false,
         selectedDevices: [],
-        devices: {},
-        pairingDevice: {}
+        devices        : {},
+        pairingDevice  : {}
       },
       mounted() {
         this.devices = allDevices;
         this.pairingDevice = pairingDevice;
       },
-      methods: {},
-      watch: {
+      methods : {},
+      watch   : {
         'selectedDevices': function (val) {
           Homey.emit('devicesChanged', {
             'devices': val

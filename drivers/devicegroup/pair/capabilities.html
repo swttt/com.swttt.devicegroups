@@ -16,11 +16,11 @@
     }
 
     new Vue({
-      el: '#app',
-      data: {
-        isLoading: false,
-        capabilities: result,
-        i18n: Homey.getLanguage(function (err, result) {
+      el     : '#app',
+      data   : {
+        isLoading           : false,
+        capabilities        : result,
+        i18n                : Homey.getLanguage(function (err, result) {
           return (err) ? 'en' : result;
         }),
         selectedCapabilities: []
@@ -35,7 +35,7 @@
           }
         }
       },
-      watch: {
+      watch  : {
         'selectedCapabilities': function (val) {
           Homey.emit('capabilitiesChanged', {'capabilities': val}, function (err, result) {
             if (err) {
