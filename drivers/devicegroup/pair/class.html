@@ -5,39 +5,39 @@
 </style>
 <script src='../../../assets/vue.min.js'></script>
 <script>
-    Homey.setTitle('Choose a device class');
+  Homey.setTitle('Choose a device class');
 
-    Homey.emit('startedClasses', null, function (err, result) {
-        new Vue({
-            el: '#all-classes',
-            data: {
-                isLoading: false,
-                classes: result,
-                i18n: Homey.getLanguage(function (err, result) {
-                    return (err) ? 'en' : result;
-                }),
-            },
-            methods: {
-                addClass(deviceclass) {
-                    Homey.emit('addClass', {'class': deviceclass}, function (err, result) {
-                        if (err) {
-                            console.log(err);
-                            return;
-                        }
-                        Homey.nextView();
-                    });
-                },
-                getTitle(value, i18n) {
-                    // Future proofing for new languages
-                    if (value.title.hasOwnProperty(i18n)) {
-                        return value.title[i18n];
-                    } else {
-                        return value.title.en;
-                    }
-                }
+  Homey.emit('startedClasses', null, function (err, result) {
+    new Vue({
+      el: '#all-classes',
+      data: {
+        isLoading: false,
+        classes: result,
+        i18n: Homey.getLanguage(function (err, result) {
+          return (err) ? 'en' : result;
+        }),
+      },
+      methods: {
+        addClass(deviceclass) {
+          Homey.emit('addClass', {'class': deviceclass}, function (err, result) {
+            if (err) {
+              console.log(err);
+              return;
             }
-        });
+            Homey.nextView();
+          });
+        },
+        getTitle(value, i18n) {
+          // Future proofing for new languages
+          if (value.title.hasOwnProperty(i18n)) {
+            return value.title[i18n];
+          } else {
+            return value.title.en;
+          }
+        }
+      }
     });
+  });
 
 
 </script>

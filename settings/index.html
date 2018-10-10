@@ -66,8 +66,13 @@
                                     <div class="ui label" style="text-align:center;border-radius:.28571429rem;">
                                         <div>{{ capability.i18n }}</div>
                                         <template v-if="capability.available.length">
-                                            <select v-model="capability.selected" @change="onCapabilityMethodChanged" v-bind:data-capability="capability.key" class="ui input compact mini selection dropdown" style="margin-top:1em;">
-                                                <option v-for="option in capability.available" v-bind:value="option" title="{{ option.description }}" v-bind:data-method="option.value">
+                                            <select v-model="capability.selected" @change="onCapabilityMethodChanged"
+                                                    v-bind:data-capability="capability.key"
+                                                    class="ui input compact mini selection dropdown"
+                                                    style="margin-top:1em;">
+                                                <option v-for="option in capability.available" v-bind:value="option"
+                                                        title="{{ option.description }}"
+                                                        v-bind:data-method="option.value">
                                                     {{ option.i18n }}
                                                 </option>
                                             </select>
@@ -108,172 +113,172 @@
     </div>
 </div>
 <script>
-    function onHomeyReady(Homey) {
-        Homey.ready();
+  function onHomeyReady(Homey) {
+    Homey.ready();
 
-        new Vue({
-            el: '#app-settings-view',
-            data: {
-                groups: [],
-                selectedGroup: null,
-                groupedDevices: [],
-                isLoading: false,
-                isLoadingDevices: false,
-                isUpdating: true,
-                allDevices: [],
-                i18n: 'en',
-                library: {},
-                category : 'category',
-                capabilities: {}
-            },
-            mounted() {
+    new Vue({
+      el: '#app-settings-view',
+      data: {
+        groups: [],
+        selectedGroup: null,
+        groupedDevices: [],
+        isLoading: false,
+        isLoadingDevices: false,
+        isUpdating: true,
+        allDevices: [],
+        i18n: 'en',
+        library: {},
+        category: 'category',
+        capabilities: {}
+      },
+      mounted() {
 
-                // Retrieve list of groups.
-                Homey.api('GET', '/group', (err, groups) => {
-                    if (err) return Homey.alert(err);
-                    this.groups = groups;
-                });
-
-                // Retrieve our library.
-                Homey.api('GET', '/library', (err, library) => {
-                    if (err) return Homey.alert(err);
-                    this.library = library;
-                });
-
-                // Get our language, force it to always be en or nl
-                Homey.getLanguage(function (err, result) {
-                    this.i18n = (err) ? 'en' : ((result == 'nl') ? 'nl' : 'en');
-                });
-
-            },
-            watch: {
-
-                groupedDevices(newValue, oldValue) {
-
-                    if (this.isLoading && oldValue.length === 0) return;
-
-                    this.isUpdating = true;
-
-                    // Gets called when changing groups : disable it if that's the case.
-                    // @todo this is still getting called.
-                    console.log(this.selectedGroup);
-                    if (this.selectedGroup) {
-                        Homey.api('PUT', '/group/' + this.selectedGroup.id, newValue, (err) => {
-                            this.isUpdating = false;
-                            if (err) return Homey.alert(err);
-                        });
-                    }
-
-                },
-            },
-            computed: {
-
-                // Match all devices that have support the capabilities matching the device group.
-                // Also prevent self-inclusion.
-                allDevicesMatchingCapabilities() {
-                    let caps = this.selectedGroup.capabilities;
-                    return this.allDevices.filter(device => {
-                        return device.data.id !== this.selectedGroup.id && caps.every(cap => device.capabilitiesArray.includes(cap));
-                    });
-                }
-            },
-            methods: {
-
-                onCapabilityMethodChanged(event) {
-                    this.isUpdating = true;
-
-                    // Seriously? This is 'modern'? FU vue.
-                    const selectedMethod = event.target.options[event.target.options.selectedIndex].dataset.method;
-
-                    this.selectedGroup.settings.capabilities[event.target.dataset.capability].method = selectedMethod;
-
-                    Homey.api('PUT', '/group/' + this.selectedGroup.id + '/capabilities', this.selectedGroup.settings.capabilities, (err) => {
-                        this.isUpdating = false;
-                        if (err) return Homey.alert(err);
-                    });
-                },
-
-                groupSelected(ev) {
-
-                    this.isLoading = true;
-                    this.isLoadingDevices = true;
-                    this.selectedGroup = null;
-                    this.groupedDevices = [];
-
-                    Homey.api('GET', '/group/' + ev.target.value, (err, group) => {
-
-                        this.isLoadingDevices = false;
-                        this.isLoading = false;
-
-                        if (err) return Homey.alert(err);
-
-                        this.selectedGroup = group;
-                        this.groupedDevices = (group.settings.groupedDevices || []).map(g => g.id);
-
-                        // Get the i18n category name
-                        this.category       = this.library.categories[this.selectedGroup.class];
-                        this.category.i18n  = this.category.title[this.i18n];
-
-                        // Reset the capabilities.
-                        this.capabilities = {};
-
-                        // Populate the capabilities
-                        for (i in this.selectedGroup.capabilities) {
-
-                            let key = this.selectedGroup.capabilities[i];
-
-                            this.capabilities[key]          = this.library.capabilities[key];
-                            this.capabilities[key].key      = key;
-                            this.capabilities[key].i18n     = this.capabilities[key].title[this.i18n];
-                            this.capabilities[key].selected = this.library.methods[group.settings.capabilities[key].method];
-
-
-                            // Now populate the method i18n titles.
-                            for (x in this.capabilities[key].available) {
-
-                                // Shoul dbe stored int he data store as we go.
-                                if (!this.capabilities[key].available[x].hasOwnProperty('i18n')) {
-                                    // Alias
-                                    let method = this.capabilities[key].available[x];
-                                    this.capabilities[key].available[x] = this.library.methods[method];
-                                    this.capabilities[key].available[x].i18n = this.capabilities[key].available[x].title[this.i18n];
-                                }
-
-                            }
-                        }
-
-                        if (!this.allDevices.length) {
-                            // this.isLoading = true;
-                            this.isLoadingDevices = true;
-                            Homey.api('GET', '/devices', (err, devices) => {
-                                this.isLoading = false;
-                                this.isLoadingDevices = false;
-                                if (err) return Homey.alert(err);
-                                this.allDevices = devices;
-                            });
-                        }
-                    });
-                }
-            }
+        // Retrieve list of groups.
+        Homey.api('GET', '/group', (err, groups) => {
+          if (err) return Homey.alert(err);
+          this.groups = groups;
         });
-    }
 
-    if (typeof Homey === 'undefined') {
-        Homey = {
-            ready: () => {
-            },
-            api: (method, endpoint, callback) => {
-                setTimeout(() => {
-                    return callback(null, [
-                        {id: 'foo', name: 'Foo Device'},
-                        {id: 'bar', name: 'Bar Device'},
-                        {id: 'blah', name: 'Blah Device'},
-                    ]);
-                }, 1000);
+        // Retrieve our library.
+        Homey.api('GET', '/library', (err, library) => {
+          if (err) return Homey.alert(err);
+          this.library = library;
+        });
+
+        // Get our language, force it to always be en or nl
+        Homey.getLanguage(function (err, result) {
+          this.i18n = (err) ? 'en' : ((result == 'nl') ? 'nl' : 'en');
+        });
+
+      },
+      watch: {
+
+        groupedDevices(newValue, oldValue) {
+
+          if (this.isLoading && oldValue.length === 0) return;
+
+          this.isUpdating = true;
+
+          // Gets called when changing groups : disable it if that's the case.
+          // @todo this is still getting called.
+          console.log(this.selectedGroup);
+          if (this.selectedGroup) {
+            Homey.api('PUT', '/group/' + this.selectedGroup.id, newValue, (err) => {
+              this.isUpdating = false;
+              if (err) return Homey.alert(err);
+            });
+          }
+
+        },
+      },
+      computed: {
+
+        // Match all devices that have support the capabilities matching the device group.
+        // Also prevent self-inclusion.
+        allDevicesMatchingCapabilities() {
+          let caps = this.selectedGroup.capabilities;
+          return this.allDevices.filter(device => {
+            return device.data.id !== this.selectedGroup.id && caps.every(cap => device.capabilitiesArray.includes(cap));
+          });
+        }
+      },
+      methods: {
+
+        onCapabilityMethodChanged(event) {
+          this.isUpdating = true;
+
+          // Seriously? This is 'modern'? FU vue.
+          const selectedMethod = event.target.options[event.target.options.selectedIndex].dataset.method;
+
+          this.selectedGroup.settings.capabilities[event.target.dataset.capability].method = selectedMethod;
+
+          Homey.api('PUT', '/group/' + this.selectedGroup.id + '/capabilities', this.selectedGroup.settings.capabilities, (err) => {
+            this.isUpdating = false;
+            if (err) return Homey.alert(err);
+          });
+        },
+
+        groupSelected(ev) {
+
+          this.isLoading = true;
+          this.isLoadingDevices = true;
+          this.selectedGroup = null;
+          this.groupedDevices = [];
+
+          Homey.api('GET', '/group/' + ev.target.value, (err, group) => {
+
+            this.isLoadingDevices = false;
+            this.isLoading = false;
+
+            if (err) return Homey.alert(err);
+
+            this.selectedGroup = group;
+            this.groupedDevices = (group.settings.groupedDevices || []).map(g => g.id);
+
+            // Get the i18n category name
+            this.category = this.library.categories[this.selectedGroup.class];
+            this.category.i18n = this.category.title[this.i18n];
+
+            // Reset the capabilities.
+            this.capabilities = {};
+
+            // Populate the capabilities
+            for (i in this.selectedGroup.capabilities) {
+
+              let key = this.selectedGroup.capabilities[i];
+
+              this.capabilities[key] = this.library.capabilities[key];
+              this.capabilities[key].key = key;
+              this.capabilities[key].i18n = this.capabilities[key].title[this.i18n];
+              this.capabilities[key].selected = this.library.methods[group.settings.capabilities[key].method];
+
+
+              // Now populate the method i18n titles.
+              for (x in this.capabilities[key].available) {
+
+                // Shoul dbe stored int he data store as we go.
+                if (!this.capabilities[key].available[x].hasOwnProperty('i18n')) {
+                  // Alias
+                  let method = this.capabilities[key].available[x];
+                  this.capabilities[key].available[x] = this.library.methods[method];
+                  this.capabilities[key].available[x].i18n = this.capabilities[key].available[x].title[this.i18n];
+                }
+
+              }
             }
-        };
-        onHomeyReady(Homey);
-    }
+
+            if (!this.allDevices.length) {
+              // this.isLoading = true;
+              this.isLoadingDevices = true;
+              Homey.api('GET', '/devices', (err, devices) => {
+                this.isLoading = false;
+                this.isLoadingDevices = false;
+                if (err) return Homey.alert(err);
+                this.allDevices = devices;
+              });
+            }
+          });
+        }
+      }
+    });
+  }
+
+  if (typeof Homey === 'undefined') {
+    Homey = {
+      ready: () => {
+      },
+      api: (method, endpoint, callback) => {
+        setTimeout(() => {
+          return callback(null, [
+            {id: 'foo', name: 'Foo Device'},
+            {id: 'bar', name: 'Bar Device'},
+            {id: 'blah', name: 'Blah Device'},
+          ]);
+        }, 1000);
+      }
+    };
+    onHomeyReady(Homey);
+  }
 </script>
 </body>
 </html>

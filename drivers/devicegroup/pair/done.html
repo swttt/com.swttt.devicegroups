@@ -1,21 +1,21 @@
 <script>
 
-    Homey.setTitle('Adding device to Homey...');
-    Homey.emit('almostDone', null, function (err, result) {
-        if (err) {
-            console.log(err);
-            return;
-        }
+  Homey.setTitle('Adding device to Homey...');
+  Homey.emit('almostDone', null, function (err, result) {
+    if (err) {
+      console.log(err);
+      return;
+    }
 
-        Homey.addDevice(result, (err, res) => {
-            if (err) {
-                console.log(err);
-                return;
-            }
+    Homey.addDevice(result, (err, res) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
 
-            Homey.done();
-        })
-    });
+      Homey.done();
+    })
+  });
 </script>
 
 <i class="loading fa fa-cog fa-spin"></i>
