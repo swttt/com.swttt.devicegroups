@@ -1,5 +1,7 @@
 {
-  "method" : false,
+  "method" : "any",
   "available" : [
+    "any",
+    "all"
   ]
 }

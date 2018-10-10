@@ -1,9 +1,10 @@
 {
   "method" : "mean",
   "available" : [
+    "ignore",
     "mean",
-    "mode",
-    "min",
-    "max"
+    "median",
+    "lowest",
+    "highest"
   ]
 }

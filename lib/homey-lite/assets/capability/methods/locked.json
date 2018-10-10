@@ -1,5 +1,9 @@
 {
-  "method" : false,
+  "method" : "all",
   "available" : [
+    "ignore",
+    "any",
+    "all",
+    "mode"
   ]
 }

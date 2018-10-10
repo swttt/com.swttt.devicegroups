@@ -1,5 +1,10 @@
 {
-  "method" : false,
+  "method" : "ignore",
   "available" : [
+    "ignore",
+    "mean",
+    "median",
+    "lowest",
+    "highest"
   ]
 }

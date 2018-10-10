@@ -1,8 +1,11 @@
 {
-  "method" : "any",
+  "method" : "ignore",
   "available" : [
+      "ignore",
       "any",
       "all",
-      "mode"
+      "mode",
+      "always",
+      "never"
   ]
 }

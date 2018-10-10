@@ -1,8 +1,9 @@
 {
   "method" : "mean",
   "available" : [
+    "ignore",
     "mean",
-    "mode",
+    "median",
     "lowest",
     "highest"
   ]

@@ -1,10 +1,9 @@
 {
-  "method" : "sum",
+  "method" : "mean",
   "available" : [
-    "sum",
     "mean",
     "median",
-    "max",
-    "min"
+    "lowest",
+    "highest"
   ]
 }
