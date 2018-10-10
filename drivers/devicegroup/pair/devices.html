@@ -17,22 +17,22 @@
     var allDevices = result.devices;
     var pairingDevice = result.pairingDevice;
     new Vue({
-      el      : '#all-devices',
-      data    : {
-        isLoading      : false,
-        selectedDevices: [],
-        devices        : {},
-        pairingDevice  : {}
+      el       : '#all-devices',
+      data     : {
+        isLoading       : false,
+        selectedDevices : [],
+        devices         : {},
+        pairingDevice   : {}
       },
       mounted() {
         this.devices = allDevices;
         this.pairingDevice = pairingDevice;
       },
-      methods : {},
-      watch   : {
-        'selectedDevices': function (val) {
+      methods  : {},
+      watch    : {
+        'selectedDevices' : function (val) {
           Homey.emit('devicesChanged', {
-            'devices': val
+            'devices' : val
           }, function (err, result) {
             if (err) {
               console.log(err);
@@ -41,7 +41,7 @@
           });
         }
       },
-      computed: {
+      computed : {
         filteredDevices() {
 
           var capabilities = this.pairingDevice.capabilities;

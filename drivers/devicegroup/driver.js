@@ -127,7 +127,7 @@ class DeviceGroupDriver extends Homey.Driver {
 
       try {
         pairingDevice.data.id = guid();
-        pairingDevice.store = {version: '1.2.0'};
+        pairingDevice.store = {version : '1.2.0'};
 
         callback(null, pairingDevice);
       } catch (error) {

@@ -117,19 +117,19 @@
     Homey.ready();
 
     new Vue({
-      el      : '#app-settings-view',
-      data    : {
-        groups          : [],
-        selectedGroup   : null,
-        groupedDevices  : [],
-        isLoading       : false,
-        isLoadingDevices: false,
-        isUpdating      : true,
-        allDevices      : [],
-        i18n            : 'en',
-        library         : {},
-        category        : 'category',
-        capabilities    : {}
+      el       : '#app-settings-view',
+      data     : {
+        groups           : [],
+        selectedGroup    : null,
+        groupedDevices   : [],
+        isLoading        : false,
+        isLoadingDevices : false,
+        isUpdating       : true,
+        allDevices       : [],
+        i18n             : 'en',
+        library          : {},
+        category         : 'category',
+        capabilities     : {}
       },
       mounted() {
 
@@ -151,7 +151,7 @@
         });
 
       },
-      watch   : {
+      watch    : {
 
         groupedDevices(newValue, oldValue) {
 
@@ -171,7 +171,7 @@
 
         },
       },
-      computed: {
+      computed : {
 
         // Match all devices that have support the capabilities matching the device group.
         // Also prevent self-inclusion.
@@ -182,7 +182,7 @@
           });
         }
       },
-      methods : {
+      methods  : {
 
         onCapabilityMethodChanged(event) {
           this.isUpdating = true;
@@ -265,14 +265,14 @@
 
   if (typeof Homey === 'undefined') {
     Homey = {
-      ready: () => {
+      ready : () => {
       },
-      api  : (method, endpoint, callback) => {
+      api   : (method, endpoint, callback) => {
         setTimeout(() => {
           return callback(null, [
-            {id: 'foo', name: 'Foo Device'},
-            {id: 'bar', name: 'Bar Device'},
-            {id: 'blah', name: 'Blah Device'},
+            {id : 'foo', name : 'Foo Device'},
+            {id : 'bar', name : 'Bar Device'},
+            {id : 'blah', name : 'Blah Device'},
           ]);
         }, 1000);
       }

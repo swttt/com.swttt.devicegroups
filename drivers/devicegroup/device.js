@@ -113,7 +113,7 @@ class DeviceGroupDevice extends Homey.Device {
 
         // Get the WebAPI reference 'real' device
         let device = await this.api.devices.getDevice({
-          id: deviceGroup[key].id
+          id : deviceGroup[key].id
         });
 
         // Using the WebAPI for the 'real' device, set the capability value, to what ever we just changed.
@@ -179,7 +179,7 @@ class DeviceGroupDevice extends Homey.Device {
 
       // requires the API. @todo investigate whether this should be stored in memory
       let device = await this.api.devices.getDevice({
-        id: this.settings.groupedDevices[x].id
+        id : this.settings.groupedDevices[x].id
       });
 
       // A refresh is required for the WebAPI when accessing capabilities.
@@ -243,7 +243,7 @@ class DeviceGroupDevice extends Homey.Device {
       labelDevices.push(this.settings.groupedDevices[x].name);
     }
 
-    this.setSettings({labelDevices: labelDevices});
+    this.setSettings({labelDevices : labelDevices});
   }
 
   /**
@@ -263,7 +263,7 @@ class DeviceGroupDevice extends Homey.Device {
         console.log('Upgrading ' + this.getName());
 
         let capabilities = await this.getCapabilities();
-        let settings = {capabilities: {}};
+        let settings = {capabilities : {}};
 
         for (let i in capabilities) {
           // Add all the settings which are new to 1.2.0
