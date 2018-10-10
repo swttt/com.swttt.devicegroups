@@ -5,5 +5,5 @@
   },
   "description": "The highest value of the all the grouped device",
   "value": "highest",
-  "function": "min"
+  "function": "max"
 }
