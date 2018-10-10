@@ -19,29 +19,22 @@ class DeviceGroupDevice extends Homey.Device {
    * Automatically runs
    * Gathers the required properties, sets our listeners, and polls
    */
-  onInit() {
+  async onInit() {
     this.log('Initialising ' + this.getName());
 
     this.settings = this.getSettings();
     this.store = this.getStore();
     this.library = new HomeyLite();
 
-    // Backwards compatibility check
-    this.checkForUpdates().then(() => {
-
-      this.initApi().then(() => {
-
-        this.initListener();
-        this.initPolls();
-
-      }).catch((error) => {
-        throw error;
-      });
-
-    }).catch((error) => {
+    try {
+      await this.checkForUpdates();
+      await this.initApi();
+      this.initListener();  // don't wait
+      this.initPolls();     // don't wait
+    } catch (error) {
       this.error(error);
-    });
-
+      return;
+    }
   }
 
 
@@ -197,7 +190,6 @@ class DeviceGroupDevice extends Homey.Device {
           let value = values[key];                                // Alias the value
           let method = this.settings.capabilities[key].method;    // Alias the method we are going to use
           let type = this.library.getCapability(key).type;        // Alias the data type
-
 
           // if the method is set the false - its disabled
           // if the method is set to ignore, dont update use the card behaviour.
