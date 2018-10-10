@@ -6,6 +6,7 @@
     "light_saturation",
     "light_temperature",
     "light_mode",
-    "measure_power"
+    "measure_power",
+    "meter_power"
   ]
 }

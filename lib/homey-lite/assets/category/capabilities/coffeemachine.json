@@ -1,3 +1,7 @@
 {
-  "capabilities" : []
+  "capabilities" : [
+    "onoff",
+    "target_temperature",
+    "measure_temperature"
+  ]
 }

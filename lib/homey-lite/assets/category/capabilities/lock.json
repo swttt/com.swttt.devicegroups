@@ -1,6 +1,7 @@
 {
   "capabilities" : [
     "locked",
-    "lock_mode"
+    "lock_mode",
+    "measure_battery"
   ]
 }

@@ -2,6 +2,9 @@
   "capabilities" : [
     "onoff",
     "dim",
-    "windowcoverings_state"
+    "windowcoverings_state",
+    "windowcoverings_tilt_up",
+    "windowcoverings_tilt_down",
+    "windowcoverings_tilt_set"
   ]
 }
