@@ -30,7 +30,6 @@ class DeviceGroups extends Homey.App {
 
     async getDevices() {
 
-        console.log(this.api);
         const api = await this.getApi();
         return await api.devices.getDevices();
     }

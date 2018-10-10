@@ -51,7 +51,7 @@ If you like this app, then consider to buy me a beer :)
 - Added Sensors (temp/power/lux)
 - Added Power to Light & Socket category (TBC)
 - Added i18n support to the device settings page labels, currently support en only. 
-
+- Device pair screens show loading status.
 
 ##### 1.1.0
 - Device Group editor
@@ -64,10 +64,7 @@ If you like this app, then consider to buy me a beer :)
 ### 1.2.0 Road Map
 
 
-- Allow All  to be selected in setup, to show all capabilities, if performance is not an issue.
-- Update capability setup screen to initially show loading status.
-- ~~Allow calculated method to be changed when adding a device.~~ 
+- Allow All to be selected in setup, to show all capabilities, if performance is not an issue.
 - Alphabetical ordering of items.
 - Update categories to be tiles & addition of icons for all categories. 
-- Addition of all new capabilities
 
