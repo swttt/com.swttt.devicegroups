@@ -1,9 +1,0 @@
-{
-  "method" : "mean",
-  "available" : [
-    "mean",
-    "median",
-    "lowest",
-    "highest"
-  ]
-}

@@ -5,5 +5,11 @@
   },
   "description": {
     "en": "Use this device class for fans that cool your home."
-  }
+  },
+  "capabilities" : [
+    "onoff",
+    "dim",
+    "measure_power",
+    "meter_power"
+  ]
 }

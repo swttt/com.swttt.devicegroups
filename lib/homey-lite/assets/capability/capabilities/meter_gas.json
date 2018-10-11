@@ -16,24 +16,8 @@
   },
   "getable": true,
   "setable": false,
-  "uiComponent": "sensor",
-  "$flow": {
-    "triggers": [
-      {
-        "id": "meter_gas_changed",
-        "title": {
-          "en": "The gas meter changed",
-          "nl": "De gasmeter is veranderd"
-        },
-        "tokens": [
-          {
-            "name": "$id",
-            "title": "$title",
-            "type": "$type",
-            "example": 25
-          }
-        ]
-      }
-    ]
-  }
+  "method" : "sum",
+  "available" : [
+    "sum"
+  ]
 }

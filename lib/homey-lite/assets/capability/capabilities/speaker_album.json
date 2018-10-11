@@ -6,5 +6,6 @@
   "type": "string",
   "getable": true,
   "setable": false,
-  "uiComponent": "media"
+  "method" : false,
+  "available" : []
 }

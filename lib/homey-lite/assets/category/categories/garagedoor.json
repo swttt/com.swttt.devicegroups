@@ -3,8 +3,5 @@
     "en": "Garage door",
     "nl": "Garagedeur"
   },
-  "$speechAlternatives": {
-    "en": [ "garagedoor", "garage door", "garage door" ],
-    "nl": [ "garagedeur", "garage deur", "garage deuren" ]
-  }
+  "capabilities" : []
 }

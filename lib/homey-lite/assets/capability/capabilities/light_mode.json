@@ -25,6 +25,5 @@
     }
   ],
   "getable": true,
-  "setable": true,
-  "uiComponent": "color"
+  "setable": true
 }

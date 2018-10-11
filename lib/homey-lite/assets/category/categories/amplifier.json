@@ -6,8 +6,11 @@
   "description": {
     "en": "Use this device class for audio amplifier devices."
   },
-  "$speechAlternatives": {
-    "en": [ "amp", "amplifier", "tuner" ],
-    "nl": [ "versterker" ]
-  }
+  "capabilities" : [
+    "onoff",
+    "volume_set",
+    "volume_mute",
+    "volume_up",
+    "volume_down"
+  ]
 }

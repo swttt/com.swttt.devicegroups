@@ -15,24 +15,8 @@
   },
   "getable": true,
   "setable": false,
-  "uiComponent": "sensor",
-  "$flow": {
-    "triggers": [
-      {
-        "id": "meter_power_changed",
-        "title": {
-          "en": "The power meter changed",
-          "nl": "De stroommeter is veranderd"
-        },
-        "tokens": [
-          {
-            "name": "$id",
-            "title": "$title",
-            "type": "$type",
-            "example": 25
-          }
-        ]
-      }
-    ]
-  }
+  "method" : "sum",
+  "available" : [
+    "sum"
+  ]
 }

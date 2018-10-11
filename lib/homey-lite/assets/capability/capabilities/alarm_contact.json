@@ -10,32 +10,9 @@
   },
   "getable": true,
   "setable": false,
-  "uiComponent": "sensor",
-  "$flow": {
-    "triggers": [
-      {
-        "id": "alarm_contact_true",
-        "title": {
-          "en": "The contact alarm turned on",
-          "nl": "Het contactalarm gaat aan"
-        }
-      },
-      {
-        "id": "alarm_contact_false",
-        "title": {
-          "en": "The contact alarm turned off",
-          "nl": "Het contactalarm gaat uit"
-        }
-      }
-    ],
-    "conditions": [
-      {
-        "id": "alarm_contact",
-        "title": {
-          "en": "The contact alarm is !{{on|off}}",
-          "nl": "Het contactalarm is !{{aan|uit}}"
-        }
-      }
-    ]
-  }
+  "method" : "any",
+  "available" : [
+    "any",
+    "all"
+  ]
 }

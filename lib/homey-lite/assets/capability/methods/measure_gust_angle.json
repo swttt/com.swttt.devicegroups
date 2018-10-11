@@ -1,7 +1,0 @@
-{
-  "method" : "mean",
-  "available" : [
-    "mean",
-    "median"
-  ]
-}

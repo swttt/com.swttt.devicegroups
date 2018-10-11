@@ -3,7 +3,9 @@
     "en": "Button",
     "nl": "Knop"
   },
-  "description": {
-    "en": "Use this device class for buttons, such as a remote."
-  }
+  "capabilities" : [
+    "onoff",
+    "target_temperature",
+    "measure_temperature"
+  ]
 }

@@ -16,24 +16,8 @@
   },
   "getable": true,
   "setable": false,
-  "uiComponent": "sensor",
-  "$flow": {
-    "triggers": [
-      {
-        "id": "meter_water_changed",
-        "title": {
-          "en": "The water meter changed",
-          "nl": "De watermeter is veranderd"
-        },
-        "tokens": [
-          {
-            "name": "$id",
-            "title": "$title",
-            "type": "$type",
-            "example": 25
-          }
-        ]
-      }
-    ]
-  }
+  "method" : "sum",
+  "available" : [
+    "sum"
+  ]
 }

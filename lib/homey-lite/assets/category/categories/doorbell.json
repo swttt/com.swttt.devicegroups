@@ -5,5 +5,8 @@
   },
   "description": {
     "en": "Use this device class for doorbells, usually together with the `button` capability."
-  }
+  },
+  "capabilities" : [
+    "alarm_generic"
+  ]
 }

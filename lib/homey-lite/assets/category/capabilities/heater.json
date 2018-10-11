@@ -1,8 +1,0 @@
-{
-  "capabilities" : [
-    "onoff",
-    "dim",
-    "measure_power",
-    "meter_power"
-  ]
-}

@@ -6,16 +6,6 @@
   "type": "boolean",
   "getable": false,
   "setable": true,
-  "uiComponent": "media",
-  "$flow": {
-    "actions": [
-      {
-        "id": "next",
-        "title": {
-          "en": "Next",
-          "nl": "Volgende"
-        }
-      }
-    ]
-  }
+  "method" : false,
+  "available" : []
 }

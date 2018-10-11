@@ -6,8 +6,5 @@
   "description": {
     "en": "Use this device class for sunshades (window coverings against the sun)."
   },
-  "$speechAlternatives": {
-    "en": [ "sunscreen", "sunscreens", "sunshade", "sunshades" ],
-    "nl": [ "zonnescherm", "zonneschermen", "luifel", "zonwering", "zonnewering" ]
-  }
+  "capabilities" : []
 }

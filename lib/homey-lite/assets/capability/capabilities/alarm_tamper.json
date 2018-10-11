@@ -10,32 +10,9 @@
   },
   "getable": true,
   "setable": false,
-  "uiComponent": "sensor",
-  "$flow": {
-    "triggers": [
-      {
-        "id": "alarm_tamper_true",
-        "title": {
-          "en": "The tamper alarm turned on",
-          "nl": "Het sabotagealarm gaat aan"
-        }
-      },
-      {
-        "id": "alarm_tamper_false",
-        "title": {
-          "en": "The tamper alarm turned off",
-          "nl": "Het sabotagealarm gaat uit"
-        }
-      }
-    ],
-    "conditions": [
-      {
-        "id": "alarm_tamper",
-        "title": {
-          "en": "The tamper alarm is !{{on|off}}",
-          "nl": "Het sabotagealarm is !{{aan|uit}}"
-        }
-      }
-    ]
-  }
+  "method" : "any",
+  "available" : [
+    "any",
+    "all"
+  ]
 }

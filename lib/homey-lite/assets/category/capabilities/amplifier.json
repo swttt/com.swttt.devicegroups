@@ -1,9 +1,0 @@
-{
-  "capabilities" : [
-    "onoff",
-    "volume_set",
-    "volume_mute",
-    "volume_up",
-    "volume_down"
-  ]
-}

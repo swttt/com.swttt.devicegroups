@@ -6,8 +6,13 @@
   "description": {
     "en": "Use this device class for devices that can play music, usually together with the `speaker_*` capabilities."
   },
-  "$speechAlternatives": {
-    "en": [ "speaker", "speakers" ],
-    "nl": [ "speaker", "speakers" ]
-  }
+  "capabilities" : [
+    "speaker_playing",
+    "speaker_next",
+    "speaker_prev",
+    "volume_set",
+    "volume_up",
+    "volume_down",
+    "volume_mute"
+  ]
 }

@@ -6,8 +6,13 @@
   "description": {
     "en": "Use this device class for TVs."
   },
-  "$speechAlternatives": {
-    "en": [ "tvs", "televisions", "television", "tv" ],
-    "nl": [ "tv's", "televisie", "televisies", "tv" ]
-  }
+  "capabilities" : [
+    "onoff",
+    "channel_up",
+    "channel_down",
+    "volume_set",
+    "volume_mute",
+    "volume_up",
+    "volume_down"
+  ]
 }

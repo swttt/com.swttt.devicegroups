@@ -16,8 +16,5 @@
     "blinds",
     "curtain"
   ],
-  "$speechAlternatives": {
-    "en": [ "relay", "relays" ],
-    "nl": [ "relais" ]
-  }
+  "capabilities" : []
 }

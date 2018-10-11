@@ -26,22 +26,13 @@
   ],
   "getable": true,
   "setable": true,
-  "uiComponent": "media",
-  "$flow": {
-    "actions": [
-      {
-        "id": "set_repeat",
-        "title": {
-          "en": "Repeat"
-        },
-        "args": [
-          {
-            "name": "value",
-            "type": "dropdown",
-            "values": "$values"
-          }
-        ]
-      }
-    ]
-  }
+  "method" : "ignore",
+  "available" : [
+	"ignore",
+	"any",
+	"all",
+	"most",
+	"always",
+	"never"
+  ]
 }

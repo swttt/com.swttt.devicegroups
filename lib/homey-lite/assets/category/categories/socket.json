@@ -18,8 +18,10 @@
     "kettle",
     "tv"
   ],
-  "$speechAlternatives": {
-    "en": [ "socket", "plug" ],
-    "nl": [ "schakelaar", "wandschakelaar", "stekkerdoos", "tussenstekker" ]
-  }
+  "capabilities" : [
+    "onoff",
+    "dim",
+    "measure_power",
+    "meter_power"
+  ]
 }

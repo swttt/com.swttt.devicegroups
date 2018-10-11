@@ -8,5 +8,13 @@
   "decimals": 2,
   "getable": true,
   "setable": true,
-  "uiComponent": "slider"
+  "method" : "mean",
+  "available" : [
+    "ignore",
+    "mean",
+    "median",
+    "ignore",
+    "highest",
+    "lowest"
+  ]
 }

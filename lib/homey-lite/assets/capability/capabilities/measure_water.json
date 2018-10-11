@@ -15,24 +15,12 @@
   "decimals": 2,
   "getable": true,
   "setable": false,
-  "uiComponent": "sensor",
-  "$flow": {
-    "triggers": [
-      {
-        "id": "measure_water_changed",
-        "title": {
-          "en": "The waterflow has changed",
-          "nl": "De waterstroom veranderd"
-        },
-        "tokens": [
-          {
-            "name": "$id",
-            "title": "$title",
-            "type": "$type",
-            "example": 2
-          }
-        ]
-      }
-    ]
-  }
+  "method" : "sum",
+  "available" : [
+    "sum",
+    "mean",
+    "median",
+    "lowest",
+    "highest"
+  ]
 }

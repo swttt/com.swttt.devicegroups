@@ -15,8 +15,12 @@
     "blinds",
     "curtain"
   ],
-  "$speechAlternatives": {
-    "en": [ "window coverings", "windowcoverings" ],
-    "nl": [ "raambekleding", "raambedekking" ]
-  }
+  "capabilities" : [
+    "onoff",
+    "dim",
+    "windowcoverings_state",
+    "windowcoverings_tilt_up",
+    "windowcoverings_tilt_down",
+    "windowcoverings_tilt_set"
+  ]
 }

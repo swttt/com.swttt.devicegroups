@@ -10,32 +10,9 @@
   },
   "getable": true,
   "setable": false,
-  "uiComponent": "sensor",
-  "$flow": {
-    "triggers": [
-      {
-        "id": "alarm_night_true",
-        "title": {
-          "en": "The night alarm turned on",
-          "nl": "Het nachtalarm gaat aan"
-        }
-      },
-      {
-        "id": "alarm_night_false",
-        "title": {
-          "en": "The night alarm turned off",
-          "nl": "Het nachtalarm gaat uit"
-        }
-      }
-    ],
-    "conditions": [
-      {
-        "id": "alarm_night",
-        "title": {
-          "en": "The night alarm is !{{on|off}}",
-          "nl": "Het nachtalarm is !{{aan|uit}}"
-        }
-      }
-    ]
-  }
+  "method" : "any",
+  "available" : [
+    "any",
+    "all"
+  ]
 }

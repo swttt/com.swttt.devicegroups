@@ -6,8 +6,11 @@
   "description": {
     "en": "Use this device class for kettle devices, that can heat water."
   },
-  "$speechAlternatives": {
-    "en": [ "kettle", "kettles", "water cooker" ],
-    "nl": [ "ketel", "waterkoker" ]
-  }
+  "capabilities" : [
+    "onoff",
+    "target_temperature",
+    "measure_temperature",
+    "measure_power",
+    "meter_power"
+  ]
 }

@@ -1,9 +1,0 @@
-{
-  "method" : "all",
-  "available" : [
-    "ignore",
-    "any",
-    "all",
-    "most"
-  ]
-}

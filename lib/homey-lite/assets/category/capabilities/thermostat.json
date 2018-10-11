@@ -1,8 +1,0 @@
-{
-  "capabilities" : [
-    "thermostat_mode",
-    "target_temperature",
-    "measure_temperature",
-    "meter_power"
-  ]
-}

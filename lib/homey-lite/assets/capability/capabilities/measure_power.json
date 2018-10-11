@@ -15,24 +15,12 @@
   "decimals": 2,
   "getable": true,
   "setable": false,
-  "uiComponent": "sensor",
-  "$flow": {
-    "triggers": [
-      {
-        "id": "measure_power_changed",
-        "title": {
-          "en": "The power changed",
-          "nl": "De energie is veranderd"
-        },
-        "tokens": [
-          {
-            "name": "$id",
-            "title": "$title",
-            "type": "$type",
-            "example": 7.5
-          }
-        ]
-      }
-    ]
-  }
+  "method" : "sum",
+  "available" : [
+    "sum",
+    "mean",
+    "median",
+    "lowest",
+    "highest"
+  ]
 }
