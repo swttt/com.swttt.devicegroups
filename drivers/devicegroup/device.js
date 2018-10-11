@@ -1,12 +1,9 @@
 'use strict';
 
-const Homey = require('homey');
-const HomeyLite = require('../../lib/homey-lite/lib');
-const Helper = require('../../lib/helper');
-
-const {
-  HomeyAPI
-} = require('../../lib/athom-api.js');
+const Homey       = require('homey');
+const HomeyLite   = require('../../lib/homey-lite/lib');
+const {HomeyAPI}  = require('../../lib/athom-api.js');
+const Helper      = require('../../lib/helper');
 
 
 /**
@@ -15,7 +12,8 @@ const {
  * Where as the grouped are the devices that we are working with.
  * However it looks like the original intention was for this device
  * to be called 'GroupDevice'. Whether or not it semantically correct
- * more critical at the moment is its inconsistent.
+ * more critical at the moment is its inconsistent use. eg.
+ * deviceGroup = this.settings.groupedDevices :: but class = DeviceGroup
  */
 class DeviceGroupDevice extends Homey.Device {
 
@@ -51,7 +49,7 @@ class DeviceGroupDevice extends Homey.Device {
   async refresh() {
 
     this.log('Refreshing Device Group ' + this.getName());
-    
+
     try {
       await this.setUnavailable();        // Set card to unavailable
       this.destroyPoll()                  // destroy the polling
@@ -123,10 +121,13 @@ class DeviceGroupDevice extends Homey.Device {
 
 
   /**
-   * Initialise the polling, this is how we gather our grouped devices data
-   * to ensure that the card/mobile is kept up to date. Will run the first poll.
+   * Initialise the polling,
+   *
+   * Will then assign the pollDevice to be ran on pollingFrequency. this is how we gather our grouped devices data
+   * to ensure that the card/mobile is kept up to date. Will run the first poll ensuring the device is up to date from the start.
+   *
    * @todo Initally I attempted to add a deviceCapability listener to the individual devices, but was unsuccessful, try again.
-   * @returns {Promise<*>}
+   * @returns {Promise<boolean>}
    */
   async initPolls() {
 
@@ -190,6 +191,15 @@ class DeviceGroupDevice extends Homey.Device {
   }
 
 
+  /**
+   * Assigns a card's values to the values of the supplied devices
+   *
+   * Based off of the capabilities and their values supplied and which methods they have assigned to them
+   * setCardValues will determine what value each of the capabilities of this device should be then assigns it
+   *
+   * @param values
+   * @returns {Promise<void>}
+   */
   async setCardValues(values) {
 
     // loop through each of the capabilities calculating the values.
@@ -199,13 +209,13 @@ class DeviceGroupDevice extends Homey.Device {
       if (this.library.getCapability(this.capabilities[i]).getable) {
 
         // Aliases
-        let key = this.capabilities[i];                              // Alias the capability key
+        let key = this.capabilities[i];                         // Alias the capability key
         let value = values[key];                                // Alias the value
         let method = this.settings.capabilities[key].method;    // Alias the method we are going to use
         let type = this.library.getCapability(key).type;        // Alias the data type
 
         // if the method is set the false - its disabled
-        // if the method is set to ignore, dont update use the card behaviour.
+        // if the method is set to ignore, don't update use the card behaviour.
         if (method !== false && method !== 'ignore') {
 
           // Calculate our value using our function
@@ -216,8 +226,8 @@ class DeviceGroupDevice extends Homey.Device {
 
           // // Set the capability of the groupedDevice
           this.setCapabilityValue(key, value).then().catch((error) => {
-            console.log('err:')
-            console.log(error.message);
+            console.log('err:');        // DEBUG
+            console.log(error.message); // DEBUG
           });
         }
       }
@@ -321,6 +331,7 @@ class DeviceGroupDevice extends Homey.Device {
     this.destroyPoll();
   }
 
+  
   /**
    * Removing device interval polling
    */
