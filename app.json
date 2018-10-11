@@ -120,7 +120,7 @@
             "label": {
               "en": "Polling frequency"
             },
-            "value": 3,
+            "value": 5,
             "attr": {
               "min": 3
             },

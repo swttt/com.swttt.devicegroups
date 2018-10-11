@@ -22,7 +22,7 @@ Any other feature request can be added there as well.
 
 ### Donate
 
-If you like this app, then consider to buy me a beer :)
+If you like this app, then consider buying swttt a beer :)
 
 [![Donate](https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_donate_92x26.png)](https://paypal.me/BasJansen)
 
@@ -32,7 +32,7 @@ If you like this app, then consider to buy me a beer :)
 
 ##### Testing notes
 
-- Default behaviour of 'dim' changed to average of the group
+- Default behaviour of 'dim' changed to mean average of the group
 - Default behaviour of 'onoff' changed to 'any' (on if any grouped devices are on) 
 
 ##### 1.2.0-alpha1
