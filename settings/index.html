@@ -189,7 +189,6 @@
 
           // Seriously? This is 'modern'? FU vue.
           const selectedMethod = event.target.options[event.target.options.selectedIndex].dataset.method;
-
           this.selectedGroup.settings.capabilities[event.target.dataset.capability].method = selectedMethod;
 
           Homey.api('PUT', '/group/' + this.selectedGroup.id + '/capabilities', this.selectedGroup.settings.capabilities, (err) => {
@@ -236,7 +235,6 @@
               // Now populate the method i18n titles.
               for (x in this.capabilities[key].available) {
 
-                // Shoul dbe stored int he data store as we go.
                 if (!this.capabilities[key].available[x].hasOwnProperty('i18n')) {
                   // Alias
                   let method = this.capabilities[key].available[x];

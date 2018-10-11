@@ -36,47 +36,40 @@ class DeviceGroups extends Homey.App {
 
 
   async getGroups() {
+
     return Homey.ManagerDrivers.getDriver('devicegroup').getDevices();
   }
 
   async getGroup(id) {
+
     let device = await Homey.ManagerDrivers.getDriver('devicegroup').getDevice({id});
     if (device instanceof Error) throw device;
     return device;
   }
 
   async setDevicesForGroup(id, devices) {
+
     let group = await this.getGroup(id);
 
     // Find all devices that should be grouped.
     let allDevices = await this.getDevices();
     let groupedDevices = Object.values(allDevices).filter(d => devices.includes(d.id));
 
-    let labelDevices = [];
-    for (let i in groupedDevices) {
-      labelDevices.push(groupedDevices[i].name);
-    }
-    labelDevices = labelDevices.join(', ');
-
     // Update the group settings.
-    let ret = await group.setSettings({groupedDevices, labelDevices: labelDevices});
-
-    await group.refresh();
-
-    return ret;
+    let result = await group.setSettings({groupedDevices});
+    group.refresh();
+    return result;
   }
 
-  async setGroupSettings(id, settings) {
-
-    let group = await this.getGroup(id);
-
-    // Update the group settings.
-    let ret = await group.setSettings(group.settings);
-
-    await group.refresh();
-
-    return ret;
-  }
+  // async setGroupSettings(id, settings) {
+  //
+  //   let group = await this.getGroup(id);
+  //
+  //   // Update the group settings.
+  //   let result = await group.setSettings(group.settings);
+  //   await group.refresh();
+  //   return result;
+  // }
 
   async setMethodForCapabilityOfGroup(id, capabilities) {
 
@@ -84,24 +77,11 @@ class DeviceGroups extends Homey.App {
 
     group.settings.capabilities = capabilities;
 
-    // Update the device label
-    // @todo move to method in device updateLabels
-    // need to update to capability (method)
-    let labelCapabilities = [];
-    for (let key in group.settings.capabilities) {
-      labelCapabilities.push(this.library.getCapability(key).title[this.i18n] + ' (' + this.library.getMethod(group.settings.capabilities[key].method).title[this.i18n] + ')')
-    }
-    group.settings.labelCapabilities = labelCapabilities.join(', ');
-
     // Update the group settings.
-    let ret = await group.setSettings(group.settings);
-
-    await group.refresh();
-
-    return ret;
+    let result = await group.setSettings(group.settings);
+    group.refresh();
+    return result;
   }
-
-
 }
 
 module.exports = DeviceGroups;
