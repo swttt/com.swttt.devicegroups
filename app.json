@@ -5,7 +5,7 @@
     "homey:manager:api"
   ],
   "name": {
-    "en": "(1.2.0-alpha1) Device Groups"
+    "en": "(1.2.0-alpha2) Device Groups"
   },
   "description": {
     "en": "Makes it possible to group devices and switch all devices within a group.",

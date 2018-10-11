@@ -1,5 +1,5 @@
 {
-  "method" : "ignore",
+  "method" : "any",
   "available" : [
       "ignore",
       "any",
