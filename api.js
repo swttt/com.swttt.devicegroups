@@ -1,5 +1,5 @@
 const Homey = require('homey');
-const HomeyLite = require('./lib/homey-lite/lib');
+const Librarian   = require('./lib/librarian');
 
 module.exports = [
   {
@@ -40,14 +40,6 @@ module.exports = [
     }
   },
   {
-    // Update the settings for a group.
-    method : 'PUT',
-    path   : '/group/:id/settings',
-    fn     : async (args) => {
-      await Homey.app.setGroupSettings(args.params.id, args.body);
-    }
-  },
-  {
     // Update the group capability methods.
     method : 'PUT',
     path   : '/group/:id/capabilities',
@@ -68,7 +60,7 @@ module.exports = [
     method : 'GET',
     path   : '/library',
     fn     : async (args) => {
-      let library = new HomeyLite();
+      let library = new Librarian();
       return await library.getJSON();
     }
   },

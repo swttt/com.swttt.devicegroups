@@ -1,9 +1,28 @@
 {
-  "Device Groups Editor" : "Device Groups Editor",
-  "Edit your device groups" : "Edit your device groups",
-  "Device Group Name" : "Device Group Name",
-  "Device Class" : "Device Class",
-  "Capabilities" : "Capabilities",
-  "Devices in group" : "Devices in group",
-  "Select device group" : "Select device group"
+  "_" : {
+    "Device Groups Editor" : "Device Groups Editor",
+    "Edit your device groups" : "Edit your device groups",
+    "Device Group Name" : "Device Group Name",
+    "Device Class" : "Device Class",
+    "Capabilities" : "Capabilities",
+    "Devices in group" : "Devices in group",
+    "Select device group" : "Select device group"
+  },
+  "category" : {
+    "lights" : {
+      "title" : "wip",
+      "description" : "wip"
+    }
+  },
+  "capability" : {
+    "onoff" : {
+      "title" : "wip"
+    }
+  },
+  "method" : {
+    "any" : {
+      "title" : "wip",
+      "description" : "wip"
+    }
+  }
 }

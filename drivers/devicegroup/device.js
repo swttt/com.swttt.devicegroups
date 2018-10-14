@@ -1,7 +1,7 @@
 'use strict';
 
 const Homey       = require('homey');
-const HomeyLite   = require('../../lib/homey-lite/lib');
+const Librarian   = require('../../lib/librarian');
 const {HomeyAPI}  = require('../../lib/athom-api.js');
 const Helper      = require('../../lib/helper');
 
@@ -25,10 +25,10 @@ class DeviceGroupDevice extends Homey.Device {
   async onInit() {
     this.log('Initialising ' + this.getName());
 
+
     // Set our properties
     this.settings = await this.getSettings();
-    this.store = this.getStore();
-    this.library = new HomeyLite();
+    this.library = new Librarian();
     this.capabilities = this.getCapabilities();
 
     try {
@@ -36,6 +36,8 @@ class DeviceGroupDevice extends Homey.Device {
       await this.initApi();
       this.initListener();            // don't wait
       this.initPolls();               // don't wait
+      this.updateDevicesLabels();
+      this.updateCapabilityLabels();
     } catch (error) {
       this.error(error);
     }
@@ -53,15 +55,14 @@ class DeviceGroupDevice extends Homey.Device {
     try {
       await this.setUnavailable();        // Set card to unavailable
       this.settings = await this.getSettings(); // update the settings, ensure this happens prior to updating polls/labels
-      this.destroyPoll()                  // destroy the polling
+      this.destroyPoll();                 // destroy the polling
       this.updateDevicesLabels();         // update the device label (settings which store current devices)
       this.updateCapabilityLabels();      // update the capability labels (settings which store current capability/methods)
       this.initPolls();                   // re-initialise the polling
       this.setAvailable();                // set the card back to being available
     } catch (error) {
       // @todo
-      console.log('throwing...');
-      throw new error;
+      this.error(error);
     }
   }
 
@@ -78,7 +79,7 @@ class DeviceGroupDevice extends Homey.Device {
   async initListener() {
 
     // Register all of the capabilities at once with a (async) call back.
-    return this.registerMultipleCapabilityListener(this.getCapabilities(), async (valueObj, optsObj) => {
+    return this.registerMultipleCapabilityListener(this.capabilities, async (valueObj, optsObj) => {
       return this.updateCapability(valueObj, optsObj);
     }, 500);
   }
@@ -105,13 +106,9 @@ class DeviceGroupDevice extends Homey.Device {
 
       // Using the API for the 'real' device, set the capability value, to what ever we just changed.
       for (let capabilityId in valueObj) {
-
-        // Only bother setting if the capability is setable.
-        if (this.library.getCapability(capabilityId).setable) {
-          device.setCapabilityValue(capabilityId, valueObj[capabilityId]).catch((error) => {
-            console.log('Error setting capability ' + capabilityId + ' on ' + this.getName());
-          });
-        }
+        device.setCapabilityValue(capabilityId, valueObj[capabilityId]).catch((error) => {
+          console.log('Error setting capability ' + capabilityId + ' on ' + this.getName());
+        });
       }
     }
 
@@ -125,15 +122,15 @@ class DeviceGroupDevice extends Homey.Device {
    * Will then assign the pollDevice to be ran on pollingFrequency. this is how we gather our grouped devices data
    * to ensure that the card/mobile is kept up to date. Will run the first poll ensuring the device is up to date from the start.
    *
-   * @todo Initally I attempted to add a deviceCapability listener to the individual devices, but was unsuccessful, try again.
+   * @todo Initally I attempted to add a deviceCapability listener to the individual devices, but was unsuccessful.
    * @returns {Promise<boolean>}
    */
   async initPolls() {
 
     // Run our initial poll immediately.
     await this.pollDevices();
-    //
-    // // Set the polling interval based from the settings, once we have the first value.
+
+    // Set the polling interval based from the settings, once we have the first value.
     this.interval = setInterval(async () => {
       this.pollDevices();
     }, 1000 * this.settings.pollingFrequency); // In seconds
@@ -181,6 +178,7 @@ class DeviceGroupDevice extends Homey.Device {
           id : this.settings.groupedDevices[x].id
         });
 
+
         // A refresh is required for the API when accessing capabilities.
         await device.refreshCapabilities();
 
@@ -188,7 +186,10 @@ class DeviceGroupDevice extends Homey.Device {
         for (let i in this.capabilities) {
           values[this.capabilities[i]].push(device.state[this.capabilities[i]]);
         }
-      } else {this.log('no property'); this.log(this.settings.groupedDevices)}
+      } else {
+        // @todo - Remove once the bug has been squashed.
+        this.log('no property'); this.log(this.settings.groupedDevices)
+      }
 
     }
     return values;
@@ -218,8 +219,7 @@ class DeviceGroupDevice extends Homey.Device {
         let method = this.settings.capabilities[key].method;    // Alias the method we are going to use
         let type = this.library.getCapability(key).type;        // Alias the data type
 
-        // if the method is set the false - its disabled
-        // if the method is set to ignore, don't update use the card behaviour.
+        // if the method is false - its disabled if it's set to ignore, don't update use the card behaviour.
         if (method !== false && method !== 'ignore') {
 
           // Calculate our value using our function
@@ -230,8 +230,8 @@ class DeviceGroupDevice extends Homey.Device {
 
           // // Set the capability of the groupedDevice
           this.setCapabilityValue(key, value).then().catch((error) => {
-            console.log('err:');        // DEBUG
-            console.log(error.message); // DEBUG
+            // @todo remove debug message.
+            console.log('setCardValues setCapabilityValue Error: ' + error.message); // DEBUG
           });
         }
       }
@@ -240,11 +240,12 @@ class DeviceGroupDevice extends Homey.Device {
 
 
   /**
-   * Will check the current devices and update
-   * the label settings.
+   * Will update the devices label setting to the current devices.
+   *
    * @returns {Promise<void>}
    */
   async updateDevicesLabels() {
+
     let labels = [];
 
     for (let x in this.settings.groupedDevices) {
@@ -256,23 +257,26 @@ class DeviceGroupDevice extends Homey.Device {
   }
 
   /**
-   * Will check the current capability methods, and update
-   * the label settings.
+   * Will update the capabilities label setting
+   *
    * @returns {Promise<void>}
    */
   async updateCapabilityLabels() {
+
     let labels = [];
     for (let i in this.capabilities) {
 
       // Alias
       let capability = this.library.getCapability(this.capabilities[i]);
-      let method = this.library.getMethod(this.settings.capabilities[this.capabilities[i]].method);
+      let method = this.settings.capabilities[this.capabilities[i]].method
 
       labels.push(capability.title['en']);
 
       // If we have a method assigned, attach it to our description.
       if (method) {
-        labels[labels.length -1] += ' (' + method.title['en'] + ')';
+
+        // @todo currently hard coded to 'en', allow en/nl
+        labels[labels.length -1] += ' (' + this.library.getMethod(method).title['en'] + ')';
       }
     }
 

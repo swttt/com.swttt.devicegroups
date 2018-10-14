@@ -31,23 +31,23 @@
   <div class='ui attached message'>
     <div class='ui right floated basic segment' style='padding: 0; margin: 0'>
       <select :class='{ ui : true, dropdown : true, disabled : ! groups.length }' @change='groupSelected'>
-        <option disabled selected data-i18n="Select device group">Select device group:</option>
+        <option disabled selected data-i18n="_.Select device group">Select device group:</option>
         <option v-for='group in groups' :value='group.id'>{{ group.name }}</option>
       </select>
     </div>
-    <div data-i18n="Device Groups Editor" class='header'>Device Groups Editor</div>
-    <p data-i18n="Edit your device groups">Edit your device groups</p>
+    <div data-i18n="_.Device Groups Editor" class='header'>Device Groups Editor</div>
+    <p data-i18n="_.Edit your device groups">Edit your device groups</p>
   </div>
   <div class='ui bottom attached segment'>
     <div class='ui loading basic segment' v-if='isLoading'></div>
     <table class='ui definition table' v-if='selectedGroup'>
       <tbody>
       <tr>
-        <td data-i18n="Device Group Name">Device Group Name:</td>
+        <td data-i18n="_.Device Group Name">Device Group Name:</td>
         <td :title='selectedGroup.id'>{{ selectedGroup.name }}</td>
       </tr>
       <tr>
-        <td data-i18n="Device Class">Device Class:</td>
+        <td data-i18n="_.Device Class">Device Class:</td>
         <td>
           <div class='ui basic image label device-class'>
             <img
@@ -57,7 +57,7 @@
           </div>
       </tr>
       <tr>
-        <td data-i18n="Capabilities">Capabilities:</td>
+        <td data-i18n="_.Capabilities">Capabilities:</td>
         <td>
           <div class='ui compact mini horizontal list capabilities'>
             <div class='item' v-for='capability in capabilities'>
@@ -87,7 +87,7 @@
       <tr>
       </tr>
       <tr>
-        <td data-i18n="Devices in group" class='top aligned'>Devices in group:</td>
+        <td data-i18n="_.Devices in group" class='top aligned'>Devices in group:</td>
         <td>
           <div class='ui loading basic segment' v-if='isLoadingDevices'></div>
           <div class='ui middle aligned divided relaxed list'>

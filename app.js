@@ -1,21 +1,16 @@
 'use strict';
 
 const Homey = require('homey');
-const Library = require('./lib/homey-lite/lib');
 const {HomeyAPI} = require('./lib/athom-api.js');
 
 class DeviceGroups extends Homey.App {
 
 
+
   onInit() {
 
     this.log('Device groups is running...');
-
-    this.api = HomeyAPI.forCurrentHomey();
-
-    // Init the Library
-    this.library = new Library();
-
+    this.mehmeh = 'W00t';
     // Force i18n to en or nl, as we are accessing the i18n directly,
     this.i18n = (Homey.ManagerI18n.getLanguage() == 'nl') ? 'nl' : 'en';
   }
@@ -27,6 +22,7 @@ class DeviceGroups extends Homey.App {
     }
     return this.api;
   }
+
 
   async getDevices() {
 
@@ -47,6 +43,7 @@ class DeviceGroups extends Homey.App {
     return device;
   }
 
+
   async setDevicesForGroup(id, devices) {
 
     let group = await this.getGroup(id);
@@ -61,15 +58,6 @@ class DeviceGroups extends Homey.App {
     return result;
   }
 
-  // async setGroupSettings(id, settings) {
-  //
-  //   let group = await this.getGroup(id);
-  //
-  //   // Update the group settings.
-  //   let result = await group.setSettings(group.settings);
-  //   await group.refresh();
-  //   return result;
-  // }
 
   async setMethodForCapabilityOfGroup(id, capabilities) {
 
