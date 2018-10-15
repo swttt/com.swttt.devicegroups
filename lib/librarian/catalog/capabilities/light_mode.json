@@ -25,5 +25,10 @@
     }
   ],
   "getable": true,
-  "setable": true
+  "setable": true,
+  "method" : "ignore",
+  "available" : [
+    "ignore",
+    "mode"
+  ]
 }

@@ -2,6 +2,7 @@
 
 const Homey = require('homey');
 const {HomeyAPI} = require('./lib/athom-api.js');
+const Librarian   = require('./lib/librarian');
 
 class DeviceGroups extends Homey.App {
 
@@ -10,7 +11,10 @@ class DeviceGroups extends Homey.App {
   onInit() {
 
     this.log('Device groups is running...');
-    this.mehmeh = 'W00t';
+
+    // Set our library reference
+    this.library = new Librarian();
+
     // Force i18n to en or nl, as we are accessing the i18n directly,
     this.i18n = (Homey.ManagerI18n.getLanguage() == 'nl') ? 'nl' : 'en';
   }
@@ -50,11 +54,22 @@ class DeviceGroups extends Homey.App {
 
     // Find all devices that should be grouped.
     let allDevices = await this.getDevices();
-    let groupedDevices = Object.values(allDevices).filter(d => devices.includes(d.id));
+
+    // Looks like vue (upon settings) is sending a padded array with undefined items
+    // Checks that the devices sent exist in allDevices, filters out any that dont.
+    let grouped = Object.values(allDevices).filter(d => devices.includes(d.id));
+
+    let ids = [];
+    for (let i in grouped) {
+      ids.push(grouped[i].id);
+    }
+
+    group.settings.groupedDevices = ids;
 
     // Update the group settings.
-    let result = await group.setSettings({groupedDevices});
-    group.refresh();
+    let result = await group.setSettings(group.settings);
+    await group.refresh();
+
     return result;
   }
 
@@ -67,7 +82,7 @@ class DeviceGroups extends Homey.App {
 
     // Update the group settings.
     let result = await group.setSettings(group.settings);
-    group.refresh();
+    await group.refresh();
     return result;
   }
 }

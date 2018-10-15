@@ -1,5 +1,4 @@
 const Homey = require('homey');
-const Librarian   = require('./lib/librarian');
 
 module.exports = [
   {
@@ -60,8 +59,7 @@ module.exports = [
     method : 'GET',
     path   : '/library',
     fn     : async (args) => {
-      let library = new Librarian();
-      return await library.getJSON();
+      return await Homey.app.library.getJSON();
     }
   },
 ]

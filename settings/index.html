@@ -69,7 +69,9 @@
                       <select v-model="capability.selected" @change="onCapabilityMethodChanged"
                               v-bind:data-capability="capability.key"
                               class="ui input compact mini selection dropdown"
-                              style="margin-top:1em;">
+                              style="margin-top:1em;"
+                              :disabled="isUpdating"
+                        >
                         <option v-for="option in capability.available" v-bind:value="option"
                                 v-bind:title="option.description"
                                 v-bind:data-method="option.value">
@@ -95,11 +97,11 @@
               <div :class='{
                       ui          : true,
                       checked     : true,
-                      disabled    : this.isUpdating,
-                      "read-only" : this.isUpdating,
+                      disabled    : isUpdating,
+                      "read-only" : isUpdating,
                       checkbox    : true,
                     }'>
-                <input type='checkbox' :value='device.id' v-model='groupedDevices'>
+                <input type='checkbox' class="check-devices" :value='device.id' v-model='groupedDevices' :disabled="isUpdating">
                 <label>
                   {{ device.name }} (<i>{{ device.zone.name }}</i>)
                 </label>
@@ -115,7 +117,6 @@
 <script>
   function onHomeyReady(Homey) {
     Homey.ready();
-
     new Vue({
       el       : '#app-settings-view',
       data     : {
@@ -124,7 +125,8 @@
         groupedDevices   : [],
         isLoading        : false,
         isLoadingDevices : false,
-        isUpdating       : true,
+        isUpdating       : false,
+        isTest           : true,
         allDevices       : [],
         i18n             : 'en',
         library          : {},
@@ -155,14 +157,17 @@
 
         groupedDevices(newValue, oldValue) {
 
-          if (this.isLoading && oldValue.length === 0) return;
+          // Looks like this is another hack to attempt for the watch to no prematurely go off.
+          if ( ( this.isLoading || this.isTest ) && oldValue.length === 0 ) return;
 
           this.isUpdating = true;
 
           // Gets called when changing groups : disable it if that's the case.
-          // @todo this is still getting called.
-          console.log(this.selectedGroup);
+          // @todo this is still getting called. On every load
+          // @todo newValue is a padded object, with a bunch of undefined?
           if (this.selectedGroup) {
+
+
             Homey.api('PUT', '/group/' + this.selectedGroup.id, newValue, (err) => {
               this.isUpdating = false;
               if (err) return Homey.alert(err);
@@ -192,6 +197,7 @@
           this.selectedGroup.settings.capabilities[event.target.dataset.capability].method = selectedMethod;
 
           Homey.api('PUT', '/group/' + this.selectedGroup.id + '/capabilities', this.selectedGroup.settings.capabilities, (err) => {
+
             this.isUpdating = false;
             if (err) return Homey.alert(err);
           });
@@ -204,6 +210,7 @@
           this.selectedGroup = null;
           this.groupedDevices = [];
 
+
           Homey.api('GET', '/group/' + ev.target.value, (err, group) => {
 
             this.isLoadingDevices = false;
@@ -212,7 +219,8 @@
             if (err) return Homey.alert(err);
 
             this.selectedGroup = group;
-            this.groupedDevices = (group.settings.groupedDevices || []).map(g => g.id);
+            // this.groupedDevices = (group.settings.groupedDevices || []).map(g => g.id);
+            this.groupedDevices = group.settings.groupedDevices;
 
             // Get the i18n category name
             this.category = this.library.categories[this.selectedGroup.class];
@@ -243,6 +251,7 @@
                 }
 
               }
+              this.isTest = false;
             }
 
             if (!this.allDevices.length) {

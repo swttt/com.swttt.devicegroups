@@ -21,9 +21,6 @@ class DeviceGroupDriver extends Homey.Driver {
      * Currently being stored with in the devices store object @ onAlmostDone
      */
     const version = '1.2.0';
-    const i18n = 'en';
-
-    let library = new Librarian();
 
     let pairingDevice = {};
         pairingDevice.name      = 'Grouped device';
@@ -32,30 +29,27 @@ class DeviceGroupDriver extends Homey.Driver {
         pairingDevice.data      = {};
 
     socket.on('startedClasses', function (data, callback) {
-      
-      // Force i18n to en or nl, as we are accessing the i18n directly,
-      this.i18n = (Homey.ManagerI18n.getLanguage() == 'nl') ? 'nl' : 'en';
 
-      callback(null, library.getCategories());
+      callback(null, Homey.app.library.getCategories());
     });
 
     socket.on('addClass', function (data, callback) {
 
       pairingDevice.class = data.class;
-      pairingDevice.settings.labelClass = library.getCategory(data.class).title[this.i18n];
+      pairingDevice.settings.labelClass = Homey.app.library.getCategory(data.class).title[Homey.app.i18n];
       pairingDevice.name = 'Grouped ' + pairingDevice.settings.labelClass;
-      pairingDevice.icon =  'app/' + Homey.manifest.id + '/drivers/devicegroup/assets/icons/' + data.class + '.svg';
+      pairingDevice.icon =  '/app/' + Homey.manifest.id + '/drivers/devicegroup/assets/icons/' + data.class + '.svg';
 
       callback(null, pairingDevice);
     });
 
     socket.on('startedCapabilities', function (data, callback) {
 
-      let categoryCapabilities = library.getCategory(pairingDevice.class).capabilities;
+      let categoryCapabilities = Homey.app.library.getCategory(pairingDevice.class).capabilities;
 
       let result = {};
       for (let i in categoryCapabilities) {
-        result[categoryCapabilities[i]] = library.getCapability(categoryCapabilities[i]);
+        result[categoryCapabilities[i]] = Homey.app.library.getCapability(categoryCapabilities[i]);
       }
 
       callback(null, result)
@@ -70,14 +64,14 @@ class DeviceGroupDriver extends Homey.Driver {
       for (let i in data.capabilities) {
 
         pairingDevice.settings.capabilities[data.capabilities[i]] = {}; // reset
-        pairingDevice.settings.capabilities[data.capabilities[i]].method = library.getCapability(data.capabilities[i]).method;
+        pairingDevice.settings.capabilities[data.capabilities[i]].method = Homey.app.library.getCapability(data.capabilities[i]).method;
       }
 
       callback(null, pairingDevice);
     });
 
     socket.on('startedDevices', function (data, callback) {
-      let result = {};
+      let result = { devices: []};
       result.pairingDevice = pairingDevice;
 
       Homey.app.getDevices().then(res => {
@@ -89,8 +83,13 @@ class DeviceGroupDriver extends Homey.Driver {
     });
 
     socket.on('devicesChanged', function (data, callback) {
-      console.log(data.devices);
-      pairingDevice.settings.groupedDevices = data.devices;
+
+      let ids = [];
+      for (let i in data.devices) {
+        ids.push(data.devices[i].id);
+      }
+      pairingDevice.settings.groupedDevices = ids; //data.devices;
+
       callback(null, pairingDevice);
     });
 
@@ -108,7 +107,6 @@ class DeviceGroupDriver extends Homey.Driver {
     });
 
     socket.on('done', function (data, callback) {
-      library = null;
       pairingDevice = null;
       callback(null, true);
     });
