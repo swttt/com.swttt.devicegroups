@@ -1,7 +1,6 @@
 'use strict';
 
 const Homey = require('homey');
-const Librarian   = require('../../lib/librarian');
 
 function guid() {
   function s4() {

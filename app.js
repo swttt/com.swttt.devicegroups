@@ -17,6 +17,9 @@ class DeviceGroups extends Homey.App {
 
     // Force i18n to en or nl, as we are accessing the i18n directly,
     this.i18n = (Homey.ManagerI18n.getLanguage() == 'nl') ? 'nl' : 'en';
+
+    // Prime the API into memory
+    this.getApi();
   }
 
 
@@ -30,8 +33,7 @@ class DeviceGroups extends Homey.App {
 
   async getDevices() {
 
-    const api = await this.getApi();
-    return await api.devices.getDevices();
+    return await (await this.getApi()).devices.getDevices();
   }
 
 

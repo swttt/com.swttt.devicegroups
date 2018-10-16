@@ -1,9 +1,7 @@
 'use strict';
 
 const Homey       = require('homey');
-const {HomeyAPI}  = require('../../lib/athom-api.js');
 const Helper      = require('../../lib/helper');
-
 
 
 /**
@@ -16,9 +14,6 @@ const Helper      = require('../../lib/helper');
  * deviceGroup = this.settings.groupedDevices :: but class = DeviceGroup
  */
 class DeviceGroupDevice extends Homey.Device {
-
-
-
 
   /**
    * Automatically runs
@@ -356,18 +351,8 @@ class DeviceGroupDevice extends Homey.Device {
    * @returns {Promise<*>}
    */
   async initApi() {
-    this.api = await this.getApi();
-    return true;
-  }
-
-
-  /**
-   * Retrieves the HomeAPI library for the (current) Homey
-   * @returns {*}
-   */
-  getApi() {
     if (!this.api) {
-      this.api = HomeyAPI.forCurrentHomey();
+      this.api = await Homey.app.api;
     }
     return this.api;
   }
