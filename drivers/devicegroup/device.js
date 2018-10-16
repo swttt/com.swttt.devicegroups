@@ -43,19 +43,18 @@ class DeviceGroupDevice extends Homey.Device {
   /**
    * Refresh the settings & capability listeners
    *
-   * Sets device unavailable/available while updating, check to determine availability has been added
-   * to ensure that the device is not currently being updated, there is a race condition which is being causes (generally)
-   * by the settings page, where multiple refreshes will be running at once, this plays havoc on the device. In particular
-   * destroying the polls, and re-creating them. There is an attempt with in the view to reduce the chances of this by waiting
-   * for a API response however this seems to have issues when unexpected event occur.
+   * Sets device unavailable/available while updating, there is a race condition which is being causes (generally)
+   * by the settings page, where multiple refreshes will be running at once, this plays havoc on the device. (eg. destroying polls)
+   * There is an attempt with in the view to reduce the chances of this by waiting
+   * for a API response however this seems to have issues when unexpected event occur, or even immediate clicks after the call back has returned.
    *
-   * @todo I actually believe the end solution is to change the settings to a button click -> set disabled, callback to re-enable.
-   * Rather than trying to do ajax requests on the fly.
+   * @todo I believe the end solution is to change the settings to a button click -> set disabled, callback to re-enable.
+   * TAs the i
    * @returns {Promise<boolean>}
    */
   async refresh() {
-
     this.log('Refreshing Device Group ' + this.getName());
+
     try {
       await this.setUnavailable();              // Set card to unavailable
       this.settings = await this.getSettings(); // update the settings, ensure this happens prior to updating polls/labels
@@ -63,9 +62,8 @@ class DeviceGroupDevice extends Homey.Device {
       this.updateCapabilityLabels();            // update the capability labels (settings which store current capability/methods)
       this.destroyPoll();                       // destroy the polling
       this.initPolls();                         // re-initialise the polling
-      this.setAvailable();                      // set the card back to being available
+      await this.setAvailable();                      // set the card back to being available
     } catch (error) {
-      // @todo
       this.console.log(error);
       this.error(error);
     }
@@ -145,7 +143,6 @@ class DeviceGroupDevice extends Homey.Device {
       }, 1000 * this.settings.pollingFrequency); // In seconds
     }
 
-
     return true;
   }
 
@@ -169,7 +166,6 @@ class DeviceGroupDevice extends Homey.Device {
    * @returns {Promise<void>}
    */
   async getDevicesValues() {
-    //DEBUG this.log('-----');
     let values = [];
 
     // Initialise the values
@@ -179,8 +175,6 @@ class DeviceGroupDevice extends Homey.Device {
 
     // Loop through each of the devices in the group
     for (let x in this.settings.groupedDevices) {
-
-      //DEBUG this.log('checking : ' + this.settings.groupedDevices[x]);
 
       // There is a bug where this is called while group devices is empty ..
       // Seems to be prevalent when updating the settings using the API, possibly race condition
