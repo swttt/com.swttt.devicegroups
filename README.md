@@ -12,6 +12,21 @@ Now you have one device to control all the grouped devices.
 
 ---
 
+### Device Groups Settings
+
+There are two sets of settings associated with device groups, first the settings available from the device group card. Which offers overview information 
+ability to change the frequency of how often devices are checked for changes. 
+
+More importantly is the application settings, which can be accessed by click on your Homeys settings then the Device Groups link. 
+It is from here, 
+
+- You can change which devices are in a group. eg. *Add or remove a new light to a group*
+- Set the feedback information for a specific group eg. *The On off button should only be on if all lights are on.*
+- How grouped information is calculated for a specific capability on a specific group. - *Grouped temperature sensors should display the average of the entire group.*
+
+
+---
+
 ### Issues & Feature requests
 
 If you found any bugs you can create an issue on [github](https://github.com/swttt/com.swttt.devicegroups) .
@@ -28,12 +43,20 @@ If you like this app, then consider buying swttt a beer :)
 
 ---
 
+#### Testing notes
+
+Currently (in alpha testing), this application will **not** overwrite the stable version of the application. Instead installing as "(alpha) Device Groups"
+This is to allow testing with out breaking any existing devices/flows. 
+
+---
+
 ### Changelog
 
-##### Testing notes
 
-- Default behaviour of 'dim' changed to mean average of the group
-- Default behaviour of 'onoff' changed to 'any' (on if any grouped devices are on) 
+##### 1.2.0-alpha2
+
+- Reliability, Stability and Performance
+
 
 ##### 1.2.0-alpha1
 - API Update to 2.0.129

@@ -104,7 +104,7 @@ class DeviceGroupDevice extends Homey.Device {
     // Loop through each 'real' device in the group
     for (let key in this.settings.groupedDevices) {
 
-      // Get the WebAPI reference 'real' device
+      // Get the WebAPI reference 'real' device ::
       let device = await this.api.devices.getDevice({
         id : this.settings.groupedDevices[key]
       });
