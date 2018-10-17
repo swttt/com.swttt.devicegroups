@@ -3,7 +3,10 @@
     "en": "Total Value",
     "nl": "Totale waarde"
   },
-  "description": "The sum of all the grouped device values",
+  "description": {
+    "en": "The sum of all the grouped device values",
+    "nl": "N/A"
+  },
   "value": "sum",
   "function": "sum"
 }

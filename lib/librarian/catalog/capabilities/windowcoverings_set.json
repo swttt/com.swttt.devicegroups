@@ -4,8 +4,9 @@
     "en": "Position",
     "nl": "Positie"
   },
-  "desc": {
-	"en": "Set the position of window coverings. 0% is closed, 100% is open"
+  "description": {
+	"en": "Set the position of window coverings. 0% is closed, 100% is open",
+    "nl": "Positie"
   },
   "chartType": "stepLine",
   "min": 0,

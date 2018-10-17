@@ -1,9 +1,13 @@
 {
+  "type": "number",
   "title": {
     "en": "Position",
     "nl": "Positie"
   },
-  "type": "number",
+  "description": {
+    "en": "Current position",
+    "nl": "N/A"
+  },
   "getable": true,
   "setable": false,
   "method" : false,

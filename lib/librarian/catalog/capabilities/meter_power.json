@@ -4,14 +4,13 @@
     "en": "Power Meter",
     "nl": "Energiemeter"
   },
+  "description": {
+    "en": "Power usage in KiloWattHour (kWh)",
+    "nl": "Stroomverbuik in KiloWattUur (kWh)"
+  },
   "decimals": 2,
   "units": {
     "en": "KWh"
-  },
-  "chartType": "spline",
-  "desc": {
-    "en": "Power usage in KiloWattHour (kWh)",
-    "nl": "Stroomverbuik in KiloWattUur (kWh)"
   },
   "getable": true,
   "setable": false,

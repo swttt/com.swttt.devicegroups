@@ -4,16 +4,15 @@
     "en": "Battery",
     "nl": "Accuniveau"
   },
+  "description": {
+    "en": "Battery charge in percentage (%)",
+    "nl": "Accuniveau in procenten (%)"
+  },
   "units": {
     "en": "%"
   },
   "min": 0,
   "max": 100,
-  "desc": {
-    "en": "Battery charge in percentage (%)",
-    "nl": "Accuniveau in procenten (%)"
-  },
-  "chartType": "spline",
   "decimals": 2,
   "getable": true,
   "setable": false,

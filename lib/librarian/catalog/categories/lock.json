@@ -4,7 +4,8 @@
     "nl": "Slot"
   },
   "description": {
-    "en": "Use this device class for lock devices, usually together with the `locked` and `lock_mode` capabilities."
+    "en": "Use this device class for lock devices.",
+    "nl": "N/A"
   },
   "capabilities" : [
     "locked",

@@ -1,9 +1,13 @@
 {
+  "type": "string",
   "title": {
     "en": "Artist",
     "nl": "Artiest"
   },
-  "type": "string",
+  "description": {
+    "en": "Current artist.",
+    "nl": "N/A"
+  },
   "getable": true,
   "setable": false,
   "method" : false,

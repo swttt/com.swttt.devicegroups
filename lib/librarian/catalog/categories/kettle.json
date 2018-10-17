@@ -4,7 +4,8 @@
     "nl": "Waterkoker"
   },
   "description": {
-    "en": "Use this device class for kettle devices, that can heat water."
+    "en": "Use this device class for kettle devices, that can heat water.",
+    "nl": "N/A"
   },
   "capabilities" : [
     "onoff",

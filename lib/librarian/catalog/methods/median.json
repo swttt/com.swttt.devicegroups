@@ -3,7 +3,10 @@
     "en": "Median Average",
     "nl": "Mediaan"
   },
-  "description": "The value of the device in the middle",
+  "description": {
+    "en": "The value of the device in the middle",
+    "nl": "N/A"
+  },
   "value": "median",
   "function": "median"
 }

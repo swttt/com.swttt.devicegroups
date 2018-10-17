@@ -1,9 +1,13 @@
 {
+  "type": "boolean",
   "title": {
     "en": "Volume muted",
     "nl": "Gedempt volume"
   },
-  "type": "boolean",
+  "description": {
+    "en": "Volume muted",
+    "nl": "Gedempt volume"
+  },
   "getable": true,
   "setable": true,
   "method" : "ignore",

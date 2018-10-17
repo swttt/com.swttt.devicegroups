@@ -3,7 +3,10 @@
     "en": "Most Devices",
     "nl": "On if Most"
   },
-  "description": "On if at least half devices are on",
+  "description": {
+    "en": "On if at least half devices are on",
+    "nl": "N/A"
+  },
   "value": "median",
   "function": "median"
 }

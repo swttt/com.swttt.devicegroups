@@ -4,7 +4,8 @@
     "nl": "Speaker"
   },
   "description": {
-    "en": "Use this device class for devices that can play music, usually together with the `speaker_*` capabilities."
+    "en": "Use this device class for devices that can play audio, such as music.",
+    "nl": "N/A"
   },
   "capabilities" : [
     "speaker_playing",

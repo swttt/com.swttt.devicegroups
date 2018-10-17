@@ -1,8 +1,13 @@
 {
-  "title": {
-    "en": "Window Coverings Tilt Set"
-  },
   "type": "number",
+  "title": {
+    "en": "Window Coverings Tilt Set",
+    "nl": "Window Coverings Tilt Set"
+  },
+  "description": {
+    "en": "The window's tilt value",
+    "nl":  "N/A"
+  },
   "min": 0,
   "max": 1,
   "decimals": 2,

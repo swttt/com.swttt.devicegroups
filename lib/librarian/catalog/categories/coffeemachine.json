@@ -4,7 +4,8 @@
     "nl": "Koffiemachine"
   },
   "description": {
-    "en": "Use this device class for coffee machines."
+    "en": "Use this device class for coffee machines.",
+    "nl": "N/A"
   },
   "capabilities" : [
     "onoff",

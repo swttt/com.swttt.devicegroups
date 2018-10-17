@@ -4,7 +4,8 @@
     "nl": "Sensor"
   },
   "description": {
-    "en": "Use this device class for sensors, e.g. a contact or motion sensor."
+    "en": "Use this device class for sensors, e.g. a contact or motion sensor. As well as alarms!",
+    "nl": "N/A"
   },
   "capabilities": [
     "measure_temperature",

@@ -3,5 +3,9 @@
     "en": "Garage door",
     "nl": "Garagedeur"
   },
+  "description": {
+    "en": "Use this device class for garage doors as well as other automatic doors and gates.",
+    "nl": "N/A"
+  },
   "capabilities" : []
 }

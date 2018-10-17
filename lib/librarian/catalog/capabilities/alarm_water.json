@@ -4,7 +4,7 @@
     "en": "Water Alarm",
     "nl": "Wateralarm"
   },
-  "desc": {
+  "description": {
     "en": "True when water has been detected",
     "nl": "Gaat af als er water gedetecteerd wordt"
   },

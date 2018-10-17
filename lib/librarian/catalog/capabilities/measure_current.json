@@ -4,14 +4,13 @@
     "en": "Current",
     "nl": "Stroom"
   },
-  "units": {
-    "en": "A"
-  },
-  "desc": {
+  "description": {
     "en": "Electric current (A)",
     "nl": "Elektrische stroom (A)"
   },
-  "chartType": "stepLine",
+  "units": {
+    "en": "A"
+  },
   "decimals": 2,
   "getable": true,
   "setable": false,

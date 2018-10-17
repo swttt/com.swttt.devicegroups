@@ -3,7 +3,10 @@
     "en": "Mean Average",
     "nl": "Gemiddeld"
   },
-  "description": "The average your are used to (sum/count)",
+  "description": {
+    "en": "The average your are used to (sum/count)",
+    "nl": "N/A"
+  },
   "value": "median",
   "function": "median"
 }

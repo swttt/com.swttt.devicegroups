@@ -4,12 +4,12 @@
     "en": "CO",
     "nl": "CO"
   },
-  "units": {
-    "en": "ppm"
-  },
-  "desc": {
+  "description": {
     "en": "CO in Parts-per-million (ppm)",
     "nl": "CO deeltjes per miljoen (ppm)"
+  },
+  "units": {
+    "en": "ppm"
   },
   "chartType": "spline",
   "decimals": 2,

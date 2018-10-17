@@ -1,7 +1,12 @@
 {
   "type": "enum",
   "title": {
-    "en": "Vacuum cleaner state"
+    "en": "Vacuum cleaner state",
+    "nl": "Vacuum cleaner state"
+  },
+  "description": {
+    "en": "The state of a a vacuum cleaner, either it is cleaning, spot cleaning, docked, charging or stopped",
+    "nl": "N/A"
   },
   "values": [
     {

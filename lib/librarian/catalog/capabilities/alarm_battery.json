@@ -4,7 +4,7 @@
     "en": "Battery Alarm",
     "nl": "Batterij alarm"
   },
-  "desc": {
+  "description": {
     "en": "True when there is a battery warning",
     "nl": "Geeft een batterijwaarschuwing"
   },

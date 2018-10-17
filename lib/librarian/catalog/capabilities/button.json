@@ -1,9 +1,13 @@
 {
+  "type": "boolean",
   "title": {
     "en": "Button",
     "nl": "Knop"
   },
-  "type": "boolean",
+  "description": {
+    "en": "A push button",
+    "nl": "N/A"
+  },
   "getable": false,
   "setable": true,
   "method" : false,

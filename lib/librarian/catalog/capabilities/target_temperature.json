@@ -1,15 +1,18 @@
 {
   "type": "number",
-  "min": 4,
-  "max": 35,
   "title": {
     "en": "Target temperature",
     "nl": "Ingestelde temperatuur"
   },
+  "description": {
+    "en": "Set the temperature which a device should target",
+    "nl": "N/A"
+  },
   "units": {
     "en": "°C"
   },
-  "chartType": "stepLine",
+  "min": 4,
+  "max": 35,
   "decimals": 2,
   "getable": true,
   "setable": true,

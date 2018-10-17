@@ -3,6 +3,10 @@
     "en": "Button",
     "nl": "Knop"
   },
+  "description": {
+    "en": "Use this device class for buttons, and other items which do not have a state.",
+    "nl":  "N/A"
+  },
   "capabilities" : [
     "onoff",
     "target_temperature",

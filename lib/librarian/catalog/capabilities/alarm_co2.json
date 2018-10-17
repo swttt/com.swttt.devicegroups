@@ -4,7 +4,7 @@
     "en": "CO2 Alarm",
     "nl": "CO2 Alarm"
   },
-  "desc": {
+  "description": {
     "en": "True when dangerous CO2 values have been detected",
     "nl": "Gaat af bij gevaarlijke concentraties CO2"
   },

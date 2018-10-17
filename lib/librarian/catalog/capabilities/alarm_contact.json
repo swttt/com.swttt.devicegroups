@@ -4,7 +4,7 @@
     "en": "Contact Alarm",
     "nl": "Contact alarm"
   },
-  "desc": {
+  "description": {
     "en": "Contact sensor, e.g. for windows (true/false)",
     "nl": "Contact sensor, bijvoorbeeld voor ramen"
   },

@@ -4,16 +4,15 @@
     "en": "Gas Meter",
     "nl": "Gasmeter"
   },
-  "min": 0,
-  "decimals": 2,
-  "chartType": "spline",
-  "units": {
-    "en": "m³"
-  },
-  "desc": {
+  "description": {
     "en": "Gas usage in Cubic Meter (m³)",
     "nl": "Gas gebruik in Kubieke Meter (m³)"
   },
+  "units": {
+    "en": "m³"
+  },
+  "min": 0,
+  "decimals": 2,
   "getable": true,
   "setable": false,
   "method" : "sum",

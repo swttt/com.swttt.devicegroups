@@ -4,7 +4,8 @@
     "nl": "Huisbeveiliging"
   },
   "description": {
-    "en": "Use this device class for home alarm systems."
+    "en": "Use this device class for home alarm systems.",
+    "nl": "N/A"
   },
   "capabilities" : [
     "homealarm_state",

@@ -4,7 +4,8 @@
     "nl": "Gordijnen"
   },
   "description": {
-    "en": "Use this device class for curtains. "
+    "en": "Use this device class for curtains.",
+    "nl": "N/A"
   },
   "capabilities" : []
 }

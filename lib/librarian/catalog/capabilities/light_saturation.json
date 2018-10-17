@@ -4,8 +4,11 @@
     "en": "Color Saturation",
     "nl": "Kleurverzadiging"
   },
+  "description": {
+    "en": "The colour intensity",
+    "nl": "N/A"
+  },
   "min": 0,
-  "chartType": "stepLine",
   "max": 1,
   "decimals": 2,
   "getable": true,

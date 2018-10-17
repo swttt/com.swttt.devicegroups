@@ -4,6 +4,10 @@
     "en": "Home Alarm state",
     "nl": "Thuisalarm status"
   },
+  "description": {
+    "en": "Switch between armed, disarmed and partially armed",
+    "nl": "N/A"
+  },
   "values": [
     {
       "id": "armed",

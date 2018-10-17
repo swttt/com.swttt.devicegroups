@@ -4,6 +4,10 @@
     "en": "Lock mode",
     "nl": "Slot modus"
   },
+  "description": {
+    "en": "Switch between Always locked, always unlocked and locked until unlocked modes",
+    "nl": "N/A"
+  },
   "values": [
     {
       "id": "always_locked",

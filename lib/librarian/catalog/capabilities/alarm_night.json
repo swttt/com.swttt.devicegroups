@@ -4,7 +4,7 @@
     "en": "Night Alarm",
     "nl": "Nacht Alarm"
   },
-  "desc": {
+  "description": {
     "en": "True when it is night",
     "nl": "Gaat af als het nacht is"
   },

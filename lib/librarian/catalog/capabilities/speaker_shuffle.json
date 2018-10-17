@@ -1,8 +1,12 @@
 {
+  "type": "boolean",
   "title": {
     "en": "Shuffle"
   },
-  "type": "boolean",
+  "description": {
+    "en": "Shuffle item.",
+    "nl": "N/A"
+  },
   "getable": true,
   "setable": true,
   "method" : "ignore",

@@ -4,7 +4,8 @@
     "nl": "Versterker"
   },
   "description": {
-    "en": "Use this device class for audio amplifier devices."
+    "en": "Use this device class for audio amplifier devices.",
+    "nl":  "N/A"
   },
   "capabilities" : [
     "onoff",

@@ -4,16 +4,15 @@
     "en": "Water Meter",
     "nl": "Watermeter"
   },
-  "decimals": 2,
-  "min": 0,
-  "units": {
-    "en": "m³"
-  },
-  "chartType": "spline",
-  "desc": {
+  "description": {
     "en": "Water usage in Cubic Meter (m³)",
     "nl": "Water gebruik in Kubieke Meter (m³)"
   },
+  "units": {
+    "en": "m³"
+  },
+  "decimals": 2,
+  "min": 0,
   "getable": true,
   "setable": false,
   "method" : "sum",

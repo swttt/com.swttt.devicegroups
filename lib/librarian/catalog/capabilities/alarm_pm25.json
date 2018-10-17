@@ -4,7 +4,7 @@
     "en": "PM2.5 Alarm",
     "nl": "PM2.5 Alarm"
   },
-  "desc": {
+  "description": {
     "en": "True when PM2.5 values exceeds threshold",
     "nl": "Gaat af wanneer de PM2.5 waarde overschreden wordt"
   },

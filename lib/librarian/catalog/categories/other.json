@@ -4,7 +4,8 @@
     "nl": "Overig"
   },
   "description": {
-    "en": "Use this device class for devices that do not fit any other device class."
+    "en": "Use this device class for devices that do not fit any other device class.",
+    "nl": "N/A"
   },
   "capabilities" : []
 }

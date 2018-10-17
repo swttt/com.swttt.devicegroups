@@ -3,7 +3,10 @@
     "en": "On if All",
     "nl": "On if All"
   },
-  "description": "On if all devices are on. otherwise off",
+  "description": {
+    "en": "On if all devices are on. otherwise off",
+    "nl": "N/A"
+  },
   "value": "all",
   "function": "min"
 }

@@ -1,9 +1,13 @@
 {
+  "type": "boolean",
   "title": {
     "en": "Channel up",
     "nl": "Kanaal omhoog"
   },
-  "type": "boolean",
+  "description": {
+    "en": "Change channel up",
+    "nl": "N/A"
+  },
   "getable": false,
   "setable": true,
   "method" : false,

@@ -3,7 +3,10 @@
     "en": "On if Any",
     "nl": "On if Any"
   },
-  "description": "On if any devices are on",
+  "description": {
+    "en": "On if any devices are on",
+    "nl": "N/A"
+  },
   "value": "any",
   "function": "max"
 }

@@ -4,12 +4,12 @@
     "en": "Luminance",
     "nl": "Helderheid"
   },
-  "units": {
-    "en": "lx"
-  },
-  "desc": {
+  "description": {
     "en": "Luminance in Lux (lx)",
     "nl": "Helderheid in Lux (lx)"
+  },
+  "units": {
+    "en": "lx"
   },
   "chartType": "spline",
   "decimals": 2,

@@ -4,14 +4,13 @@
     "en": "Wind Angle",
     "nl": "Windrichting"
   },
-  "units": {
-    "en": "°"
-  },
-  "desc": {
+  "description": {
     "en": "Wind Angle in Degrees (°)",
     "nl": "Windrichting in Graden (°)"
   },
-  "chartType": "spline",
+  "units": {
+    "en": "°"
+  },
   "decimals": 2,
   "getable": true,
   "setable": false,

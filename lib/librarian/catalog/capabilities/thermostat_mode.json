@@ -4,7 +4,7 @@
     "en": "Thermostat mode",
     "nl": "Thermostaat modus"
   },
-  "desc": {
+  "description": {
     "en": "Mode of the thermostat",
     "nl": "Modus van de thermostaat"
   },

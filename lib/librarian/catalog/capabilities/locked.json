@@ -4,7 +4,7 @@
     "en": "Locked",
     "nl": "Op slot"
   },
-  "desc": {
+  "description": {
     "en": "True when the lock is locked",
     "nl": "Geeft aan wanneer iets op slot is"
   },

@@ -3,7 +3,10 @@
     "en": "Mode Average",
     "nl": "Modus Gemiddeld?"
   },
-  "description": "The value which the most devices has",
+  "description": {
+    "en": "The value which the most devices has",
+    "nl": "N/A"
+  },
   "value": "mode",
   "function": "mode"
 }

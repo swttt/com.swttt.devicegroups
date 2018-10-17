@@ -4,14 +4,13 @@
     "en": "Gust Angle",
     "nl": "Windstoot richting"
   },
-  "units": {
-    "en": "°"
-  },
-  "desc": {
+  "description": {
     "en": "Gust Angle in Degrees (°)",
     "nl": "Windstoot richting in Graden (°)"
   },
-  "chartType": "stepLine",
+  "units": {
+    "en": "°"
+  },
   "decimals": 2,
   "getable": true,
   "setable": false,

@@ -4,7 +4,7 @@
     "en": "Heat Alarm",
     "nl": "Hittealarm"
   },
-  "desc": {
+  "description": {
     "en": "True when extreme heat has been detected",
     "nl": "Gaat af als er extreme hitte gedetecteerd wordt"
   },

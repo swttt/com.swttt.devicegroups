@@ -3,7 +3,10 @@
     "en": "Minimum Value",
     "nl": "Minimale waarde"
   },
-  "description": "The value of the device with the smallest value",
+  "description": {
+    "en": "The value of the device with the smallest value",
+    "nl": "N/A"
+  },
   "value": "min",
   "function": "min"
 }

@@ -4,7 +4,8 @@
     "nl": "Stofzuiger"
   },
   "description": {
-    "en": "Use this device class for vacuum cleaners, usually together with the `vacuumcleaner_state` capability."
+    "en": "Use this device class for vacuum cleaners.",
+    "nl": "N/A"
   },
   "capabilities" : [
     "vacuumcleaner_state"

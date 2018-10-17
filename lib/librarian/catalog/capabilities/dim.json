@@ -4,7 +4,10 @@
     "en": "Dim level",
     "nl": "Dim niveau"
   },
-  "chartType": "stepLine",
+  "description": {
+    "en": "Dims level of a device as a percentage of its full value",
+    "nl": "N/A"
+  },
   "min": 0,
   "max": 1,
   "decimals": 2,

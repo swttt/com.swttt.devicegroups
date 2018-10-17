@@ -3,7 +3,10 @@
     "en": "Always On",
     "nl": "Always On"
   },
-  "description": "Always returns to on",
+  "description": {
+    "en": "Always returns to on",
+    "nl": "N/A"
+  },
   "value": "always",
   "function": "always"
 }

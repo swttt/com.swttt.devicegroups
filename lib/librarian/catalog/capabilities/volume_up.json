@@ -1,9 +1,13 @@
 {
+  "type": "boolean",
   "title": {
     "en": "Volume up",
     "nl": "Volume omhoog"
   },
-  "type": "boolean",
+  "description": {
+    "en": "Volume up",
+    "nl": "Volume omhoog"
+  },
   "getable": false,
   "setable": true,
   "method" : false,

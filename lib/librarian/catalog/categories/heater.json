@@ -4,7 +4,8 @@
     "nl": "Heater"
   },
   "description": {
-    "en": "Use this device class for heaters, that warm your home."
+    "en": "Use this device class for heaters, that warm your home.",
+    "nl": "N/A"
   },
   "capabilities" : [
     "onoff",

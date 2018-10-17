@@ -3,7 +3,10 @@
     "en": "Never On",
     "nl": "Never On"
   },
-  "description": "Never on, always returns to off",
+  "description": {
+    "en": "Never on, always returns to off",
+    "nl": "N/A"
+  },
   "value": "never",
   "function": "never"
 }

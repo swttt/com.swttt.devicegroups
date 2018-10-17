@@ -4,8 +4,11 @@
     "en": "Color Temperature",
     "nl": "Kleurtemperatuur"
   },
+  "description": {
+    "en": "The white light temperature warm to cold as a decimal",
+    "nl": "N/A"
+  },
   "min": 0,
-  "chartType": "stepLine",
   "max": 1,
   "decimals": 2,
   "getable": true,

@@ -1,9 +1,13 @@
 {
+  "type": "boolean",
   "title": {
     "en": "Volume down",
     "nl": "Volume omlaag"
   },
-  "type": "boolean",
+  "description": {
+    "en": "Set volume down",
+    "nl": "N/A"
+  },
   "getable": false,
   "setable": true,
   "method" : false,

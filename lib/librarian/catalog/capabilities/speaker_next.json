@@ -1,9 +1,13 @@
 {
+  "type": "boolean",
   "title": {
     "en": "Next",
     "nl": "Volgende"
   },
-  "type": "boolean",
+  "description": {
+    "en": "Go to next item.",
+    "nl": "N/A"
+  },
   "getable": false,
   "setable": true,
   "method" : false,

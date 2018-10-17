@@ -3,6 +3,10 @@
     "en": "Channel down",
     "nl": "Kanaal omlaag"
   },
+  "description": {
+    "en": "Change channel down",
+    "nl": "N/A"
+  },
   "type": "boolean",
   "getable": false,
   "setable": true,

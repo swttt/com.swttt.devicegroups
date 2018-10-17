@@ -4,14 +4,13 @@
     "en": "Humidity",
     "nl": "Luchtvochtigheid"
   },
-  "units": {
-    "en": "%"
-  },
-  "desc": {
+  "description": {
     "en": "Humidity in percent (%)",
     "nl": "Relatieve luchtvochtigheid (%)"
   },
-  "chartType": "spline",
+  "units": {
+    "en": "%"
+  },
   "decimals": 2,
   "getable": true,
   "setable": false,

@@ -4,6 +4,10 @@
     "en": "Closed",
     "nl": "Gesloten"
   },
+  "description": {
+    "en": "Closed",
+    "nl": "Gesloten"
+  },
   "getable": true,
   "setable": true,
   "method" : "ignore",

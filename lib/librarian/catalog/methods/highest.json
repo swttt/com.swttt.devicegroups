@@ -3,7 +3,10 @@
     "en": "Highest Value",
     "nl": "høyeste verdi"
   },
-  "description": "The highest value of the all the grouped device",
+  "description": {
+    "en": "The highest value of the all the grouped device",
+    "nl": "N/A"
+  },
   "value": "highest",
   "function": "max"
 }

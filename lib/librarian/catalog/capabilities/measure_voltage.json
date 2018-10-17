@@ -4,14 +4,13 @@
     "en": "Voltage",
     "nl": "Voltage"
   },
-  "units": {
-    "en": "V"
-  },
-  "desc": {
+  "description": {
     "en": "Voltage (V)",
     "nl": "Voltage (V)"
   },
-  "chartType": "stepLine",
+  "units": {
+    "en": "V"
+  },
   "decimals": 2,
   "getable": true,
   "setable": false,

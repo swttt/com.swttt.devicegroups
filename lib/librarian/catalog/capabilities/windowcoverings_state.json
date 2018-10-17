@@ -1,8 +1,12 @@
 {
+  "type": "enum",
   "title": {
     "en": "Window Coverings state"
   },
-  "type": "enum",
+  "description": {
+    "en": "Whether a window cover is up, down or idle",
+    "nl": "Description Translation Required"
+  },
   "values": [
     {
       "id": "up",

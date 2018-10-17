@@ -4,12 +4,12 @@
     "en": "Power",
     "nl": "Energie"
   },
-  "units": {
-    "en": "W"
-  },
-  "desc": {
+  "description": {
     "en": "Power in Watt (W)",
     "nl": "Vermogen in Watt (W)"
+  },
+  "units": {
+    "en": "W"
   },
   "chartType": "stepLine",
   "decimals": 2,

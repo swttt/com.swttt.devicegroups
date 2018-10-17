@@ -4,7 +4,7 @@
     "en": "Light mode",
     "nl": "Lamp modus"
   },
-  "desc": {
+  "description": {
     "en": "Switch between Color or Temperature mode",
     "nl": "Schakel tussen Kleur of Temperatuur modus"
   },

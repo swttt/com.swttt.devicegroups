@@ -4,7 +4,7 @@
     "en": "Smoke Alarm",
     "nl": "Rookmelder"
   },
-  "desc": {
+  "description": {
     "en": "True when smoke has been detected",
     "nl": "Gaat af als er rook gedetecteerd wordt"
   },
