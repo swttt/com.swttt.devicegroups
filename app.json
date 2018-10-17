@@ -1,11 +1,11 @@
 {
-  "id": "com.swttt.devicegroups.alpha2",
+  "id": "com.swttt.devicegroups.alpha3",
   "sdk": 2,
   "permissions": [
     "homey:manager:api"
   ],
   "name": {
-    "en": "(alpha2) Device Groups"
+    "en": "(alpha3) Device Groups"
   },
   "description": {
     "en": "Makes it possible to group devices and switch all devices within a group.",
