@@ -87,7 +87,7 @@ class DeviceGroupDriver extends Homey.Driver {
       for (let i in data.devices) {
         ids.push(data.devices[i].id);
       }
-      pairingDevice.settings.groupedDevices = ids; //data.devices;
+      pairingDevice.settings.groupedDevices = ids;
 
       callback(null, pairingDevice);
     });

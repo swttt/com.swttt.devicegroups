@@ -10,6 +10,8 @@ class DeviceGroups extends Homey.App {
 
   onInit() {
 
+    // require('inspector').open(9229, '0.0.0.0');
+
     this.log('Device groups is running...');
 
     // Set our library reference
