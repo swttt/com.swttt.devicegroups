@@ -5,8 +5,7 @@
   },
   "description": {
     "en": "Off if all devices on. otherwise on",
-    "value": "none",
     "nl": "N/A"
   },
-  "function": "none"
+  "function": "nand"
 }

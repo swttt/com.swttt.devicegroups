@@ -7,7 +7,6 @@ const Librarian   = require('./lib/librarian');
 class DeviceGroups extends Homey.App {
 
 
-
   onInit() {
 
     this.log('Device groups is running...');
@@ -20,6 +19,9 @@ class DeviceGroups extends Homey.App {
 
     // Prime the API into memory
     this.getApi();
+
+    // initialise the devices object.
+    this.devices = {};
   }
 
 
@@ -34,6 +36,26 @@ class DeviceGroups extends Homey.App {
   async getDevices() {
 
     return await (await this.getApi()).devices.getDevices();
+  }
+
+
+  /**
+   * Proof of concept to store devices with in app, rather than device.
+   *
+   * @todo performance test against storing in the device.
+   * @param id
+   * @returns {Promise<*>}
+   */
+  async getDevice(id) {
+
+    if (!this.devices[id]) {
+
+      this.devices[id] = await (await this.getApi()).devices.getDevice({
+        id : id
+      });
+    }
+
+    return this.devices[id];
   }
 
 

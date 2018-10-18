@@ -5,13 +5,8 @@ const Helper      = require('../../lib/helper');
 
 
 /**
- * @todo consistent naming of grouped vs devices
- * In scope of this application the 'device' is the virtual item.
- * Where as the grouped are the devices that we are working with.
- * However it looks like the original intention was for this device
- * to be called 'GroupDevice'. Whether or not it semantically correct
- * more critical at the moment is its inconsistent use. eg.
- * deviceGroup = this.settings.groupedDevices :: but class = DeviceGroup
+ * Notes about naming convention, this is a DeviceGroup ie. a Device which contains a group.
+ * A groupedDevice is one of the items which this 'DeviceGroup' contains or if you prefer a device which has been grouped.
  */
 class DeviceGroupDevice extends Homey.Device {
 
@@ -26,30 +21,36 @@ class DeviceGroupDevice extends Homey.Device {
     this.settings = await this.getSettings();
     this.capabilities = this.getCapabilities();
     this.interval = false;
+    this.devices = {};
 
     try {
       await this.checkForUpdates();
-      await this.initApi();
       this.initListener();            // don't wait
       this.initPolls();               // don't wait
-      this.updateDevicesLabels();
-      this.updateCapabilityLabels();
     } catch (error) {
       this.error(error);
     }
+  }
+
+  /**
+   * When a device is added, set our label values.
+   *
+   *
+   * @returns {Promise<void>}
+   */
+  async onAdded() {
+    this.log('Adding Device Group ' + this.getName());
+    //this.updateDevicesLabels();
+    //this.updateCapabilityLabels();
   }
 
 
   /**
    * Refresh the settings & capability listeners
    *
-   * Sets device unavailable/available while updating, there is a race condition which is being causes (generally)
-   * by the settings page, where multiple refreshes will be running at once, this plays havoc on the device. (eg. destroying polls)
-   * There is an attempt with in the view to reduce the chances of this by waiting
-   * for a API response however this seems to have issues when unexpected event occur, or even immediate clicks after the call back has returned.
+   * Sets device unavailable/available while updating, regathers the latest, settings emptys all devices for them to rebuilt, and updates the deviceGroup labels.
    *
-   * @todo I believe the end solution is to change the settings to a button click -> set disabled, callback to re-enable.
-   * TAs the i
+   * @todo Previously there was a race condition (generally caused from settings page) which would cause havock, now Intervals have been removed, this requires re-testing.
    * @returns {Promise<boolean>}
    */
   async refresh() {
@@ -58,11 +59,10 @@ class DeviceGroupDevice extends Homey.Device {
     try {
       await this.setUnavailable();              // Set card to unavailable
       this.settings = await this.getSettings(); // update the settings, ensure this happens prior to updating polls/labels
+      this.devices = {};                        // Empty our device cache
       this.updateDevicesLabels();               // update the device label (settings which store current devices)
       this.updateCapabilityLabels();            // update the capability labels (settings which store current capability/methods)
-      this.destroyPoll();                       // destroy the polling
-      this.initPolls();                         // re-initialise the polling
-      await this.setAvailable();                      // set the card back to being available
+      await this.setAvailable();                // set the card back to being available
     } catch (error) {
       this.console.log(error);
       this.error(error);
@@ -82,11 +82,11 @@ class DeviceGroupDevice extends Homey.Device {
    * @returns {Promise<void>}
    */
   async initListener() {
-
+    this.log('Initialising Listener Device Group ' + this.getName());
     // Register all of the capabilities at once with a (async) call back.
     return this.registerMultipleCapabilityListener(this.capabilities, async (valueObj, optsObj) => {
       return this.updateCapability(valueObj, optsObj);
-    }, 500);
+  }, 500);
   }
 
 
@@ -105,14 +105,12 @@ class DeviceGroupDevice extends Homey.Device {
     for (let key in this.settings.groupedDevices) {
 
       // Get the WebAPI reference 'real' device ::
-      let device = await this.api.devices.getDevice({
-        id : this.settings.groupedDevices[key]
-      });
+      let device = await this.getDevice(this.settings.groupedDevices[key]);
 
       // Using the API for the 'real' device, set the capability value, to what ever we just changed.
       for (let capabilityId in valueObj) {
         device.setCapabilityValue(capabilityId, valueObj[capabilityId]).catch((error) => {
-          console.log('Error setting capability ' + capabilityId + ' on ' + this.getName());
+          this.log('Error setting capability ' + capabilityId + ' on ' + this.getName() + ' err' + error.message);
         });
       }
     }
@@ -127,36 +125,32 @@ class DeviceGroupDevice extends Homey.Device {
    * Will then assign the pollDevice to be ran on pollingFrequency. this is how we gather our grouped devices data
    * to ensure that the card/mobile is kept up to date. Will run the first poll ensuring the device is up to date from the start.
    *
-   * @todo Initally I attempted to add a deviceCapability listener to the individual devices, but was unsuccessful.
+   * Initally I attempted to add a deviceCapability listener to the individual devices, but was unsuccessful.
+   *
    * @returns {Promise<boolean>}
    */
   async initPolls() {
-
-    // Run our initial poll immediately.
-    await this.pollDevices();
-
-    // Another hack to compensate for the Ajax settings.
-    if (this.interval === false) {
-      // Set the polling interval based from the settings, once we have the first value.
-      this.interval = setInterval(async () => {
-        this.pollDevices();
-      }, 1000 * this.settings.pollingFrequency); // In seconds
-    }
-
-    return true;
+    this.log('Initialising Polls Device Group ' + this.getName());
+    this.pollDevices();
   }
 
 
   /**
    * Simple function to do a poll
    *
+   * Pauses X seconds then calls self.
+   *
+   * @todo investigate Homey.ManagerCron
+   *
    * Gets the devices values, and then sets the grouped card values.
    * @returns {Promise<void>}
    */
   async pollDevices() {
-    this.setCardValues(
+    await this.setCardValues(
         await this.getDevicesValues()
     );
+
+    setTimeout(this.pollDevices.bind(this), 1);//000 * this.settings.pollingFrequency);
   }
 
 
@@ -166,6 +160,7 @@ class DeviceGroupDevice extends Homey.Device {
    * @returns {Promise<void>}
    */
   async getDevicesValues() {
+
     let values = [];
 
     // Initialise the values
@@ -180,18 +175,18 @@ class DeviceGroupDevice extends Homey.Device {
       // Seems to be prevalent when updating the settings using the API, possibly race condition
       if (this.settings.groupedDevices.hasOwnProperty(x)) {
 
-        // requires the API. @todo investigate whether this should be stored in memory
-        let device = await this.api.devices.getDevice({
-          id : this.settings.groupedDevices[x]
-        });
+        // requires the AP, stored in memory - see getDevice() for details.
+        let device = await this.getDevice(this.settings.groupedDevices[x])
 
         // A refresh is required for the API when accessing capabilities.
-        await device.refreshCapabilities();
+        // await device.refreshCapabilities();
 
         // Loop through each of the capabilities checking each of the devices value.
         for (let i in this.capabilities) {
           values[this.capabilities[i]].push(device.state[this.capabilities[i]]);
         }
+
+        device = null;
       }
 
     }
@@ -206,39 +201,44 @@ class DeviceGroupDevice extends Homey.Device {
    * setCardValues will determine what value each of the capabilities of this device should be then assigns it
    *
    * @param values
-   * @returns {Promise<void>}
+   * @returns {Promise<boolean>}
    */
   async setCardValues(values) {
+
+    // DEBUG force block scope variable, sanity check for memory debugging. @todo to be removed.
+    let a = {key: null, value: null, method : null, type: null}
 
     // loop through each of the capabilities calculating the values.
     for (let i in this.capabilities) {
 
-      // Only bother getting the capability value .. if it is getable.
-      if (Homey.app.library.getCapability(this.capabilities[i]).getable) {
+      // Aliases
+      a.key = this.capabilities[i];                           // Alias the capability key
+      a.value = values[a.key];                                // Alias the value
+      a.method = this.settings.capabilities[a.key].method;    // Alias the method we are going to use
+      a.type = Homey.app.library.getCapability(a.key).type;   // Alias the data type
 
-        // Aliases
-        let key = this.capabilities[i];                         // Alias the capability key
-        let value = values[key];                                // Alias the value
-        let method = this.settings.capabilities[key].method;    // Alias the method we are going to use
-        let type = Homey.app.library.getCapability(key).type;        // Alias the data type
+      // if the method is false - its disabled if it's set to ignore, don't update use the card behaviour.
+      if (a.method !== false && a.method !== 'ignore') {
 
-        // if the method is false - its disabled if it's set to ignore, don't update use the card behaviour.
-        if (method !== false && method !== 'ignore') {
+        // Calculate our value using our function
+        a.value = Helper[Homey.app.library.getMethod(a.method).function](a.value);
 
-          // Calculate our value using our function
-          value = Helper[Homey.app.library.getMethod(method).function](value);
+        // Convert the value in the to capabilities required type
+        a.value = Helper[a.type](a.value);
 
-          // Convert the value in the to capabilities required type
-          value = Helper[type](value);
-
-          // // Set the capability of the groupedDevice
-          this.setCapabilityValue(key, value).then().catch((error) => {
-            // @todo remove debug message.
-            console.log('setCardValues setCapabilityValue Error: ' + error.message); // DEBUG
-          });
+        try {
+          // Set the capability of the groupedDevice
+          await this.setCapabilityValue(a.key, a.value);
+        } catch (error) {
+          this.log('Error on setting capability value : ' + a.key + ' ' + value + ' err:' +  error.message); // DEBUG
+          throw new error;
         }
       }
     }
+
+    // DEBUG Sanity check for GC, while memory testing @todo to be removed.
+    a = null;
+    return true;
   }
 
 
@@ -248,15 +248,12 @@ class DeviceGroupDevice extends Homey.Device {
    * @returns {Promise<void>}
    */
   async updateDevicesLabels() {
-
+    this.log('Update Device Labels Device Group ' + this.getName());
     let labels = [];
 
     for (let key in this.settings.groupedDevices) {
 
-      // Get the WebAPI reference 'real' device
-      let device = await this.api.devices.getDevice({
-        id : this.settings.groupedDevices[key]
-      });
+      let device = await this.getDevice(this.settings.groupedDevices[key]);
 
       labels.push(device.name);
     }
@@ -270,7 +267,7 @@ class DeviceGroupDevice extends Homey.Device {
    * @returns {Promise<void>}
    */
   async updateCapabilityLabels() {
-
+    this.log('Update Capability Labels Device Group ' + this.getName());
     let labels = [];
     for (let i in this.capabilities) {
 
@@ -278,13 +275,11 @@ class DeviceGroupDevice extends Homey.Device {
       let capability = Homey.app.library.getCapability(this.capabilities[i]);
       let method = this.settings.capabilities[this.capabilities[i]].method
 
-      labels.push(capability.title['en']);
+      labels.push(capability.title[Homey.App.i18n]);
 
       // If we have a method assigned, attach it to our description.
       if (method) {
-
-        // @todo currently hard coded to 'en', allow en/nl
-        labels[labels.length -1] += ' (' + Homey.app.library.getMethod(method).title['en'] + ')';
+        labels[labels.length -1] += ' (' + Homey.app.library.getMethod(method).title[Homey.App.i18n] + ')';
       }
     }
 
@@ -332,23 +327,31 @@ class DeviceGroupDevice extends Homey.Device {
       }
     }
     catch (error) {
-      //@todo exception handing
       throw new error;
     }
     return false;
   }
 
-
   /**
-   * Initialise the API, but getting the API for (current) Homey
-   * and subscribing to the observer.
+   * Gets an API device from the APP, cache it
+   *
+   * Was added as storing the entire device with in a variable, in order to reduce the calls to the API
+   * which appears to have a memory leak where "something" with in there is not getting GC().
+   *
+   * @todo - store the value with in the app rather than the driver - this which will reduce memory usage for groups which share devices.
+   *
+   * @param id
    * @returns {Promise<*>}
    */
-  async initApi() {
-    if (!this.api) {
-      this.api = await Homey.app.api;
+  async getDevice(id) {
+
+    if (!this.devices[id]) {
+      // Get the WebAPI reference 'real' device
+      this.devices[id] = await (await Homey.app.api).devices.getDevice({
+        id : id
+      });
     }
-    return this.api;
+    return this.devices[id];
   }
 
 
@@ -356,18 +359,9 @@ class DeviceGroupDevice extends Homey.Device {
    * Remove the poll when device deleted
    */
   onDeleted() {
-    this.destroyPoll();
+    this.log('Deleting  Device Group ' + this.getName());
   }
 
-
-  /**
-   * Removing device interval polling
-   */
-  destroyPoll() {
-    this.log('Destroying Poll ');
-    clearInterval(this.interval);
-    this.interval = false;
-  }
 }
 
 module.exports = DeviceGroupDevice;

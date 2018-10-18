@@ -1,4 +1,16 @@
+
+
 # Device Groups
+
+Please note alpha3, is compltely stable and optimised, however there is a memory leak with in the Athom code,
+In order to enable full functionality uncomment line 182 of device.js (await device.refreshCapabilities()), this will have the side
+effect of causing memory to increase continuous until the soft ceiling of 100MB.
+
+As this is Athom code which I have no control over, a fix by them or a completely new approach is required.
+
+---
+
+
 
 With this app you can group devices with the same capabilities as one device.
 

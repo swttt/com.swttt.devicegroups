@@ -18,8 +18,6 @@
 
 ### Performance
 
-- Investigate storing the groupedDevices with in device class rather then calling api on every call. 
-
 
 ### Testing
 
@@ -29,3 +27,4 @@ https://docs.google.com/spreadsheets/d/1GAjOZUtZgUeg95zHC7CNl6wXo-iqTMqeUiyN16OX
 ### Future
 - Move all i18n back into the locales folder/structure, instead of the homey-lite.
 - Update default polling frequency based off of the specific capability. 
+- App GroupDeviced - GetIcon - Display on settings/pair
