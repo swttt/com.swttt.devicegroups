@@ -125,7 +125,7 @@ class DeviceGroupDevice extends Homey.Device {
    * Will then assign the pollDevice to be ran on pollingFrequency. this is how we gather our grouped devices data
    * to ensure that the card/mobile is kept up to date. Will run the first poll ensuring the device is up to date from the start.
    *
-   * Initally I attempted to add a deviceCapability listener to the individual devices, but was unsuccessful.
+   * Initially I attempted to add a deviceCapability listener to the individual devices, but was unsuccessful.
    *
    * @returns {Promise<boolean>}
    */
@@ -231,8 +231,10 @@ class DeviceGroupDevice extends Homey.Device {
           await this.setCapabilityValue(a.key, a.value);
         } catch (error) {
           this.log('Error on setting capability value : ' + a.key + ' ' + value + ' err:' +  error.message); // DEBUG
+
           throw new error;
         }
+
       }
     }
 
