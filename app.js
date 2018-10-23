@@ -9,9 +9,10 @@ class DeviceGroups extends Homey.App {
 
   onInit() {
 
-    // require('inspector').open(9229, '0.0.0.0');
-
     this.log('Device groups is running...');
+
+    // Debugging tool
+    // require('inspector').open(9229, '0.0.0.0');
 
     // Set our library reference
     this.library = new Librarian();
@@ -22,7 +23,8 @@ class DeviceGroups extends Homey.App {
     // Prime the API into memory
     this.getApi();
 
-    // initialise the devices object.
+    // Initialise the devices objects.
+    // Stores all API devices used, as there seems to be a leak when calling the API for the device.
     this.devices = {};
   }
 
@@ -42,6 +44,11 @@ class DeviceGroups extends Homey.App {
 
 
   /**
+   * Gets an API device from the APP, cache it
+   *
+   * Was added as storing the entire device with in a variable, in order to reduce the calls to the API
+   * which appears to have a memory leak where "something" with in there is not getting GC().
+   *
    * Proof of concept to store devices with in app, rather than device.
    *
    * @todo performance test against storing in the device.

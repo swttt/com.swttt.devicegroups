@@ -2,24 +2,18 @@
 
 # Device Groups
 
-Please note alpha3, is compltely stable and optimised, however there is a memory leak with in the Athom code,
-In order to enable full functionality uncomment line 182 of device.js (await device.refreshCapabilities()), this will have the side
-effect of causing memory to increase continuous until the soft ceiling of 100MB.
-
-As this is Athom code which I have no control over, a fix by them or a completely new approach is required.
-
----
-
-
-
 With this app you can group devices with the same capabilities as one device.
 
-After installing add a new groupingDevices from the devices tab.
-Now select the group device's class. (e.g. Light).
-On the next page you will see all the capabilities supported by this class, now chose the ones you need. (e.g. onoff and dim).
-Now on the last page you will find all devices that match these capabilities, select the devices you want to group and finish the pairing process.
+1) After installing, to add a new Device Group, select "Device Groups" from the add new device modal popup.
 
-Now you have one device to control all the grouped devices.
+2) Now select the group device's class. (e.g. Light).
+On the next page you will see all the capabilities supported by this class.
+ 
+3) Now chose the ones you need. (e.g. onoff and dim, temperature sensor).
+
+4) Now on the last page you will find all devices that match these capabilities, select the devices you want to group and finish the pairing process.
+
+5) Now you have one device to control all the grouped devices.
 
 
 ---
@@ -27,14 +21,14 @@ Now you have one device to control all the grouped devices.
 ### Device Groups Settings
 
 There are two sets of settings associated with device groups, first the settings available from the device group card. Which offers overview information 
-ability to change the frequency of how often devices are checked for changes. 
+ only.
 
-More importantly is the application settings, which can be accessed by click on your Homeys settings then the Device Groups link. 
+More importantly there is the application settings, which can be accessed by clicking on your Homeys settings then the "Device Groups" link. 
 It is from here, 
 
 - You can change which devices are in a group. eg. *Add or remove a new light to a group*
 - Set the feedback information for a specific group eg. *The On off button should only be on if all lights are on.*
-- How grouped information is calculated for a specific capability on a specific group. - *Grouped temperature sensors should display the average of the entire group.*
+- How grouped information is calculated for a specific capability on a specific group. - *Grouped temperature sensors upstairs should display the average of the entire group.*
 
 
 ---
@@ -64,6 +58,18 @@ This is to allow testing with out breaking any existing devices/flows.
 
 ### Changelog
 
+##### 1.2.0-alpha4
+
+- Change polling to event listener on groupedDevice state change
+- Add placeholder icons
+- Add validation code for use in future
+- move method names to locale
+
+
+##### 1.2.0-alpha3
+
+- Store devices in memory to reduce memory pressure.
+- Update catalog, making it consistent name convention/order
 
 ##### 1.2.0-alpha2
 

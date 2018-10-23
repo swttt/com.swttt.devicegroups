@@ -20,9 +20,73 @@
     }
   },
   "method" : {
+    "all" : {
+      "title" : "On if all on",
+      "description" : "On if all devices are on. otherwise off"
+    },
+    "always" : {
+      "title" : "Always On",
+      "description" : "Always returns to on"
+    },
     "any" : {
-      "title" : "wip",
-      "description" : "wip"
+      "title" : "On if any on",
+      "description" : "On if any devices are on"
+    },
+    "highest" : {
+      "title" : "Highest Value",
+      "description" : "The highest value of the all the grouped device"
+    },
+    "ignore" : {
+      "title" : "Ignore Devices",
+      "description" : "Don't update, only use values set by the card"
+    },
+    "lowest" : {
+      "title" : "Lowest Value",
+      "description" : "The lowest value of the all the grouped device"
+    },
+    "max" : {
+      "title" : "Maximum value",
+      "description" : "The value of the device with the largest value"
+    },
+    "mean" : {
+      "title" : "Mean Average",
+      "description" : "The average your are used to (sum/count)"
+    },
+    "median" : {
+      "title" : "Median Average",
+      "description" : "The value of the device in the middle"
+    },
+    "min" : {
+      "title" : "Minimum Value",
+      "description" : "The value of the device with the smallest value"
+    },
+    "mode" : {
+      "title" : "Mode Average",
+      "description" : "The value which the most devices has"
+    },
+    "most" : {
+      "title" : "Most Devices",
+      "description" : "On if at least half devices are on"
+    },
+    "never" : {
+      "title" : "Never On",
+      "description" : "Never on, always returns to off"
+    },
+    "none" : {
+      "title" : "On unless all on",
+      "description" : "Off if all devices are on, otherwise on"
+    },
+    "sum" : {
+      "title" : "Total Value",
+      "description" : "The sum of all the grouped device values"
+    },
+    "nor" : {
+      "title" : "On if None on",
+      "description" : "On if all devices are off, otherwise off"
+    },
+    "xor" : {
+      "title" : "On unless all on or off",
+      "description" : "Off when all devices are off or all devices are on"
     }
   }
 }

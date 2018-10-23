@@ -1,11 +1,11 @@
 {
-  "id": "com.swttt.devicegroups.alpha3",
+  "id": "com.swttt.devicegroups.alpha",
   "sdk": 2,
   "permissions": [
     "homey:manager:api"
   ],
   "name": {
-    "en": "(alpha3) Device Groups"
+    "en": "(alpha) Device Groups"
   },
   "description": {
     "en": "Makes it possible to group devices and switch all devices within a group.",
@@ -104,28 +104,6 @@
             "value": "Unknown",
             "hint": {
               "en": "To change which devices are with in a group, please go to the Homey settings page and click on the Device Groups Settings"
-            }
-          }
-        ]
-      },
-      {
-        "type": "group",
-        "label": {
-          "en": "General Settings"
-        },
-        "children": [
-          {
-            "id": "pollingFrequency",
-            "type": "number",
-            "label": {
-              "en": "Polling frequency"
-            },
-            "value": 5,
-            "attr": {
-              "min": 3
-            },
-            "hint": {
-              "en": "How often to poll devices in a group for changes, in seconds."
             }
           }
         ]
