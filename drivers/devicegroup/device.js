@@ -1,8 +1,7 @@
 'use strict';
 
-const Homey       = require('homey');
-const Helper      = require('../../lib/helper');
-
+const Homey = require('homey');
+const Helper = require('../../lib/helper');
 
 /**
  * Notes about naming convention, this is a DeviceGroup ie. a Device which contains a group.
@@ -10,7 +9,6 @@ const Helper      = require('../../lib/helper');
  *
  * i: capability key, x: groupedDevice key
  *
- * @todo test changing settings
  * @todo bug on first capability until reload
  * @todo bug where devices not showing in 'getDevices' until restart?
  */
@@ -45,6 +43,8 @@ class DeviceGroupDevice extends Homey.Device {
     } catch (error) {
       this.error(error);
     }
+
+    // Let the console know we are done with out init
     this.log('Completed Initialising ' + this.getName());
   }
 
@@ -81,13 +81,11 @@ class DeviceGroupDevice extends Homey.Device {
 
     await this.load();
     try {
-      // await this.setUnavailable();              // Set card to unavailable
       this.updateDevicesLabels();
       this.updateCapabilityLabels();
       await this.destroyEvents();
       await this.initEvents();
       await this.initValues();
-      // await this.setAvailable();                // Set the card back to available
     } catch (error) {
       this.console.log(error);
       this.error(error);
@@ -174,7 +172,6 @@ class DeviceGroupDevice extends Homey.Device {
    * Will initialise the states by adding an event when ever a groupedDevice state (capability) is changed.
    * This event will gather the values of the groupedDevices capabilities and then update the deviceGroup card/mobile values.
    *
-   * @todo make sure if we init after settings update - that two even listeners are not created
    * @returns {Promise<void>}
    */
   async initEvents() {
@@ -196,8 +193,6 @@ class DeviceGroupDevice extends Homey.Device {
 
         // Set our event listener
         device.on('$state', this.events[this.settings.groupedDevices[x]]);
-
-        device = null; // @todo remove GC should handle this.
       }
     }
   }
@@ -286,16 +281,17 @@ class DeviceGroupDevice extends Homey.Device {
     // If no capability is sent set all capabilities.
     capabilities = (capabilities) ? capabilities : this.capabilities;
 
-    // DEBUG force block scope variable, sanity check for memory debugging. @todo to be removed.
+    // force block scope variable, sanity check for memory debugging.
     let a = {key: null, value: null, method : null, type: null}
 
     // loop through each of the capabilities calculating the values.
     for (let i in capabilities) {
+
       // Aliases
       a.key = capabilities[i];                                // Alias the capability key
       a.value = values[a.key];                                // Alias the value
       a.method = this.settings.capabilities[a.key].method;    // Alias the method we are going to use
-      a.capability = Homey.app.library.getCapability(a.key);   // Alias the capability
+      a.capability = Homey.app.library.getCapability(a.key);  // Alias the capability
 
       // if the method is false - its disabled if it's set to ignore, don't update use the card behaviour.
       if (a.method !== false && a.method !== 'ignore') {
@@ -320,8 +316,6 @@ class DeviceGroupDevice extends Homey.Device {
         }
       }
     }
-
-    a = null; // @todo remove GC should handle this.
     return true;
   }
 
@@ -336,7 +330,6 @@ class DeviceGroupDevice extends Homey.Device {
     let labels = [];
 
     for (let x in this.settings.groupedDevices) {
-
       let device = await this.getDevice(this.settings.groupedDevices[x]);
       labels.push(device.name);
     }
@@ -358,6 +351,7 @@ class DeviceGroupDevice extends Homey.Device {
 
     for (let i in this.capabilities) {
 
+      // Alias
       a.capability = Homey.app.library.getCapability(this.capabilities[i]);
       a.method = this.settings.capabilities[this.capabilities[i]].method
 
@@ -370,7 +364,6 @@ class DeviceGroupDevice extends Homey.Device {
     }
 
     this.setSettings({labelCapabilities : labels.join(', ')});
-    a = null; // @todo remove GC should handle this.
     return true;
   }
 
@@ -425,16 +418,11 @@ class DeviceGroupDevice extends Homey.Device {
    * Was added as storing the entire device with in a variable, in order to reduce the calls to the API
    * which appears to have a memory leak where "something" with in there is not getting GC().
    *
-   * @todo - Performance testing storing devices against the app rather than deviceGroup, remove this function if positive result.
-   *
    * @param id
    * @returns {Promise<*>}
    */
   async getDevice(id) {
-
-    // Performance test storing against the app rather than device.
     return await Homey.app.getDevice(id);
-
   }
 
   /**
@@ -456,9 +444,7 @@ class DeviceGroupDevice extends Homey.Device {
 
       // Loop ALL grouped devices
       for (let x in this.settings.groupedDevices) {
-
         if (this.events.hasOwnProperty(this.settings.groupedDevices[x])) {
-
           let device = await this.getDevice(this.settings.groupedDevices[x]);
           await device.removeListener('$state', this.events[this.settings.groupedDevices[x]]);
           this.events[this.settings.groupedDevices[x]] = null; // @todo GC should handle this

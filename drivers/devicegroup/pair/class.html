@@ -1,61 +1,46 @@
+<script src='../../../assets/vue.min.js'></script>
+<script>
+  Homey.setTitle('Choose a device class');
+  Homey.emit('startedClasses', null, function (err, result) {
+    new Vue({
+      el: '#all-classes',
+      data: {
+        isLoading: false,
+        classes: result,
+        i18n: Homey.getLanguage(function (err, result) {
+          return (err) ? 'en' : result;
+        }),
+      },
+      methods:{
+        addClass(deviceclass) {
+          Homey.emit('addClass', {'class': deviceclass}, function (err, result) {
+            if(err){console.log(err); return;}
+              Homey.nextView();
+          });
+        },
+        getTitle(value, i18n) {
+          return (value.title.hasOwnProperty(i18n)) ? value.title[i18n] : value.title.en;
+        }
+      }
+    });
+  });
+</script>
 <style>
   [v-cloak] {
     display: none;
   }
 </style>
-<script src='../../../assets/vue.min.js'></script>
-<script>
-  Homey.setTitle('Choose a device class');
-
-  Homey.emit('startedClasses', null, function (err, result) {
-    new Vue({
-      el      : '#all-classes',
-      data    : {
-        isLoading : false,
-        classes   : result,
-        i18n      : Homey.getLanguage(function (err, result) {
-          return (err) ? 'en' : result;
-        }),
-      },
-      methods : {
-        addClass(deviceclass) {
-          Homey.emit('addClass', {'class' : deviceclass}, function (err, result) {
-            if (err) {
-              console.log(err);
-              return;
-            }
-            Homey.nextView();
-          });
-        },
-        getTitle(value, i18n) {
-          // Future proofing for new languages
-          if (value.title.hasOwnProperty(i18n)) {
-            return value.title[i18n];
-          } else {
-            return value.title.en;
-          }
-        }
-      }
-    });
-  });
-
-
-</script>
 <div id="all-classes">
-
   <i v-if='isLoading' class="loading fa fa-cog fa-spin"></i>
-
   <template v-cloak>
-    <ul id="devices-list">
-      <li v-for="(value, key) in classes" v-on:click="addClass(key)" class="device">
-        <label for="device" class="name">
-          <div class="overlay"></div>
-          <span class="icon"
-                v-bind:style="{WebkitMaskImage: 'url(/app/com.swttt.devicegroups.alpha/drivers/devicegroup/assets/icons/' + key + '.svg)'}"></span>
-          <span class="name" tabindex="-1">{{getTitle(value, i18n)}}</span>
-        </label>
-      </li>
-    </ul>
+  <ul id="devices-list">
+    <li v-for="(value, key) in classes"  v-on:click="addClass(key)" class="device">
+      <label for="device" class="name">
+        <div class="overlay"></div>
+        <span class="icon" v-bind:style="{WebkitMaskImage: 'url(/app/com.swttt.devicegroups.beta/drivers/devicegroup/assets/icons/' + key + '.svg)'}"></span>
+        <span class="name" tabindex="-1">{{getTitle(value, i18n)}}</span>
+      </label>
+    </li>
+  </ul>
   </template>
 </div>
-

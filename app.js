@@ -1,18 +1,85 @@
 'use strict';
 
 const Homey = require('homey');
-const {HomeyAPI} = require('./lib/athom-api.js');
-const Librarian   = require('./lib/librarian');
+const { HomeyAPI } = require('./lib/athom-api.js');
+const Librarian = require('./lib/librarian');
 
 class DeviceGroups extends Homey.App {
 
+  getApi() {
+    if (!this.api) {
+      this.api = HomeyAPI.forCurrentHomey();
+    }
+    return this.api;
+  }
+
+  async getDevices() {
+    const api = await this.getApi();
+    return await api.devices.getDevices();
+  }
+
+  /**
+   * Gets an API device from the APP, cache it
+   *
+   * Was added as storing the entire device with in a variable, in order to reduce the calls to the API
+   * which appears to have a memory leak where "something" with in there is not getting GC().
+   *
+   * @param id
+   * @returns {Promise<*>}
+   */
+  async getDevice(id) {
+    if (!this.devices[id]) {
+      this.devices[id] = await (await this.getApi()).devices.getDevice({
+        id : id
+      });
+    }
+    return this.devices[id];
+  }
+
+  async getGroups() {
+    return Homey.ManagerDrivers.getDriver('devicegroup').getDevices();
+  }
+
+  async getGroup(id) {
+    let device = await Homey.ManagerDrivers.getDriver('devicegroup').getDevice({ id });
+    if (device instanceof Error) throw device;
+    return device;
+  }
+
+  async setDevicesForGroup(id, devices) {
+    let group = await this.getGroup(id);
+
+    // Find all devices that should be grouped.
+    let allDevices     = await this.getDevices();
+
+    // Looks like vue (upon settings) is sending a padded array with undefined items
+    // Checks that the devices sent exist in allDevices, filters out any that don't.
+    let groupedDevices = Object.values(allDevices).filter(d => devices.includes(d.id));
+
+    let ids = [];
+    for (let i in grouped) {
+      ids.push(grouped[i].id);
+    }
+    group.settings.groupedDevices = ids;
+
+    // Update the group settings.
+    let result = await group.setSettings(group.settings);
+    await group.refresh();
+    return result;
+  }
+
+  async setMethodForCapabilityOfGroup(id, capabilities) {
+    let group = await this.getGroup(id);
+    group.settings.capabilities = capabilities;
+
+    // Update the group settings.
+    let result = await group.setSettings(group.settings);
+    await group.refresh();
+    return result;
+  }
 
   onInit() {
-
     this.log('Device groups is running...');
-
-    // Debugging tool
-    // require('inspector').open(9229, '0.0.0.0');
 
     // Set our library reference
     this.library = new Librarian();
@@ -23,101 +90,10 @@ class DeviceGroups extends Homey.App {
     // Prime the API into memory
     this.getApi();
 
-    // Initialise the devices objects.
-    // Stores all API devices used, as there seems to be a leak when calling the API for the device.
+    // Initialise the devices objects. Stores all API devices used, @see getDevice()
     this.devices = {};
   }
 
-
-  getApi() {
-    if (!this.api) {
-      this.api = HomeyAPI.forCurrentHomey();
-    }
-    return this.api;
-  }
-
-
-  async getDevices() {
-
-    return await (await this.getApi()).devices.getDevices();
-  }
-
-
-  /**
-   * Gets an API device from the APP, cache it
-   *
-   * Was added as storing the entire device with in a variable, in order to reduce the calls to the API
-   * which appears to have a memory leak where "something" with in there is not getting GC().
-   *
-   * Proof of concept to store devices with in app, rather than device.
-   *
-   * @todo performance test against storing in the device.
-   * @param id
-   * @returns {Promise<*>}
-   */
-  async getDevice(id) {
-
-    if (!this.devices[id]) {
-
-      this.devices[id] = await (await this.getApi()).devices.getDevice({
-        id : id
-      });
-    }
-
-    return this.devices[id];
-  }
-
-
-  async getGroups() {
-
-    return Homey.ManagerDrivers.getDriver('devicegroup').getDevices();
-  }
-
-  async getGroup(id) {
-
-    let device = await Homey.ManagerDrivers.getDriver('devicegroup').getDevice({id});
-    if (device instanceof Error) throw device;
-    return device;
-  }
-
-
-  async setDevicesForGroup(id, devices) {
-
-    let group = await this.getGroup(id);
-
-    // Find all devices that should be grouped.
-    let allDevices = await this.getDevices();
-
-    // Looks like vue (upon settings) is sending a padded array with undefined items
-    // Checks that the devices sent exist in allDevices, filters out any that dont.
-    let grouped = Object.values(allDevices).filter(d => devices.includes(d.id));
-
-    let ids = [];
-    for (let i in grouped) {
-      ids.push(grouped[i].id);
-    }
-
-    group.settings.groupedDevices = ids;
-
-    // Update the group settings.
-    let result = await group.setSettings(group.settings);
-    await group.refresh();
-
-    return result;
-  }
-
-
-  async setMethodForCapabilityOfGroup(id, capabilities) {
-
-    let group = await this.getGroup(id);
-
-    group.settings.capabilities = capabilities;
-
-    // Update the group settings.
-    let result = await group.setSettings(group.settings);
-    await group.refresh();
-    return result;
-  }
 }
 
 module.exports = DeviceGroups;

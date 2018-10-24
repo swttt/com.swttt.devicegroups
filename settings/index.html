@@ -1,293 +1,261 @@
 <!doctype html>
 <html>
-<head>
-  <script src='/homey.js' data-origin='settings'></script>
-  <link rel='stylesheet' href='../assets/semantic-custom.min.css'>
-  <script src='../assets/vue.min.js'></script>
-  <style>
-    .capabilities.list code {
-      padding: 3px 5px;
-      border: 1px solid #ccc;
-      background: #eee;
-      border-radius: 3px;
-    }
+  <head>
+    <script src='/homey.js' data-origin='settings'></script>
+    <link rel='stylesheet' href='../assets/semantic-custom.min.css'>
+    <script src='../assets/vue.min.js'></script>
+    <style>
+      .capabilities.list code {
+        padding       : 3px 5px;
+        border        : 1px solid #ccc;
+        background    : #eee;
+        border-radius : 3px;
+      }
 
-    .device-class {
-      font-family: monospace !important;
-      font-weight: normal !important;
-    }
+      .device-class {
+        font-family : monospace !important;
+        font-weight : normal !important;
+      }
 
-    .device-class img {
-      height: 17px !important;
-      vertical-align: middle !important;
-      opacity: 0.5;
-      padding: 0 0 0 0.5em;
-      margin-right: 0 !important;
-    }
-  </style>
-</head>
-<body>
-<div id='app-settings-view' style='padding: 3px'>
-  <div class='ui attached message'>
-    <div class='ui right floated basic segment' style='padding: 0; margin: 0'>
-      <select :class='{ ui : true, dropdown : true, disabled : ! groups.length }' @change='groupSelected'>
-        <option disabled selected data-i18n="_.Select device group">Select device group:</option>
-        <option v-for='group in groups' :value='group.id'>{{ group.name }}</option>
-      </select>
-    </div>
-    <div data-i18n="_.Device Groups Editor" class='header'>Device Groups Editor</div>
-    <p data-i18n="_.Edit your device groups">Edit your device groups</p>
-  </div>
-  <div class='ui bottom attached segment'>
-    <div class='ui loading basic segment' v-if='isLoading'></div>
-    <table class='ui definition table' v-if='selectedGroup'>
-      <tbody>
-      <tr>
-        <td data-i18n="_.Device Group Name">Device Group Name:</td>
-        <td :title='selectedGroup.id'>{{ selectedGroup.name }}</td>
-      </tr>
-      <tr>
-        <td data-i18n="_.Device Class">Device Class:</td>
-        <td>
-          <div class='ui basic image label device-class'>
-            <img
-                    style='height: 17px!important; vertical-align: middle!important'
-                    :src='`../drivers/devicegroup/assets/icons/${ selectedGroup.class }.svg`'>
-            {{ category.i18n }}
-          </div>
-      </tr>
-      <tr>
-        <td data-i18n="_.Capabilities">Capabilities:</td>
-        <td>
-          <div class='ui compact mini horizontal list capabilities'>
-            <div class='item' v-for='capability in capabilities'>
-              <div class='content'>
-                <div class="ui labeled input">
-                  <div class="ui label" style="text-align:center;border-radius:.28571429rem;">
-                    <div>{{ capability.i18n }}</div>
-                    <template v-if="capability.available.length">
-                      <select v-model="capability.selected" @change="onCapabilityMethodChanged"
-                              v-bind:data-capability="capability.key"
-                              class="ui input compact mini selection dropdown"
-                              style="margin-top:1em;"
-                              :disabled="isUpdating"
-                        >
-                        <option v-for="option in capability.available" v-bind:value="option"
-                                v-bind:title="option.description"
-                                v-bind:data-method="option.value">
-                          {{ option.i18n }}
-                        </option>
-                      </select>
-                    </template>
+      .device-class img {
+        height         : 17px !important;
+        vertical-align : middle !important;
+        opacity        : 0.5;
+        padding        : 0 0 0 0.5em;
+        margin-right   : 0 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id='app-settings-view' style='padding: 3px'>
+      <div class='ui attached message'>
+        <div class='ui right floated basic segment' style='padding: 0; margin: 0'>
+          <select :class='{ ui : true, dropdown : true, disabled : ! groups.length }' @change='groupSelected' >
+            <option disabled selected data-i18n="_.Select device group">Select device group:</option>
+            <option v-for='group in groups' :value='group.id'>{{ group.name }}</option>
+          </select>
+        </div>
+        <div data-i18n="_.Device Groups Editor" class='header'>Device Groups Editor</div>
+        <p data-i18n="_.Edit your device groups">Edit your device groups</p>
+      </div>
+      <div class='ui bottom attached segment'>
+        <div class='ui loading basic segment' v-if='isLoading'></div>
+        <table class='ui definition table' v-if='selectedGroup'>
+          <tbody>
+            <tr>
+              <td data-i18n="_.Device Group Name">Device Group Name:</td>
+              <td :title='selectedGroup.id'>{{ selectedGroup.name }}</td>
+            </tr>
+            <tr>
+              <td data-i18n="_.Device Class">Device Class:</td>
+              <td>
+                <div class='ui basic image label device-class'>
+                  <img 
+                    style = 'height: 17px!important; vertical-align: middle!important'
+                    :src  = '`../drivers/devicegroup/assets/icons/${ selectedGroup.class }.svg`'>
+                  {{ category.i18n }}
+                </div>
+            </tr>
+            <tr>
+              <td data-i18n="_.Capabilities">Capabilities:</td>
+              <td>
+                <div class='ui compact mini horizontal list capabilities'>
+                  <div class='item' v-for='capability in capabilities'>
+                    <div class='content'>
+                      <div class="ui labeled input">
+                        <div class="ui label" style="text-align:center;border-radius:.28571429rem;">
+                          <div>{{ capability.i18n }}</div>
+                          <template v-if="capability.available.length">
+                            <select v-model="capability.selected" @change="onCapabilityMethodChanged"
+                                    v-bind:data-capability="capability.key"
+                                    class="ui input compact mini selection dropdown"
+                                    style="margin-top:1em;"
+                                    :disabled="isUpdating"
+                              >
+                              <option v-for="option in capability.available" v-bind:value="option"
+                                      v-bind:title="option.description"
+                                      v-bind:data-method="option.value">
+                                {{ option.i18n }}
+                              </option>
+                            </select>
+                          </template>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-      </tr>
-      <tr>
-        <td data-i18n="_.Devices in group" class='top aligned'>Devices in group:</td>
-        <td>
-          <div class='ui loading basic segment' v-if='isLoadingDevices'></div>
-          <div class='ui middle aligned divided relaxed list'>
-            <div class='item' v-for='device in allDevicesMatchingCapabilities'>
-              <div :class='{
+              </td>
+            </tr>
+            <tr>
+              <td data-i18n="_.Devices in group" class='top aligned'>Devices in group:</td>
+              <td>
+                <div class='ui loading basic segment' v-if='isLoadingDevices'></div>
+                <div class='ui middle aligned divided relaxed list'>
+                  <div class='item' v-for='device in allDevicesMatchingCapabilities'>
+                    <div :class='{
                       ui          : true,
                       checked     : true,
                       disabled    : isUpdating,
                       "read-only" : isUpdating,
                       checkbox    : true,
                     }'>
-                <input type='checkbox' class="check-devices" :value='device.id' v-model='groupedDevices' :disabled="isUpdating">
-                <label>
-                  {{ device.name }} (<i>{{ device.zone.name }}</i>)
-                </label>
-              </div>
-            </div>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-<script>
-  function onHomeyReady(Homey) {
-    Homey.ready();
-    new Vue({
-      el       : '#app-settings-view',
-      data     : {
-        groups           : [],
-        selectedGroup    : null,
-        groupedDevices   : [],
-        isLoading        : false,
-        isLoadingDevices : false,
-        isUpdating       : false,
-        isTest           : true,
-        allDevices       : [],
-        i18n             : 'en',
-        library          : {},
-        category         : 'category',
-        capabilities     : {}
-      },
-      mounted() {
-
-        // Retrieve list of groups.
-        Homey.api('GET', '/group', (err, groups) => {
-          if (err) return Homey.alert(err);
-          this.groups = groups;
-        });
-
-        // Retrieve our library.
-        Homey.api('GET', '/library', (err, library) => {
-          if (err) return Homey.alert(err);
-          this.library = library;
-        });
-
-        // Get our language, force it to always be en or nl
-        Homey.getLanguage(function (err, result) {
-          this.i18n = (err) ? 'en' : ((result == 'nl') ? 'nl' : 'en');
-        });
-
-      },
-      watch    : {
-
-        groupedDevices(newValue, oldValue) {
-
-          // Looks like this is another hack to attempt for the watch to no prematurely go off.
-          if ( ( this.isLoading || this.isTest ) && oldValue.length === 0 ) return;
-
-          this.isUpdating = true;
-
-          // Gets called when changing groups : disable it if that's the case.
-          // @todo this is still getting called. On every load
-          // @todo newValue is a padded object, with a bunch of undefined?
-          if (this.selectedGroup) {
-
-
-            Homey.api('PUT', '/group/' + this.selectedGroup.id, newValue, (err) => {
-              this.isUpdating = false;
+                      <input type='checkbox' class="check-devices" :value='device.id' v-model='groupedDevices' :disabled="isUpdating">
+                      <label>
+                        {{ device.name }} (<i>{{ device.zone.name }}</i>)
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script>
+      function onHomeyReady(Homey) {
+        Homey.ready();
+        new Vue({
+          el      : '#app-settings-view',
+          data    : {
+            groups         : [],
+            selectedGroup  : null,
+            groupedDevices : [],
+            isLoading      : false,
+            isUpdating     : false,
+            allDevices     : [],
+            isLoadingDevices : false,
+            isTest           : true,
+            i18n             : 'en',
+            library          : {},
+            category         : 'category',
+            capabilities     : {}
+          },
+          mounted() {
+            // Retrieve list of groups.
+            Homey.api('GET', '/group', (err, groups) => {
               if (err) return Homey.alert(err);
+              this.groups = groups;
             });
-          }
 
-        },
-      },
-      computed : {
+            // Retrieve our library.
+            Homey.api('GET', '/library', (err, library) => {
+              if (err) return Homey.alert(err);
+              this.library = library;
+            });
 
-        // Match all devices that have support the capabilities matching the device group.
-        // Also prevent self-inclusion.
-        allDevicesMatchingCapabilities() {
-          let caps = this.selectedGroup.capabilities;
-          return this.allDevices.filter(device => {
-            return device.data.id !== this.selectedGroup.id && caps.every(cap => device.capabilitiesArray.includes(cap));
-          });
-        }
-      },
-      methods  : {
-
-        onCapabilityMethodChanged(event) {
-          this.isUpdating = true;
-
-          // Seriously? This is 'modern'? FU vue.
-          const selectedMethod = event.target.options[event.target.options.selectedIndex].dataset.method;
-          this.selectedGroup.settings.capabilities[event.target.dataset.capability].method = selectedMethod;
-
-          Homey.api('PUT', '/group/' + this.selectedGroup.id + '/capabilities', this.selectedGroup.settings.capabilities, (err) => {
-
-            this.isUpdating = false;
-            if (err) return Homey.alert(err);
-          });
-        },
-
-        groupSelected(ev) {
-
-          this.isLoading = true;
-          this.isLoadingDevices = true;
-          this.selectedGroup = null;
-          this.groupedDevices = [];
-
-
-          Homey.api('GET', '/group/' + ev.target.value, (err, group) => {
-
-            this.isLoadingDevices = false;
-            this.isLoading = false;
-
-            if (err) return Homey.alert(err);
-
-            this.selectedGroup = group;
-            // this.groupedDevices = (group.settings.groupedDevices || []).map(g => g.id);
-            this.groupedDevices = group.settings.groupedDevices;
-
-            // Get the i18n category name
-            this.category = this.library.categories[this.selectedGroup.class];
-            this.category.i18n = this.category.title[this.i18n];
-
-            // Reset the capabilities.
-            this.capabilities = {};
-
-            // Populate the capabilities
-            for (i in this.selectedGroup.capabilities) {
-
-              let key = this.selectedGroup.capabilities[i];
-
-              this.capabilities[key] = this.library.capabilities[key];
-              this.capabilities[key].key = key;
-              this.capabilities[key].i18n = this.capabilities[key].title[this.i18n];
-              this.capabilities[key].selected = this.library.methods[group.settings.capabilities[key].method];
-
-
-              // Now populate the method i18n titles.
-              for (x in this.capabilities[key].available) {
-
-                if (!this.capabilities[key].available[x].hasOwnProperty('i18n')) {
-                  // Alias
-                  let method = this.capabilities[key].available[x];
-                  this.capabilities[key].available[x] = this.library.methods[method];
-                  this.capabilities[key].available[x].i18n = this.capabilities[key].available[x].title[this.i18n];
-                }
-
+            // Get our language, force it to always be en or nl
+            Homey.getLanguage(function (err, result) {
+              this.i18n = (err) ? 'en' : ((result == 'nl') ? 'nl' : 'en');
+            });
+          },
+          watch : {
+            groupedDevices(newValue, oldValue) {
+              // Looks like this is another hack to attempt for the watch to no prematurely go off.
+              if ( ( this.isLoading || this.isTest ) && oldValue.length === 0 ) return;
+              this.isUpdating = true;
+              // Gets called when changing groups : disable it if that's the case.
+              // @todo this is still getting called. On every load
+              // @todo newValue is a padded object, with a bunch of undefined?
+              if (this.selectedGroup) {
+                Homey.api('PUT', '/group/' + this.selectedGroup.id, newValue, (err) => {
+                  this.isUpdating = false;
+                  if (err) return Homey.alert(err);
+                });
               }
-              this.isTest = false;
             }
-
-            if (!this.allDevices.length) {
-              // this.isLoading = true;
-              this.isLoadingDevices = true;
-              Homey.api('GET', '/devices', (err, devices) => {
-                this.isLoading = false;
-                this.isLoadingDevices = false;
-                if (err) return Homey.alert(err);
-                this.allDevices = devices;
+          },
+          computed: {
+            // Match all devices that have support the capabilities matching the device group.
+            // Also prevent self-inclusion.
+            allDevicesMatchingCapabilities() {
+              let caps = this.selectedGroup.capabilities;
+              return this.allDevices.filter(device => {
+                return device.data.id !== this.selectedGroup.id && caps.every(cap => device.capabilitiesArray.includes(cap));
               });
             }
-          });
-        }
-      }
-    });
-  }
+          },
+          methods : {
+            onCapabilityMethodChanged(event) {
+              this.isUpdating = true;
+              // Seriously? This is 'modern'? FU vue.
+              const selectedMethod = event.target.options[event.target.options.selectedIndex].dataset.method;
+              this.selectedGroup.settings.capabilities[event.target.dataset.capability].method = selectedMethod;
+              Homey.api('PUT', '/group/' + this.selectedGroup.id + '/capabilities', this.selectedGroup.settings.capabilities, (err) => {
+                this.isUpdating = false;
+                if (err) return Homey.alert(err);
+              });
+            },
+            groupSelected(ev) {
+              this.isLoading      = true;
+              this.selectedGroup  = null;
+              this.groupedDevices = [];
+              this.isLoadingDevices = true;
+              Homey.api('GET', '/group/' + ev.target.value, (err, group) => {
+                this.isLoadingDevices = false;
+                this.isLoading = false;
+                if (err) return Homey.alert(err);
+                this.selectedGroup  = group;
 
-  if (typeof Homey === 'undefined') {
-    Homey = {
-      ready : () => {
-      },
-      api   : (method, endpoint, callback) => {
-        setTimeout(() => {
-          return callback(null, [
-            {id : 'foo', name : 'Foo Device'},
-            {id : 'bar', name : 'Bar Device'},
-            {id : 'blah', name : 'Blah Device'},
-          ]);
-        }, 1000);
+                // this.groupedDevices = (group.settings.groupedDevices || []).map(g => g.id);
+                this.groupedDevices = group.settings.groupedDevices;
+
+                // Get the i18n category name
+                this.category = this.library.categories[this.selectedGroup.class];
+                this.category.i18n = this.category.title[this.i18n];
+
+                // Reset the capabilities.
+                this.capabilities = {};
+
+                // Populate the capabilities
+                for (i in this.selectedGroup.capabilities) {
+                  let key = this.selectedGroup.capabilities[i];
+                  this.capabilities[key] = this.library.capabilities[key];
+                  this.capabilities[key].key = key;
+                  this.capabilities[key].i18n = this.capabilities[key].title[this.i18n];
+                  this.capabilities[key].selected = this.library.methods[group.settings.capabilities[key].method];
+
+                  // Now populate the method i18n titles.
+                  for (x in this.capabilities[key].available) {
+                    if (!this.capabilities[key].available[x].hasOwnProperty('i18n')) {
+                      // Alias
+                      let method = this.capabilities[key].available[x];
+                      this.capabilities[key].available[x] = this.library.methods[method];
+                      this.capabilities[key].available[x].i18n = this.capabilities[key].available[x].title[this.i18n];
+                    }
+                  }
+                  this.isTest = false;
+                }
+                if (!this.allDevices.length) {
+                  // this.isLoading = true;
+                  this.isLoadingDevices = true;
+                  Homey.api('GET', '/devices', (err, devices) => {
+                    this.isLoading = false;
+                    this.isLoadingDevices = false;
+                    if (err) return Homey.alert(err);
+                    this.allDevices = devices;
+                  });
+                }
+              });
+            }
+          }
+        });
       }
-    };
-    onHomeyReady(Homey);
-  }
-</script>
-</body>
+      if (typeof Homey === 'undefined') {
+        Homey = {
+          ready: () => {},
+          api  : (method, endpoint, callback) => {
+            setTimeout(() => {
+              return callback(null, [
+                { id : 'foo',  name : 'Foo Device' },
+                { id : 'bar',  name : 'Bar Device' },
+                { id : 'blah', name : 'Blah Device' },
+              ]);
+            }, 1000);
+          }
+        };
+        onHomeyReady(Homey);
+      }
+    </script>
+  </body>
 </html>
-
-

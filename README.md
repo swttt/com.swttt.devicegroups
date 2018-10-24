@@ -1,19 +1,17 @@
-
-
 # Device Groups
 
 With this app you can group devices with the same capabilities as one device.
 
-1) After installing, to add a new Device Group, select "Device Groups" from the add new device modal popup.
+1. After installing, to add a new Device Group, select "Device Groups" from the add new device modal popup.
 
-2) Now select the group device's class. (e.g. Light).
+2. Now select the group device's class. (e.g. Light).
 On the next page you will see all the capabilities supported by this class.
- 
-3) Now chose the ones you need. (e.g. onoff and dim, temperature sensor).
 
-4) Now on the last page you will find all devices that match these capabilities, select the devices you want to group and finish the pairing process.
+3. Now chose the ones you need. (e.g. onoff and dim, temperature sensor).
 
-5) Now you have one device to control all the grouped devices.
+4. Now on the last page you will find all devices that match these capabilities, select the devices you want to group and finish the pairing process.
+
+5. Now you have one device to control all the grouped devices.
 
 
 ---
@@ -102,8 +100,10 @@ This is to allow testing with out breaking any existing devices/flows.
 
 ---
 
-### 1.2.0 Road Map
+### Beta Road Map
 
+- Stablity / Reliablity Performance
+- New Icons
 - Allow All to be selected in setup, to show all capabilities, if performance is not an issue.
 - Update categories to be tiles & addition of icons for all categories. 
-
+- Bug Fixes
