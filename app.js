@@ -47,7 +47,7 @@ class DeviceGroups extends Homey.App {
   }
 
   async setDevicesForGroup(id, devices) {
-    let deviceGroup = await this.getGroup(id);
+    let group = await this.getGroup(id);
 
     // Find all devices that should be grouped.
     let allDevices     = await this.getDevices();
@@ -57,24 +57,24 @@ class DeviceGroups extends Homey.App {
     let groupedDevices = Object.values(allDevices).filter(d => devices.includes(d.id));
 
     let ids = [];
-    for (let i in groupedDevices) {
-      ids.push(groupedDevices[i].id);
+    for (let i in grouped) {
+      ids.push(grouped[i].id);
     }
-    deviceGroup.settings.groupedDevices = ids;
+    group.settings.groupedDevices = ids;
 
     // Update the group settings.
-    let result = await deviceGroup.setSettings(deviceGroup.settings);
-    await deviceGroup.refresh();
+    let result = await group.setSettings(group.settings);
+    await group.refresh();
     return result;
   }
 
   async setMethodForCapabilityOfGroup(id, capabilities) {
-    let deviceGroup = await this.getGroup(id);
-    deviceGroup.settings.capabilities = capabilities;
+    let group = await this.getGroup(id);
+    group.settings.capabilities = capabilities;
 
     // Update the group settings.
-    let result = await deviceGroup.setSettings(deviceGroup.settings);
-    await deviceGroup.refresh();
+    let result = await group.setSettings(group.settings);
+    await group.refresh();
     return result;
   }
 

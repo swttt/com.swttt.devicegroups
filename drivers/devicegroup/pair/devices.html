@@ -78,7 +78,7 @@
   <div v-if="filteredDevices.length > 0" style="text-align:right;font-size:0.9em">
     <small>{{ filteredDevices.length }} Devices</small>
   </div>
-  <div v-else>No Devices Found</div>
+  <div v-else>No Devices Found</div>\
   <ul id="devices-list">
     <li v-if="filteredDevices.length > 0" class="device" v-for="device in filteredDevices">
       <label :for="device.id" class="name">
