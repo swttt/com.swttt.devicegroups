@@ -44,7 +44,7 @@
   <i v-if='isLoading' class="loading fa fa-cog fa-spin"></i>
   <template v-cloak>
   <ul id="devices-list" >
-    <li class="device" v-for="(key, value) in capabilities">
+    <li class="device" v-for="(value, key) in capabilities">
 		<label :for="key" class="name">
 			<div class="overlay"></div>
 			<span class="name" tabindex="-1">{{getTitle(value, i18n)}}</span>
