@@ -51,7 +51,7 @@ If you like this app, then consider buying swttt a beer :)
 
 #### Testing notes
 
-Currently (in alpha testing), this application will **not** overwrite the stable version of the application. Instead installing as "(alpha) Device Groups"
+Currently (in beta testing), this application will **not** overwrite the stable version of the application. Instead installing as "(beta) Device Groups"
 This is to allow testing with out breaking any existing devices/flows. 
 
 ---

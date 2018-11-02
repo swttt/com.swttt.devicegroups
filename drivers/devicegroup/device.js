@@ -381,29 +381,6 @@ class DeviceGroupDevice extends Homey.Device {
       // Upgrade the item with all 1.2.0 features disabled.
       if (!this.store.hasOwnProperty('version')) {
 
-        console.log('Upgrading ' + this.getName());
-
-        let capabilities = await this.getCapabilities();
-        let settings = {capabilities : {}};
-
-        for (let i in capabilities) {
-
-          // Add all the settings which are new to 1.2.0
-          // Default each of method to false (ie disabled).
-          settings.capabilities[capabilities[i]] = {};
-          settings.capabilities[capabilities[i]].method = false;
-        }
-
-        // Gigo check :: that there are capabilities
-        if (Object.keys(settings.capabilities).length) {
-
-          this.setSettings(settings);
-          this.setStoreValue('version', '1.2.0');
-          this.store.version = '1.2.0';
-
-          console.log('Completed ' + this.getName() + ' ' + this.store.version + ' upgrade');
-          return true;
-        }
       }
     } catch (error) {
       throw new error;
