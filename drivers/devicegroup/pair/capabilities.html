@@ -6,45 +6,41 @@
 
 <script>
 
-  Homey.setTitle('Select the capabilities');
-  Homey.emit('startedCapabilities', null, function (err, result) {
-    if (err) {
-      console.log(err);
-      return;
-    }
-
-    new Vue({
-      el      : '#app',
-      data    : {
-        isLoading            : false,
-        capabilities         : result,
-        i18n                 : Homey.getLanguage(function (err, result) {
-          return (err) ? 'en' : result;
-        }),
-        selectedCapabilities : []
-      },
-      methods : {
-        getTitle(value, i18n) {
-          // Future proofing for new languages
-          if (value.title.hasOwnProperty(i18n)) {
-            return value.title[i18n];
-          } else {
-            return value.title.en;
-          }
-        }
-      },
-      watch   : {
-        'selectedCapabilities' : function (val) {
-          Homey.emit('capabilitiesChanged', {'capabilities' : val}, function (err, result) {
-            if (err) {
-              console.log(err);
-              return;
-            }
-          });
+Homey.setTitle('Select the capabilities');
+Homey.emit('startedCapabilities', null, function (err, result) {
+  if (err) {
+    console.log(err);
+    return;
+  }
+  new Vue({
+    el: '#app',
+    data: {
+      isLoading: false,
+      capabilities: result,
+      i18n: Homey.getLanguage(function (err, result) {
+        return (err) ? 'en' : result;
+      }),
+      selectedCapabilities: []
+    },
+    methods : {
+      getTitle(value, i18n) {
+        // Future proofing for new languages
+        if (value.title.hasOwnProperty(i18n)) {
+          return value.title[i18n];
+        } else {
+          return value.title.en;
         }
       }
-    });
+    },
+    watch   : {
+      'selectedCapabilities' : function (val) {
+        Homey.emit('capabilitiesChanged', {'capabilities' : val}, function (err, result) {
+          if(err){console.log(err); return;}
+        });
+      }
+    }
   });
+});
 </script>
 
 <div id="app">

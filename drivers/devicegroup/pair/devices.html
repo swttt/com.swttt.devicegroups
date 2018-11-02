@@ -2,9 +2,7 @@
   [v-cloak] {
     display: none;
   }
-
 </style>
-
 <script>
 
   Homey.setTitle('Select devices to group');
@@ -16,22 +14,22 @@
     var allDevices = result.devices;
     var pairingDevice = result.pairingDevice;
     new Vue({
-      el       : '#all-devices',
-      data     : {
-        isLoading       : false,
-        selectedDevices : [],
-        devices         : {},
-        pairingDevice   : {}
+      el: '#all-devices',
+      data: {
+        isLoading: false,
+        selectedDevices: [],
+        devices: {},
+        pairingDevice: {}
       },
       mounted() {
         this.devices = allDevices;
         this.pairingDevice = pairingDevice;
       },
-      methods  : {},
-      watch    : {
-        'selectedDevices' : function (val) {
+      methods: {},
+      watch: {
+        'selectedDevices': function (val) {
           Homey.emit('devicesChanged', {
-            'devices' : val
+            'devices': val
           }, function (err, result) {
             if (err) {
               console.log(err);
@@ -40,29 +38,26 @@
           });
         }
       },
-      computed : {
+      computed: {
         filteredDevices() {
 
           var capabilities = this.pairingDevice.capabilities;
           var devices = this.devices;
-
           var array = $.map(devices, function (value, index) {
             return [value];
-          })
+          });
 
           // the capabilities to search for const capabilities = capabilities
           const devicesByCapability = array.reduce((result, device) => {
-
             // try to find a capability that is not supported, if one of them is not supported, set includeIt to false
             let includeIt = true
 
             capabilities.forEach(c => {
-              if (!device.capabilities[c]) {
+              if(!device.capabilities[c]){
                 includeIt = false
               }
             });
-
-            if (includeIt) {
+            if (includeIt){
               result.push(device)
             }
             return result
@@ -78,13 +73,11 @@
 
 <div id="all-devices">
   <i v-if='isLoading' class="loading fa fa-cog fa-spin"></i>
-
   <template v-cloak>
     <div v-if="filteredDevices.length > 0" style="text-align:right;font-size:0.9em">
       <smnall>{{ filteredDevices.length }} Devices</smnall>
     </div>
     <div v-else>No Devices Found</div>
-
     <ul id="devices-list">
       <li v-if="filteredDevices.length > 0" class="device" v-for="device in filteredDevices">
         <label :for="device.id" class="name">
@@ -99,6 +92,3 @@
     </ul>
   </template>
 </div>
-
-
-

@@ -6,18 +6,15 @@
       console.log(err);
       return;
     }
-
     Homey.addDevice(result, (err, res) => {
       if (err) {
         console.log(err);
         return;
       }
-
       Homey.emit('done', null, function (err, result) {
         Homey.done();
       });
     })
   });
 </script>
-
 <i class="loading fa fa-cog fa-spin"></i>

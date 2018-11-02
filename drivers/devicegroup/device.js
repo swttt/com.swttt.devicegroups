@@ -1,7 +1,7 @@
 'use strict';
 
-const Homey       = require('homey');
-const Helper      = require('../../lib/helper');
+const Homey = require('homey');
+const Helper = require('../../lib/helper');
 
 
 /**
@@ -63,7 +63,6 @@ class DeviceGroupDevice extends Homey.Device {
 
     // Sanity Check
     await this.setAvailable();
-
   }
 
 
@@ -81,13 +80,11 @@ class DeviceGroupDevice extends Homey.Device {
 
     await this.load();
     try {
-      // await this.setUnavailable();              // Set card to unavailable
       this.updateDevicesLabels();
       this.updateCapabilityLabels();
       await this.destroyEvents();
       await this.initEvents();
       await this.initValues();
-      // await this.setAvailable();                // Set the card back to available
     } catch (error) {
       this.console.log(error);
       this.error(error);
@@ -133,6 +130,7 @@ class DeviceGroupDevice extends Homey.Device {
    */
   async initListener() {
     this.log('Initialising Listener Device Group ' + this.getName());
+
     // Register all of the capabilities at once with a (async) call back.
     return this.registerMultipleCapabilityListener(this.capabilities, async (valueObj, optsObj) => {
       return this.updateCapability(valueObj, optsObj);
@@ -151,6 +149,7 @@ class DeviceGroupDevice extends Homey.Device {
    */
   async updateCapability(valueObj, optsObj) {
     this.log('Update Capability Device Group ' + this.getName());
+
     // Loop through each 'real' device in the group
     for (let x in this.settings.groupedDevices) {
 
@@ -164,7 +163,6 @@ class DeviceGroupDevice extends Homey.Device {
         });
       }
     }
-
     return true;
   }
 
@@ -174,7 +172,6 @@ class DeviceGroupDevice extends Homey.Device {
    * Will initialise the states by adding an event when ever a groupedDevice state (capability) is changed.
    * This event will gather the values of the groupedDevices capabilities and then update the deviceGroup card/mobile values.
    *
-   * @todo make sure if we init after settings update - that two even listeners are not created
    * @returns {Promise<void>}
    */
   async initEvents() {
@@ -196,8 +193,6 @@ class DeviceGroupDevice extends Homey.Device {
 
         // Set our event listener
         device.on('$state', this.events[this.settings.groupedDevices[x]]);
-
-        device = null; // @todo remove GC should handle this.
       }
     }
   }
@@ -321,7 +316,6 @@ class DeviceGroupDevice extends Homey.Device {
       }
     }
 
-    a = null; // @todo remove GC should handle this.
     return true;
   }
 
@@ -336,7 +330,6 @@ class DeviceGroupDevice extends Homey.Device {
     let labels = [];
 
     for (let x in this.settings.groupedDevices) {
-
       let device = await this.getDevice(this.settings.groupedDevices[x]);
       labels.push(device.name);
     }
@@ -370,7 +363,6 @@ class DeviceGroupDevice extends Homey.Device {
     }
 
     this.setSettings({labelCapabilities : labels.join(', ')});
-    a = null; // @todo remove GC should handle this.
     return true;
   }
 
@@ -425,16 +417,11 @@ class DeviceGroupDevice extends Homey.Device {
    * Was added as storing the entire device with in a variable, in order to reduce the calls to the API
    * which appears to have a memory leak where "something" with in there is not getting GC().
    *
-   * @todo - Performance testing storing devices against the app rather than deviceGroup, remove this function if positive result.
-   *
    * @param id
    * @returns {Promise<*>}
    */
   async getDevice(id) {
-
-    // Performance test storing against the app rather than device.
     return await Homey.app.getDevice(id);
-
   }
 
   /**
@@ -456,9 +443,7 @@ class DeviceGroupDevice extends Homey.Device {
 
       // Loop ALL grouped devices
       for (let x in this.settings.groupedDevices) {
-
         if (this.events.hasOwnProperty(this.settings.groupedDevices[x])) {
-
           let device = await this.getDevice(this.settings.groupedDevices[x]);
           await device.removeListener('$state', this.events[this.settings.groupedDevices[x]]);
           this.events[this.settings.groupedDevices[x]] = null; // @todo GC should handle this
