@@ -7,8 +7,5 @@
     "en": "Use this device class for blinds, both horizontal and vertical.",
     "nl":  "N/A"
   },
-  "capabilities" : [
-    "onoff",
-    "dim"
-  ]
+  "capabilities" : []
 }
