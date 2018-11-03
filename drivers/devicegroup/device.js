@@ -352,7 +352,9 @@ class DeviceGroupDevice extends Homey.Device {
     for (let i in this.capabilities) {
 
       a.capability = Homey.app.library.getCapability(this.capabilities[i]);
-      a.method = this.settings.capabilities[this.capabilities[i]].method
+      a.method = this.settings.capabilities[this.capabilities[i]].method;
+
+
 
       labels.push(a.capability.title[Homey.app.i18n]);
 
@@ -361,7 +363,7 @@ class DeviceGroupDevice extends Homey.Device {
         labels[labels.length -1] += ' (' + Homey.app.library.getMethod(a.method).title[Homey.app.i18n] + ')';
       }
     }
-
+    this.log('Setting Capability Labels for ' + this.getName() + ' to ' + labels.join(', '));
     this.setSettings({labelCapabilities : labels.join(', ')});
     return true;
   }
