@@ -8,8 +8,6 @@
     "nl":  "N/A"
   },
   "capabilities" : [
-    "onoff",
-    "target_temperature",
-    "measure_temperature"
+    "button"
   ]
 }

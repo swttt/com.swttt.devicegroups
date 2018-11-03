@@ -354,8 +354,6 @@ class DeviceGroupDevice extends Homey.Device {
       a.capability = Homey.app.library.getCapability(this.capabilities[i]);
       a.method = this.settings.capabilities[this.capabilities[i]].method;
 
-
-
       labels.push(a.capability.title[Homey.app.i18n]);
 
       // If we have a method assigned, attach it to our description.
