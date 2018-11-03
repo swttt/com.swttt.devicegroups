@@ -341,7 +341,7 @@ class DeviceGroupDevice extends Homey.Device {
   /**
    * Will update the capabilities label setting
    *
-   * @returns {Promise<void>}
+   * @returns {Promise<boolean>}
    */
   async updateCapabilityLabels() {
     this.log('Update Capability Labels Device Group ' + this.getName());
