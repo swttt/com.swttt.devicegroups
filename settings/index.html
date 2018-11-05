@@ -124,7 +124,6 @@
             isLoading      : false,
             isUpdating     : false,
             allDevices     : [],
-            isTest         : true,
             i18n           : 'en',
             library        : {},
             category       : 'category',
@@ -150,7 +149,7 @@
           watch : {
             groupedDevices(newValue, oldValue) {
               // Looks like this is another hack to attempt for the watch to no prematurely go off.
-              if ( ( this.isLoading || this.isTest ) && oldValue.length === 0 ) return;
+              if ( ( this.isLoading ) && oldValue.length === 0 ) return;
               this.isUpdating = true;
               // Gets called when changing groups : disable it if that's the case.
               // @todo this is still getting called. On every load
@@ -222,10 +221,8 @@
                       this.capabilities[key].available[x].i18n = this.capabilities[key].available[x].title[this.i18n];
                     }
                   }
-                  this.isTest = false;
                 }
                 if (!this.allDevices.length) {
-                  // this.isLoading = true;
                   this.isLoadingDevices = true;
                   Homey.api('GET', '/devices', (err, devices) => {
                     this.isLoading = false;

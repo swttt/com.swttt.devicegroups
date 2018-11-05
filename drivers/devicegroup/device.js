@@ -159,7 +159,7 @@ class DeviceGroupDevice extends Homey.Device {
       // Using the API for the 'real' device, set the capability value, to what ever we just changed.
       for (let capabilityId in valueObj) {
         await device.setCapabilityValue(capabilityId, valueObj[capabilityId]).catch((error) => {
-          this.log('Error setting capability ' + capabilityId + ' on ' + this.getName() + ' Error' + error.message);
+          this.log('Error setting capability ' + capabilityId + ' on ' + this.getName() + '(' + error.message + ')');
         });
       }
     }
