@@ -50,25 +50,25 @@ class DeviceGroups extends Homey.App {
   }
 
   async setDevicesForGroup(id, devices) {
-    let group = await this.getGroup(id);
+    let deviceGroup = await this.getGroup(id);
 
     // Find all devices that should be grouped.
-    let allDevices = await this.getDevices();
+    let allDevices     = await this.getDevices();
 
     // Looks like vue (upon settings) is sending a padded array with undefined items
-    // Checks that the devices sent exist in allDevices, filters out any that dont.
-    let grouped = Object.values(allDevices).filter(d => devices.includes(d.id));
+    // Checks that the devices sent exist in allDevices, filters out any that do not.
+    let groupedDevices = Object.values(allDevices).filter(d => devices.includes(d.id));
 
     let ids = [];
-    for (let i in grouped) {
-      ids.push(grouped[i].id);
+    for (let i in groupedDevices) {
+      ids.push(groupedDevices[i].id);
     }
 
-    group.settings.groupedDevices = ids;
+    deviceGroup.settings.groupedDevices = ids;
 
     // Update the group settings.
-    let result = await group.setSettings(group.settings);
-    await group.refresh();
+    let result = await deviceGroup.setSettings(deviceGroup.settings);
+    await deviceGroup.refresh();
 
     return result;
   }
