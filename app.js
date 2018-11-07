@@ -75,13 +75,13 @@ class DeviceGroups extends Homey.App {
 
   async setMethodForCapabilityOfGroup(id, capabilities) {
 
-    let group = await this.getGroup(id);
+    let deviceGroup = await this.getGroup(id);
 
-    group.settings.capabilities = capabilities;
+    deviceGroup.settings.capabilities = capabilities;
 
     // Update the group settings.
-    let result = await group.setSettings( group.settings );
-    await group.refresh();
+    let result = await deviceGroup.setSettings( deviceGroup.settings );
+    await deviceGroup.refresh();
     return result;
   }
 
@@ -92,7 +92,7 @@ class DeviceGroups extends Homey.App {
     this.library = new Librarian();
 
     // Force i18n to en or nl, as we are accessing the i18n directly,
-    this.i18n = (Homey.ManagerI18n.getLanguage() == 'nl') ? 'nl' : 'en';
+    this.i18n = (Homey.ManagerI18n.getLanguage() === 'nl') ? 'nl' : 'en';
 
     // Prime the API into memory
     this.getApi();
