@@ -18,7 +18,7 @@ class DeviceGroupDriver extends Homey.Driver {
        * Add for future backwards compatibility checks : will require npm semver
        * Currently being stored with in the devices store object @ onAlmostDone
        */
-      const version = '2.0.0';
+      const version = '1.2.0';
 
       let pairingDevice = {};
           pairingDevice.name = 'Grouped device';
