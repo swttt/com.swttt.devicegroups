@@ -1,7 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
-const { HomeyAPI } = require('./lib/athom-api.js');
+const HomeyAPI = require('athom-api').HomeyAPI;
 
 class DeviceGroups extends Homey.App {
 

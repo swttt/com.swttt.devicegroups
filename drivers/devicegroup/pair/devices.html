@@ -1,27 +1,19 @@
 <script src='../../../assets/vue.min.js'></script>
 <script src="./capabilities.js"></script>
 <script>
-
   Homey.setTitle('Select devices to group');
   Homey.emit('startedDevices', null, function (err, result) {
     if (err) {
       console.log(err);
       return;
     }
-    var allDevices = result.devices;
-    var pairingDevice = result.pairingDevice;
     new Vue({
       el: '#alldevices',
       data: {
         selectedDevices: [],
-        devices: {},
-        pairingDevice: {}
+        devices: result.devices,
+        pairingDevice: result.pairingDevice
       },
-      mounted() {
-        this.devices = allDevices;
-        this.pairingDevice = pairingDevice;
-      },
-      methods: {},
       watch: {
         'selectedDevices': function (val) {
           Homey.emit('devicesChanged', {
@@ -34,44 +26,14 @@
             console.log(result);
           });
         }
-      },
-      computed: {
-        filteredDevices() {
-
-          var capabilities = this.pairingDevice.capabilities;
-          var devices = this.devices;
-          var array = $.map(devices, function (value, index) {
-            return [value];
-          })
-
-          // the capabilities to search for const capabilities = capabilities
-          const devicesByCapability = array.reduce((result, device) => {
-            // try to find a capability that is not supported, if one of them is not supported, set includeIt to false
-            let includeIt = true
-
-
-            capabilities.forEach(c => {
-              if(!device.capabilities[c]){
-                includeIt = false
-              }
-            })
-            if (includeIt)
-              result.push(device)
-            return result
-          }, [])
-
-          console.log(devicesByCapability)
-          return devicesByCapability;
-        }
       }
     });
-
   });
 </script>
 
 <div id="alldevices">
   <ul id="devices-list" >
-    <li v-if="filteredDevices.length > 0" class="device" v-for="device in filteredDevices">
+    <li v-if="devices.length > 0" class="device" v-for="device in devices">
       <label :for="device.id" class="name">
         <div class="overlay"></div>
         <span class="name" tabindex="-1">{{device.name}}</span>
@@ -81,5 +43,4 @@
       </label>
     </li>
   </ul>
-
 </div>

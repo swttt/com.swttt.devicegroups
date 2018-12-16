@@ -1,28 +1,25 @@
 'use strict';
 
 const Homey = require('homey');
-const {
-  HomeyAPI
-} = require('../../lib/athom-api.js');
+const HomeyAPI = require('athom-api').HomeyAPI;
 
 class DeviceGroupDevice extends Homey.Device {
-  onInit() {
+  async onInit() {
     this.log('device init');
+    this.api = await this.getApi();
 
     this.registerMultipleCapabilityListener(this.getCapabilities(), async(valueObj, optsObj) => {
       try {
-        var api = await this.getApi();
-        await api.devices.subscribe();
-        var deviceGroup = await this.getSettings().groupedDevices;
-        for (var key in deviceGroup) {
-          let device = await api.devices.getDevice({
-            id: deviceGroup[key].id
-          });
-          for (var key in valueObj) {
-            device.setCapabilityValue(key, valueObj[key]);
-          }
+        const groupedDevices = await this.getSetting('groupedDevices');
 
+        for (let groupedDevice of groupedDevices) {
+          groupedDevice = await this.api.devices.getDevice({id: groupedDevice.id});
+
+          Object.entries(valueObj).forEach(([key, value]) => {
+              groupedDevice.setCapabilityValue(key, value);
+          });
         }
+
         return Promise.resolve();
       }
       catch (err) {
@@ -30,8 +27,8 @@ class DeviceGroupDevice extends Homey.Device {
         return Promise.reject();
       }
     }, 500);
-
   }
+
   // this method is called when the Device is added
   onAdded() {
     this.log('device added');
@@ -48,8 +45,6 @@ class DeviceGroupDevice extends Homey.Device {
     }
     return this.api;
   }
-
-
 }
 
 module.exports = DeviceGroupDevice;

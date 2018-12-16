@@ -1,0 +1,8 @@
+{
+  "name": "com.swttt.devicegroups",
+  "version": "1.0.0",
+  "description": "With this app you can group devices with the same capabilities as one device.",
+  "dependencies": {
+    "athom-api": "^2.1.140"
+  }
+}
