@@ -28,14 +28,32 @@ class DeviceGroupDriver extends Homey.Driver {
               pairingDevice.capabilities = data.capabilities;
               callback( null, pairingDevice );
           });
-          socket.on('startedDevices', function( data, callback ) {
-              var result = {};
-                  result.pairingDevice = pairingDevice;
-                  Homey.app.getDevices().then(res => {
-                      result.devices = res;
+          socket.on('startedDevices', function (data, callback) {
+              const result = {};
+              result.pairingDevice = pairingDevice;
+
+              Homey.app.getDevices()
+                  .then(devices => {
+                      // Only keep devices that support all requested capabilities
+                      result.devices = Object.values(devices).filter(device => {
+                          let includeIt = true;
+
+                          pairingDevice.capabilities.forEach(c => {
+                              if (!device.capabilities.includes(c)) {
+                                  includeIt = false
+                              }
+                          });
+
+                          return includeIt;
+                      });
+
                       callback(null, result);
-                    })
-                    .catch(error => callback(error, null));
+                  })
+                  .catch(error => {
+                      console.log('error: ', error);
+
+                      callback(error, null)
+                  });
           });
           socket.on('devicesChanged', function( data, callback ) {
               pairingDevice.settings.groupedDevices = data.devices;
